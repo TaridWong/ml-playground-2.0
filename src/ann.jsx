@@ -2,6 +2,7 @@ import S from "./s";
 import React from "react";
 import * as m from "mathjs";
 import MLModel from "./mlmodel";
+import { ANNDiagram } from "./components/AlgorithmDiagrams";
 
 const norm = 100;
 const MAX_PER_LAYER = 10;
@@ -350,6 +351,7 @@ export default class Ann extends MLModel {
 			],
 			expl2: [
 				"Stacks layers of artificial neurons where each unit combines inputs and passes the result through a smooth mathematical curve.",
+				<ANNDiagram key="ann_diag" />,
 				"When the network makes an incorrect prediction, error signals travel backward through the layers to nudge each connection weight in the right direction.",
 				"Because it transforms data through multiple layers, it can bend around complex shapes. In education, it acts as a black box because teachers cannot easily trace a prediction back to a single human rule."
 			],

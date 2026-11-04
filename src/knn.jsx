@@ -1,6 +1,7 @@
 import S from "./s";
 import React from "react";
 import MLModel from "./mlmodel";
+import { KNNDiagram } from "./components/AlgorithmDiagrams";
 
 export default class Knn extends MLModel {
 	constructor() {
@@ -222,6 +223,7 @@ export default class Knn extends MLModel {
 			],
 			expl2: [
 				"The core intuition is that students with similar study habits and quiz scores tend to have similar academic outcomes.",
+				<KNNDiagram key="knn_diag" />,
 				"If a student sits close to several peers who passed, the model predicts they will pass too.",
 				"When K is set to 1, the model creates tiny bubbles around every individual student. If one student guessed randomly on a quiz, that single point can warp the boundary. Increasing K smooths out these bubbles so isolated accidents do not mislead the overall prediction."
 			],

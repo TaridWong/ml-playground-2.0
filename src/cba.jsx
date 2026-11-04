@@ -1,6 +1,7 @@
 import S from "./s";
 import React from "react";
 import MLModel from "./mlmodel";
+import { CBADiagram } from "./components/AlgorithmDiagrams";
 
 export default class CBA extends MLModel {
 	constructor() {
@@ -372,6 +373,7 @@ export default class CBA extends MLModel {
 			],
 			expl2: [
 				"Educators often evaluate learners using performance bands rather than continuous algebraic equations.",
+				<CBADiagram key="cba_diag" />,
 				"CBA groups continuous metrics into distinct boxes, counts the outcomes inside each box, and mines strong if-then association rules.",
 				"Unlike recursive decision trees, CBA creates a direct patchwork of rubric tiles, making every single threshold immediately clear."
 			],

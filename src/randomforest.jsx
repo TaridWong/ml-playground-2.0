@@ -1,6 +1,7 @@
 import S from "./s";
 import React from "react";
 import MLModel from "./mlmodel";
+import { RandomForestDiagram } from "./components/AlgorithmDiagrams";
 
 class RFNode {
 	constructor(data, layer) {
@@ -362,6 +363,7 @@ export default class RandomForest extends MLModel {
 			],
 			expl2: [
 				"A single decision tree can be fragile because moving a single student dot can alter the whole tree. Random Forest solves this by training multiple trees on random samples of the data.",
+				<RandomForestDiagram key="rf_diag" />,
 				"Every tree votes on whether a student is On-Track or At-Risk, and the majority vote wins.",
 				"Combining many trees blends sharp rectangular boxes into smooth gradual steps, creating much more dependable risk probabilities."
 			],

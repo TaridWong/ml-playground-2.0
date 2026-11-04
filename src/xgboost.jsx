@@ -1,6 +1,7 @@
 import S from "./s";
 import React from "react";
 import MLModel from "./mlmodel";
+import { XGBoostDiagram } from "./components/AlgorithmDiagrams";
 
 class XGBTree {
 	constructor(depth, maxDepth, l2Reg) {
@@ -414,6 +415,7 @@ export default class XGBoost extends MLModel {
 			],
 			expl2: [
 				"Unlike Random Forest where trees train independently and vote at the end, XGBoost builds trees one by one in a chain.",
+				<XGBoostDiagram key="xgb_diag" />,
 				"After each round, the algorithm calculates how far each student prediction was from reality (the residual error).",
 				"The next tree is trained specifically to predict those residual errors. When added together with shrinkage, the steps combine into a finely calibrated risk surface."
 			],

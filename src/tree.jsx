@@ -1,6 +1,7 @@
 import S from "./s";
 import React from "react";
 import MLModel from "./mlmodel";
+import { TreeDiagram } from "./components/AlgorithmDiagrams";
 
 class Node {
 	// data: [[[x, y], [x, y]....], [1, 2, 2, 1, 1,...]]
@@ -376,11 +377,8 @@ export default class Tree extends MLModel {
 			],
 			expl2: [
 				"Works like a flowchart. Starting at the top question, each student follows the left or right branch based on their score until reaching a final prediction leaf.",
-				"Every dividing line is strictly horizontal or vertical because each step looks at one metric at a time. This makes it ideal for educational rubrics where a student can pass through high exam scores or high project completion.",
-				[
-					<img key="tree_flow" className="col-xs-12 col-md-6" src="./img/tree_flow.png" alt="Tree flow" />,
-					<img key="tree_entropy" className="col-xs-12 col-md-6" src="./img/tree_entropy.png" alt="Tree entropy" />
-				]
+				<TreeDiagram key="tree_diag" />,
+				"Every dividing line is strictly horizontal or vertical because each step looks at one metric at a time. This makes it ideal for educational rubrics where a student can pass through high exam scores or high project completion."
 			],
 			pros: [
 				"Completely transparent so educators can read and verify every rule.",

@@ -2,6 +2,7 @@ import S from "./s";
 import React from "react";
 import SVM from "./lib/svm";
 import MLModel from "./mlmodel";
+import { SVMDiagram } from "./components/AlgorithmDiagrams";
 
 export default class SupportVectorMachine extends MLModel {
 	constructor() {
@@ -242,8 +243,8 @@ export default class SupportVectorMachine extends MLModel {
 			],
 			expl2: [
 				"Instead of settling for any dividing line, this model mathematically searches for the widest street separating the two groups.",
+				<SVMDiagram key="svm_diag" />,
 				"The students standing right on the edge of the street are the support vectors. Students located further away have zero effect on where the road is drawn.",
-				<img key="svm_dual" className="col-xs-10 col-xs-offset-1" src="./img/svm_dual.png" alt="SVM dual diagram" />,
 				"When straight lines cannot separate groups, kernels bend the coordinate space so that curved patterns can be divided cleanly."
 			],
 			pros: [

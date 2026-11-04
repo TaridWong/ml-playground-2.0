@@ -1,6 +1,7 @@
 import S from "./s";
 import React from "react";
 import MLModel from "./mlmodel";
+import { PerceptronDiagram } from "./components/AlgorithmDiagrams";
 
 export default class Perceptron extends MLModel {
 	constructor() {
@@ -125,6 +126,7 @@ export default class Perceptron extends MLModel {
 			],
 			expl2: [
 				"Invented in 1957, it assigns weights to each axis, adds them together, and checks whether the total crosses zero.",
+				<PerceptronDiagram key="percep_diag" />,
 				"In two dimensions, this boundary is always a single straight line.",
 				"If groups can be separated by a straight ruler, it finds a boundary. If groups overlap, curve, or form separate islands, a single straight line cannot divide them."
 			],

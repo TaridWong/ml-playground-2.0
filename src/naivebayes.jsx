@@ -1,6 +1,7 @@
 import S from "./s";
 import React from "react";
 import MLModel from "./mlmodel";
+import { NaiveBayesDiagram } from "./components/AlgorithmDiagrams";
 
 export default class GaussianNaiveBayes extends MLModel {
 	constructor() {
@@ -302,6 +303,7 @@ export default class GaussianNaiveBayes extends MLModel {
 			],
 			expl2: [
 				"Treats each student group as a cloud with an average center and spread.",
+				<NaiveBayesDiagram key="nb_diag" />,
 				"The name Naive means it assumes each study habit acts independently without influencing the others.",
 				"It respects base rates, meaning if course failure is rare, it requires stronger evidence before raising an alarm."
 			],

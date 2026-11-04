@@ -1,6 +1,7 @@
 import S from "./s";
 import React from "react";
 import MLModel from "./mlmodel";
+import { LogisticDiagram } from "./components/AlgorithmDiagrams";
 
 export default class LogisticRegression extends MLModel {
 	constructor() {
@@ -291,6 +292,7 @@ export default class LogisticRegression extends MLModel {
 			],
 			expl2: [
 				"Ordinary line models can predict values like negative 20% or positive 140%, which makes no sense for probabilities. Logistic regression wraps the calculation in an S-shaped curve so the result stays strictly between 0% and 100%.",
+				<LogisticDiagram key="logistic_diag" />,
 				"In schools, setting the alert cutoff is an educational decision. If guidance counselors only have time to meet 10 students, you raise the threshold to prioritize those with the highest risk. If free automated review materials are available, you lower the threshold so anyone with even a slight risk receives help.",
 				"The Receiver Operating Characteristic curve in your dashboard is created by sweeping this exact threshold from 100% down to 0% and charting the balance between true alerts and false alarms."
 			],

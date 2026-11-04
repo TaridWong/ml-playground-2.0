@@ -118,18 +118,43 @@ body, html {
 			border: 1px solid var(--border-color);
 		}
 
-		#github-link {
-			text-decoration: none;
-			color: #ffffff;
-			background-color: #0f172a;
-			padding: 0.4rem 0.9rem;
-			border-radius: 6px;
-			font-weight: 500;
-			font-size: 0.85rem;
-			transition: background-color 0.15s ease;
+		.github-maintainer-group {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0.2rem;
 
-			&:hover {
-				background-color: #334155;
+			#github-link {
+				text-decoration: none;
+				color: #ffffff;
+				background-color: #0f172a;
+				padding: 0.38rem 0.9rem;
+				border-radius: 6px;
+				font-weight: 500;
+				font-size: 0.85rem;
+				transition: background-color 0.15s ease;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				line-height: 1.2;
+
+				&:hover {
+					background-color: #334155;
+				}
+			}
+
+			.maintainer-link {
+				font-size: 0.69rem;
+				font-weight: 500;
+				color: #475569;
+				text-decoration: none;
+				white-space: nowrap;
+				transition: color 0.15s ease, text-decoration 0.15s ease;
+
+				&:hover {
+					color: #0d9488;
+					text-decoration: underline;
+				}
 			}
 		}
 	}

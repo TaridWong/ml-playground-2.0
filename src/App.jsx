@@ -277,15 +277,26 @@ export default function App() {
 						<span style={{ color: "#0D9488" }}>● {pointCounts.class1}</span> /{" "}
 						<span style={{ color: "#E11D48" }}>● {pointCounts.class2}</span>)
 					</span>
-					<a
-						id="github-link"
-						href="https://github.com/TaridWong/ML-Playground"
-						target="_blank"
-						rel="noreferrer"
-						title="View repository on GitHub"
-					>
-						GitHub
-					</a>
+					<div className="github-maintainer-group">
+						<a
+							id="github-link"
+							href="https://github.com/TaridWong/ml-playground-2.0"
+							target="_blank"
+							rel="noreferrer"
+							title="View repository on GitHub"
+						>
+							GitHub
+						</a>
+						<a
+							className="maintainer-link"
+							href="https://sites.google.com/view/tarid2/"
+							target="_blank"
+							rel="noreferrer"
+							title="Connect with the maintainer"
+						>
+							Connect with the maintainer
+						</a>
+					</div>
 				</div>
 			</header>
 

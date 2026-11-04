@@ -6,6 +6,8 @@ import Perceptron from "../perceptron";
 import SVM from "../svm";
 import Tree from "../tree";
 import RandomForest from "../randomforest";
+import XGBoost from "../xgboost";
+import CBA from "../cba";
 import Ann from "../ann";
 import { calculateMetrics } from "../metrics";
 
@@ -77,6 +79,20 @@ export default function ModelComparisonModal({ isOpen, onClose, store, onSelectM
 				create: () => new Perceptron()
 			},
 			{
+				id: "xgboost",
+				name: "XGBoost",
+				paradigm: "Boosting Ensemble",
+				pedagogicalStrength: "Sequential residual correction fits intricate stepped boundaries",
+				create: () => new XGBoost()
+			},
+			{
+				id: "cba",
+				name: "Association Rules (CBA)",
+				paradigm: "Rule Discretization",
+				pedagogicalStrength: "Mines clear if-then rubric tiles with confidence filtering",
+				create: () => new CBA()
+			},
+			{
 				id: "ann",
 				name: "Neural Network (ANN)",
 				paradigm: "Multi-Layer Perceptron",
@@ -138,7 +154,7 @@ export default function ModelComparisonModal({ isOpen, onClose, store, onSelectM
 					<div>
 						<h2 className="modal-title">Model Comparison & Benchmark</h2>
 						<p className="modal-subtitle">
-							Evaluating all 8 machine learning paradigms on your current cohort of {xTr.length} students simultaneously.
+							Evaluating all 10 machine learning paradigms on your current cohort of {xTr.length} students simultaneously.
 						</p>
 					</div>
 					<button className="modal-close-btn" onClick={onClose} title="Close benchmark">

@@ -640,9 +640,13 @@ body, html {
 
 	#model-selector {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+		grid-template-columns: repeat(5, 1fr);
 		gap: 0.6rem;
 		margin-bottom: 1.25rem;
+
+		@media (max-width: 1100px) {
+			grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+		}
 
 		.model-card {
 			cursor: pointer;

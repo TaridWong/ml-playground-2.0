@@ -8,6 +8,8 @@ import Perceptron from "./perceptron";
 import SupportVectorMachine from "./svm";
 import Tree from "./tree";
 import RandomForest from "./randomforest";
+import XGBoost from "./xgboost";
+import CBA from "./cba";
 import Ann from "./ann";
 
 const modelList = [
@@ -18,6 +20,8 @@ const modelList = [
 	new SupportVectorMachine(),
 	new Tree(),
 	new RandomForest(),
+	new XGBoost(),
+	new CBA(),
 	new Ann()
 ];
 
@@ -113,6 +117,8 @@ export default class UI extends React.Component {
 			{ id: "svm", name: "Support Vector Machine", icon: "./img/linear.png" },
 			{ id: "tree", name: "Decision Tree", icon: "./img/tree.png" },
 			{ id: "randomforest", name: "Random Forest", icon: "./img/randomforest.svg" },
+			{ id: "xgboost", name: "XGBoost", icon: "./img/xgboost.svg" },
+			{ id: "cba", name: "Association Rules (CBA)", icon: "./img/cba.svg" },
 			{ id: "ann", name: "Neural Network (ANN)", icon: "./img/ann.png" }
 		];
 

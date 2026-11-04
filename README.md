@@ -15,13 +15,13 @@ Connect with the Maintainer: For inquiries, updates, or collaboration regarding 
 
 Originally created as an intuitive visualization of basic machine learning classifiers, Version 2.0 has been redesigned and modernized to aid educators in their learning of machine learning algorithms.
 
-Students and educators can plot student data points, observe how 8 machine learning algorithms make decision boundaries, inspect real-time risk probabilities, and evaluate the policy impact of false alarms versus missed students.
+Students and educators can plot student data points, observe how 10 machine learning algorithms make decision boundaries, inspect real-time risk probabilities, and evaluate the policy impact of false alarms versus missed students.
 
 ---
 
 ## What Is New in Version 2.0
 
-### 1. Expanded to 8 Machine Learning Paradigms
+### 1. Expanded to 10 Machine Learning Paradigms
 * **K-Nearest Neighbors (KNN):** Interactive neighborhood consensus with live slider updates and uniform versus inverse-distance voting.
 * **Logistic Regression:** Continuous probabilistic sigmoidal surfaces with an adjustable intervention threshold and degree 1 (linear) or degree 2 (polynomial) feature expansion.
 * **Gaussian Naive Bayes:** Probabilistic cloud modeling using Bayes theorem with empirical school base rates and variance smoothing.
@@ -29,6 +29,8 @@ Students and educators can plot student data points, observe how 8 machine learn
 * **Support Vector Machine (SVM):** Maximum-margin road optimization with support vector identification and Linear, Polynomial, and Radial Basis Function (RBF) kernels.
 * **Decision Tree:** Step-by-step orthogonal rule cuts using Gini Impurity (CART) or Shannon Entropy (C4.5) splitting criteria.
 * **Random Forest:** Ensemble bagging committee that aggregates multiple decision trees to produce smooth consensus probability gradients that resist classroom noise.
+* **Extreme Gradient Boosting (XGBoost):** Sequential boosting ensemble that trains small decision trees to predict residuals, demonstrating how shrinkage and boosting rounds control overfitting.
+* **Association Rules (CBA):** Classification Based on Associations that discretizes continuous scores into rubric performance bands (e.g. Low, Medium, High) and mines transparent if-then decision rules.
 * **Artificial Neural Network (ANN):** Multi-layer perceptron with an interactive visual architecture builder (add or remove hidden layers and neurons) and real-time backpropagation.
 
 ### 2. Learning Analytics & Evaluation Dashboard
@@ -44,7 +46,7 @@ Students and educators can plot student data points, observe how 8 machine learn
 * Allows administrators to toggle between teacher time (hours) and remediation funding ($).
 
 ### 4. Model Comparison Benchmark
-* Evaluates all 8 algorithms simultaneously on your active student cohort.
+* Evaluates all 10 algorithms simultaneously on your active student cohort.
 * Ranks models by F1 score and Accuracy to demonstrate that the best algorithm depends on the geometric shape of student behaviors.
 
 ### 5. Curated Educational Data Patterns

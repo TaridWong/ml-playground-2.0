@@ -14,7 +14,7 @@ let S = {
 		3: "#E0E7FF"  // Soft Indigo tint
 	},
 	model: [
-		"knn", "logistic", "naivebayes", "perceptron", "svm", "tree", "randomforest", "ann"
+		"knn", "logistic", "naivebayes", "perceptron", "svm", "tree", "randomforest", "xgboost", "cba", "ann"
 	],
 	canvasW: 400,
 	canvasH: 400,

@@ -23,7 +23,7 @@ export default function PatternGuideModal({ isOpen, onClose, onLoadPattern }) {
 			tagColor: "#059669",
 			description:
 				"Success can be reached via multiple independent pathways. For example: A student passes if Diagnostic Score is high OR Practice Problems are high. Only students low in BOTH need help. This creates an L-shaped boundary.",
-			recommended: "Decision Tree (excels with axis-aligned horizontal & vertical cuts)",
+			recommended: "Decision Tree, Association Rules (CBA), XGBoost (excel with orthogonal rule cuts)",
 			challenges: "Linear Perceptron struggles because a single straight diagonal cut cuts through corners.",
 			presetIndex: 1
 		},
@@ -34,7 +34,7 @@ export default function PatternGuideModal({ isOpen, onClose, onLoadPattern }) {
 			tagColor: "#9333ea",
 			description:
 				"One group of students forms an isolated pocket surrounded by others. In educational research, students who game the system cluster in a specific fast-response zone, encircled by normal learners.",
-			recommended: "K-Nearest Neighbors (KNN), RBF Kernel SVM, Artificial Neural Network",
+			recommended: "K-Nearest Neighbors (KNN), RBF Kernel SVM, XGBoost, Artificial Neural Network",
 			challenges: "Perceptron and Linear SVM fail completely (~50% accuracy) because a straight line cannot enclose a circle.",
 			presetIndex: 2
 		}

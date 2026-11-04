@@ -1,7 +1,7 @@
 # Machine Learning Playground 2.0
 ### An Interactive Visual Sandbox for Learning Analytics and Educational Data Mining
 
-🌐 **Live Web Application:** [https://taridwong.github.io/ML-Playground/](https://taridwong.github.io/ML-Playground/)
+🌐 **Live Web Application:** [https://taridwong.github.io/ml-playground-2.0/](https://taridwong.github.io/ml-playground-2.0/)
 
 Developed by **Jo Chuang**; Extended and modernized by **Tarid Wongvorachan**.
 
@@ -61,7 +61,7 @@ Students and educators can plot student data points, observe how 8 distinct mach
 
 You can use the application directly in any modern desktop or tablet web browser:
 
-👉 **[Launch Machine Learning Playground 2.0](https://taridwong.github.io/ML-Playground/)**
+👉 **[Launch Machine Learning Playground 2.0](https://taridwong.github.io/ml-playground-2.0/)**
 
 No account, download, or installation is needed.
 
@@ -79,8 +79,8 @@ To run the project on your own machine:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/TaridWong/ML-Playground.git
-cd ML-Playground
+git clone https://github.com/TaridWong/ml-playground-2.0.git
+cd ml-playground-2.0
 ```
 
 2. Install dependencies:

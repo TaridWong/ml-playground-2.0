@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "type": "module",
   "description": "An interactive Machine Learning Playground for Learning Analytics and Educational Data Mining",
-  "homepage": "https://TaridWong.github.io/ML-Playground",
+  "homepage": "https://TaridWong.github.io/ml-playground-2.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

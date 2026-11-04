@@ -350,7 +350,6 @@ export default class Ann extends MLModel {
 			],
 			expl2: [
 				"Stacks layers of artificial neurons where each unit combines inputs and passes the result through a smooth mathematical curve.",
-				<img key="ann_flow" className="col-xs-10 col-xs-offset-1" src="./img/ann_flow.png" alt="ANN flow diagram" />,
 				"When the network makes an incorrect prediction, error signals travel backward through the layers to nudge each connection weight in the right direction.",
 				"Because it transforms data through multiple layers, it can bend around complex shapes. In education, it acts as a black box because teachers cannot easily trace a prediction back to a single human rule."
 			],

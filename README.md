@@ -5,15 +5,17 @@
 
 Developed by **Jo Chuang**; Extended and modernized by **Tarid Wongvorachan**.
 
+Connect with the Maintainer: For inquiries, updates, or collaboration regarding ML Playground 2.0, connect with [Tarid Wongvorachan](https://sites.google.com/view/tarid2/).
+
 ---
 
 ## Overview
 
 **Machine Learning Playground 2.0** is an interactive, browser-based sandbox designed for students, educators, and researchers in **Learning Analytics (LA)** and **Educational Data Mining (EDM)**.
 
-Originally created as an intuitive visualization of basic machine learning classifiers, Version 2.0 has been completely redesigned and modernized to bridge the gap between abstract algorithmic geometry and real-world educational decision-making.
+Originally created as an intuitive visualization of basic machine learning classifiers, Version 2.0 has been redesigned and modernized to aid educators in their learning of machine learning algorithms.
 
-Students and educators can plot student data points, observe how 8 distinct machine learning algorithms carve decision boundaries, inspect real-time risk probabilities, and evaluate the policy impact of false alarms versus missed students.
+Students and educators can plot student data points, observe how 8 machine learning algorithms make decision boundaries, inspect real-time risk probabilities, and evaluate the policy impact of false alarms versus missed students.
 
 ---
 
@@ -50,7 +52,7 @@ Students and educators can plot student data points, observe how 8 distinct mach
 * **K-12 Formative Assessment Mastery:** L-shaped rule-based relationship where passing can occur through high diagnostic scores or high practice volume.
 * **EDM Classic (Gaming the System):** Non-linear enclosed island based on rapid guessing and hint abuse.
 
-### 6. Modernized Tech Stack
+### 6. Modernized Log
 * Fully upgraded from legacy React 15 and Webpack 2 to modern **React 18** and **Vite 6**.
 * Professional educational theme featuring navy slate, teal (On-Track), and rose (At-Risk).
 * 100% client-side execution in the browser with zero server setup required.

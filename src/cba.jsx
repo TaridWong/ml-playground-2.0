@@ -388,7 +388,7 @@ export default class CBA extends MLModel {
 			],
 			links: [
 				["https://en.wikipedia.org/wiki/Association_rule_learning", "Wikipedia Association Rule Learning"],
-				["https://dl.acm.org/doi/10.1145/276305.276313", "Integrating Classification and Association Rule Mining (Liu et al.)"]
+				["https://cran.rstudio.com/web/packages/arulesCBA/", "CRAN: Package arulesCBA"]
 			]
 		});
 	}

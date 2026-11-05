@@ -110,16 +110,16 @@ export default class UI extends React.Component {
 		const isTraining = this.props.isTraining;
 
 		const modelDefs = [
-			{ id: "knn", name: "K Nearest Neighbors", icon: "./img/knn.svg" },
-			{ id: "logistic", name: "Logistic Regression", icon: "./img/logistic.svg" },
-			{ id: "naivebayes", name: "Gaussian Naive Bayes", icon: "./img/naivebayes.svg" },
-			{ id: "perceptron", name: "Perceptron", icon: "./img/perceptron.svg" },
-			{ id: "svm", name: "Support Vector Machine", icon: "./img/linear.svg" },
-			{ id: "tree", name: "Decision Tree", icon: "./img/tree.svg" },
-			{ id: "randomforest", name: "Random Forest", icon: "./img/randomforest.svg" },
-			{ id: "xgboost", name: "XGBoost", icon: "./img/xgboost.svg" },
-			{ id: "cba", name: "Association Rules (CBA)", icon: "./img/cba.svg" },
-			{ id: "ann", name: "Neural Network (ANN)", icon: "./img/ann.svg" }
+			{ id: "knn", name: "K Nearest Neighbors", icon: "./img/knn.svg?v=2" },
+			{ id: "logistic", name: "Logistic Regression", icon: "./img/logistic.svg?v=2" },
+			{ id: "naivebayes", name: "Gaussian Naive Bayes", icon: "./img/naivebayes.svg?v=2" },
+			{ id: "perceptron", name: "Perceptron", icon: "./img/perceptron.svg?v=2" },
+			{ id: "svm", name: "Support Vector Machine", icon: "./img/linear.svg?v=2" },
+			{ id: "tree", name: "Decision Tree", icon: "./img/tree.svg?v=2" },
+			{ id: "randomforest", name: "Random Forest", icon: "./img/randomforest.svg?v=2" },
+			{ id: "xgboost", name: "XGBoost", icon: "./img/xgboost.svg?v=2" },
+			{ id: "cba", name: "Association Rules (CBA)", icon: "./img/cba.svg?v=2" },
+			{ id: "ann", name: "Neural Network (ANN)", icon: "./img/ann.svg?v=2" }
 		];
 
 		return (

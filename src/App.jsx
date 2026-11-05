@@ -351,7 +351,7 @@ export default function App() {
 			{/* Topbar */}
 			<header id="topbar">
 				<div className="topbar-left">
-					<img id="logo" src="./img/logo.svg" alt="ML Playground Logo" />
+					<img id="logo" src="./img/logo.png" alt="Machine Learning Playground 2.0 Logo" />
 					<div className="title-group">
 						<div className="main-title-line">
 							<span className="main-title">Machine Learning Playground</span>

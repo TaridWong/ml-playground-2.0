@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./public/img/logo.png" alt="Machine Learning Playground 2.0 Logo" width="140" />
+</p>
+
 # Machine Learning Playground 2.0
 ### An Interactive Visual Sandbox for Learning Analytics and Educational Data Mining
 

@@ -134,8 +134,32 @@ export default class UI extends React.Component {
 							onChange={(e) => this.handleFileUpload(e)}
 						/>
 					</label>
-					<button className="btn-io" onClick={() => this.exportData()} title="Save current points to JSON">
+					<button type="button" className="btn-io" onClick={() => this.exportData()} title="Save current points to JSON">
 						Save Data
+					</button>
+					<button
+						type="button"
+						className="btn-io"
+						onClick={() => this.props.onShareLink && this.props.onShareLink()}
+						title="Copy a shareable deep link to this exact cohort, model, and view"
+					>
+						{this.props.shareCopied ? "✓ Link Copied" : "Share Link"}
+					</button>
+					<button
+						type="button"
+						className="btn-io"
+						onClick={() => this.props.onOpenAuditReport && this.props.onOpenAuditReport()}
+						title="Open 1-page Educator Algorithmic Audit and Counterfactual Intervention Report"
+					>
+						Audit Report
+					</button>
+					<button
+						type="button"
+						className="btn-io"
+						onClick={() => this.props.onStartTour && this.props.onStartTour()}
+						title="Launch a quick 4-step interactive tour of ML Playground 2.0"
+					>
+						Quick Tour
 					</button>
 				</div>
 

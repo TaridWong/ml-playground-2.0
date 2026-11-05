@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import S from "../s";
 import DecisionTreeVisualizer from "./DecisionTreeVisualizer";
+import WhatIfCounterfactualPanel from "./WhatIfCounterfactualPanel";
 
 // Helper to recursively count feature splits in a decision tree or XGBoost tree
 function countTreeSplits(node, counts) {
@@ -35,14 +36,30 @@ export default function ModelInspector({
 }) {
 	const [isCollapsed, setIsCollapsed] = useState(false);
 
-	// Keep Decision Tree using its dedicated flowchart visualizer
-	if (activeModel === "tree") {
-		return <DecisionTreeVisualizer treeData={treeHierarchy} />;
-	}
-
 	const model = store ? store.classif : null;
 	const xTr = (store && store.xTr) || [];
 	const yTr = (store && store.yTr) || [];
+
+	// Keep Decision Tree using its dedicated flowchart visualizer, plus the What-If Counterfactual panel when trained
+	if (activeModel === "tree") {
+		return (
+			<div>
+				<DecisionTreeVisualizer treeData={treeHierarchy} />
+				{isTrained && model && xTr.length >= 2 && (
+					<div className="tree-visualizer-card" style={{ marginTop: "0.85rem" }}>
+						<WhatIfCounterfactualPanel
+							model={model}
+							xTr={xTr}
+							yTr={yTr}
+							xLabel={xLabel}
+							yLabel={yLabel}
+							hoverProbe={hoverProbe}
+						/>
+					</div>
+				)}
+			</div>
+		);
+	}
 
 	const MODEL_META = {
 		knn: {
@@ -701,7 +718,19 @@ export default function ModelInspector({
 				</button>
 			</div>
 
-			{!isCollapsed && renderContent()}
+			{!isCollapsed && (
+				<div>
+					{renderContent()}
+					<WhatIfCounterfactualPanel
+						model={model}
+						xTr={xTr}
+						yTr={yTr}
+						xLabel={xLabel}
+						yLabel={yLabel}
+						hoverProbe={hoverProbe}
+					/>
+				</div>
+			)}
 		</div>
 	);
 }

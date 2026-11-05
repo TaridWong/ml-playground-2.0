@@ -9,6 +9,8 @@ import MetricsDashboard from "./components/MetricsDashboard";
 import PatternGuideModal from "./components/PatternGuideModal";
 import ModelInspector from "./components/ModelInspector";
 import ModelComparisonModal from "./components/ModelComparisonModal";
+import AuditReportModal from "./components/AuditReportModal";
+import QuickTourModal from "./components/QuickTourModal";
 
 export default function App() {
 	const canvasRef = useRef(null);
@@ -27,6 +29,9 @@ export default function App() {
 	const [metrics, setMetrics] = useState(null);
 	const [isGuideOpen, setIsGuideOpen] = useState(false);
 	const [isComparisonOpen, setIsComparisonOpen] = useState(false);
+	const [isAuditOpen, setIsAuditOpen] = useState(false);
+	const [isTourOpen, setIsTourOpen] = useState(false);
+	const [shareCopied, setShareCopied] = useState(false);
 	const [viewMode, setViewMode] = useState("boundary"); // "boundary" | "confidence"
 	const [hoverProbe, setHoverProbe] = useState(null);
 	const [treeHierarchy, setTreeHierarchy] = useState(null);
@@ -248,6 +253,99 @@ export default function App() {
 		}, 100);
 	};
 
+	// Shareable Scenario URL Deep Linking
+	const handleShareLink = () => {
+		const params = new URLSearchParams();
+		params.set("model", activeModel);
+		params.set("preset", activePresetId);
+		params.set("view", viewMode);
+		if (metrics) {
+			params.set("train", "1");
+		}
+		if (activePresetId === "custom" && store.xTr && store.xTr.length > 0 && store.xTr.length <= 120) {
+			const encodedPts = store.xTr
+				.map((pt, i) => `${Math.round(pt[0])},${Math.round(pt[1])},${store.yTr[i]}`)
+				.join(";");
+			params.set("pts", encodedPts);
+		}
+		const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+		window.history.replaceState(null, "", shareUrl);
+		if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+			navigator.clipboard.writeText(shareUrl).catch(() => {});
+		}
+		setShareCopied(true);
+		setTimeout(() => setShareCopied(false), 2200);
+	};
+
+	const handleLoadSampleAndTrain = () => {
+		const sampleId = "higher_ed_retention";
+		handlePresetChange(sampleId);
+		setTimeout(() => {
+			if (canvasObjRef.current && !isTraining) {
+				handleTrain();
+			}
+		}, 120);
+	};
+
+	// Restore state from shareable URL query parameters on initial load
+	useEffect(() => {
+		const params = new URLSearchParams(window.location.search);
+		const urlModel = params.get("model");
+		const urlPreset = params.get("preset");
+		const urlView = params.get("view");
+		const urlPts = params.get("pts");
+		const urlTrain = params.get("train");
+
+		let hasLoadedPoints = false;
+
+		if (urlPreset && urlPreset !== "custom") {
+			const foundPreset = EDUCATIONAL_PRESETS.find((p) => p.id === urlPreset);
+			if (foundPreset && canvasObjRef.current) {
+				setActivePresetId(urlPreset);
+				store.loadPresetPoints(foundPreset.points);
+				canvasObjRef.current.clearCtx();
+				canvasObjRef.current.drawStoreTr();
+				updateCounts();
+				hasLoadedPoints = true;
+			}
+		} else if (urlPts && canvasObjRef.current) {
+			const parsed = [];
+			urlPts.split(";").forEach((item) => {
+				const parts = item.split(",").map(Number);
+				if (parts.length === 3 && !parts.some(isNaN)) {
+					parsed.push({ x: [parts[0], parts[1]], y: parts[2] });
+				}
+			});
+			if (parsed.length > 0) {
+				setActivePresetId("custom");
+				store.loadPresetPoints(parsed);
+				canvasObjRef.current.clearCtx();
+				canvasObjRef.current.drawStoreTr();
+				updateCounts();
+				hasLoadedPoints = true;
+			}
+		}
+
+		if (urlView === "boundary" || urlView === "confidence") {
+			setViewMode(urlView);
+			if (canvasObjRef.current) {
+				canvasObjRef.current.setViewMode(urlView);
+			}
+		}
+
+		if (urlModel && S.model.includes(urlModel)) {
+			setActiveModel(urlModel);
+		}
+
+		if (hasLoadedPoints && urlTrain === "1") {
+			setTimeout(() => {
+				if (canvasObjRef.current) {
+					handleTrain();
+				}
+			}, 180);
+		}
+	}, [store]);
+
 	return (
 		<div className="app-wrapper">
 			{/* Topbar */}
@@ -427,6 +525,10 @@ export default function App() {
 							repaint={handleRepaint}
 							clearAll={handleClearAll}
 							openComparison={() => setIsComparisonOpen(true)}
+							onShareLink={handleShareLink}
+							shareCopied={shareCopied}
+							onOpenAuditReport={() => setIsAuditOpen(true)}
+							onStartTour={() => setIsTourOpen(true)}
 							selectedModel={activeModel}
 							renderInfo={(info) => setInfoContent(info)}
 							onModelChange={(modelId) => {
@@ -481,6 +583,25 @@ export default function App() {
 				store={store}
 				onSelectModel={handleSelectModelFromComparison}
 				activePreset={activePreset}
+			/>
+
+			{/* Educator Algorithmic Audit & Intervention Report Modal */}
+			<AuditReportModal
+				isOpen={isAuditOpen}
+				onClose={() => setIsAuditOpen(false)}
+				activeModel={activeModel}
+				store={store}
+				metrics={metrics}
+				activePreset={activePreset}
+			/>
+
+			{/* 45-Second Interactive Quick Tour Modal */}
+			<QuickTourModal
+				isOpen={isTourOpen}
+				onClose={() => setIsTourOpen(false)}
+				onLoadSampleAndTrain={handleLoadSampleAndTrain}
+				onOpenAuditReport={() => setIsAuditOpen(true)}
+				onOpenComparison={() => setIsComparisonOpen(true)}
 			/>
 		</div>
 	);

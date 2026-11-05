@@ -125,19 +125,17 @@ export function NaiveBayesDiagram() {
 				{/* 2D coordinate box */}
 				<rect x="25" y="20" width="370" height="220" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
 
-				{/* On-Track Gaussian Cloud (Teal) */}
+				{/* On-Track Gaussian Cloud (Teal - no box) */}
 				<ellipse cx="275" cy="95" rx="80" ry="50" fill="#ccfbf1" fillOpacity="0.4" stroke={COLOR_TEAL} strokeWidth="1.5" strokeDasharray="4 3" />
 				<ellipse cx="275" cy="95" rx="50" ry="30" fill="#ccfbf1" fillOpacity="0.75" stroke={COLOR_TEAL} strokeWidth="2" />
 				<circle cx="275" cy="95" r="5" fill={COLOR_TEAL} />
-				<rect x="220" y="78" width="110" height="20" rx="3" fill="#ffffff" fillOpacity="0.9" stroke="#99f6e4" strokeWidth="1" />
-				<text x="275" y="92" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#0f766e" fontFamily={FONT_FAMILY}>On-Track Cloud</text>
+				<text x="275" y="85" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#0f766e" fontFamily={FONT_FAMILY}>On-Track Cloud</text>
 
-				{/* At-Risk Gaussian Cloud (Rose) */}
+				{/* At-Risk Gaussian Cloud (Rose - no box) */}
 				<ellipse cx="120" cy="160" rx="75" ry="45" fill="#ffe4e6" fillOpacity="0.4" stroke={COLOR_ROSE} strokeWidth="1.5" strokeDasharray="4 3" />
 				<ellipse cx="120" cy="160" rx="45" ry="26" fill="#ffe4e6" fillOpacity="0.75" stroke={COLOR_ROSE} strokeWidth="2" />
 				<circle cx="120" cy="160" r="5" fill={COLOR_ROSE} />
-				<rect x="70" y="145" width="100" height="20" rx="3" fill="#ffffff" fillOpacity="0.9" stroke="#fecdd3" strokeWidth="1" />
-				<text x="120" y="159" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#be123c" fontFamily={FONT_FAMILY}>At-Risk Cloud</text>
+				<text x="120" y="150" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#be123c" fontFamily={FONT_FAMILY}>At-Risk Cloud</text>
 
 				{/* Boundary curve where densities match */}
 				<path d="M 170 20 Q 205 130, 230 240" fill="none" stroke={COLOR_NAVY} strokeWidth="3" />
@@ -183,11 +181,11 @@ export function PerceptronDiagram() {
 
 				{/* Misclassified student causing tilt */}
 				<circle cx="160" cy="100" r="8" fill={COLOR_ROSE} stroke="#000000" strokeWidth="1.5" />
-				<text x="160" y="82" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#b91c1c" fontFamily={FONT_FAMILY}>Mistake Point</text>
+				<text x="175" y="104" textAnchor="start" fontSize="11" fontWeight="bold" fill="#b91c1c" fontFamily={FONT_FAMILY}>Mistake Point</text>
 
 				{/* Old line */}
 				<line x1="60" y1="80" x2="320" y2="180" stroke="#94a3b8" strokeWidth="2" strokeDasharray="5 4" />
-				<text x="100" y="118" fontSize="11" fontWeight="bold" fill="#64748b" fontFamily={FONT_FAMILY}>Old Fence</text>
+				<text x="75" y="112" fontSize="11" fontWeight="bold" fill="#64748b" fontFamily={FONT_FAMILY}>Old Fence</text>
 
 				{/* Tilt adjustment arrow */}
 				<path d="M 180 125 A 40 40 0 0 1 205 160" fill="none" stroke="#ea580c" strokeWidth="2.5" markerEnd="url(#arrow-percep)" />
@@ -259,20 +257,19 @@ export function SVMDiagram() {
 
 				{/* Right side explainer card */}
 				<rect x="420" y="20" width="280" height="225" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
-				<text x="435" y="44" fontSize="14" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>The Widest Street</text>
-				<text x="435" y="66" fontSize="11" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>1. Maximizes safety margin:</text>
-				<text x="450" y="81" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Widens the shaded street until it touches the closest students.</text>
+				<text x="435" y="46" fontSize="14" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>The Widest Street</text>
+				<text x="435" y="70" fontSize="11" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>1. Maximizes safety margin:</text>
+				<text x="448" y="86" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Widens the shaded street until it</text>
+				<text x="448" y="100" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>touches the closest students.</text>
 
-				<text x="435" y="103" fontSize="11" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>2. Support Vectors matter most:</text>
-				<text x="450" y="118" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Only edge students hold the road. Outer students have zero effect.</text>
+				<text x="435" y="122" fontSize="11" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>2. Support Vectors matter most:</text>
+				<text x="448" y="138" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Only edge students hold the road.</text>
+				<text x="448" y="152" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Outer students have zero effect.</text>
 
-				<text x="435" y="140" fontSize="11" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>3. Students inside the empty buffer:</text>
-				<text x="450" y="155" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Indicate borderline overlap or noise. The model uses soft</text>
-				<text x="450" y="169" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>margin penalties to tolerate small intrusion, or bends the</text>
-				<text x="450" y="183" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>decision boundary with kernels to resolve complex patterns.</text>
-
-				<rect x="435" y="198" width="250" height="24" rx="4" fill="#e0f2fe" stroke="#bae6fd" />
-				<text x="560" y="214" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#0369a1" fontFamily={FONT_FAMILY}>Tolerates noise gracefully without erratic shifts</text>
+				<text x="435" y="174" fontSize="11" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>3. Students inside the empty buffer:</text>
+				<text x="448" y="190" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Indicate noisy overlap. Soft margins</text>
+				<text x="448" y="204" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>tolerate intrusions, while kernels</text>
+				<text x="448" y="218" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>bend space to resolve boundaries.</text>
 			</svg>
 		</div>
 	);

@@ -227,9 +227,9 @@ export function SVMDiagram() {
 				{/* Center dividing boundary (Road divider) */}
 				<line x1="180" y1="20" x2="280" y2="240" stroke={COLOR_NAVY} strokeWidth="3" />
 
-				{/* Clear Safety Margin Explanation Text inside street (no box) */}
-				<text x="230" y="45" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#0284c7" fontFamily={FONT_FAMILY}>Safety Margin (Street)</text>
-				<text x="230" y="60" textAnchor="middle" fontSize="9.5" fill="#64748b" fontFamily={FONT_FAMILY}>Empty buffer separating groups</text>
+				{/* Clear Safety Margin Explanation Text inside street (30% smaller, moved right) */}
+				<text x="265" y="42" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#0284c7" fontFamily={FONT_FAMILY}>Safety Margin (Street)</text>
+				<text x="265" y="55" textAnchor="middle" fontSize="6.8" fill="#64748b" fontFamily={FONT_FAMILY}>Empty buffer separating groups</text>
 
 				{/* Students far away (non-support vectors) */}
 				<circle cx="55" cy="60" r="5" fill={COLOR_ROSE} />
@@ -317,13 +317,13 @@ export function TreeDiagram() {
 				<rect x="345" y="110" width="110" height="125" fill="#ccfbf1" fillOpacity="0.45" />
 				<rect x="235" y="110" width="110" height="125" fill="#ffe4e6" fillOpacity="0.5" />
 
-				{/* Horizontal Cut (Exam = 60 - no box) */}
+				{/* Horizontal Cut (Exam = 60 - no box, smaller font) */}
 				<line x1="235" y1="110" x2="455" y2="110" stroke={COLOR_NAVY} strokeWidth="2.5" />
-				<text x="315" y="100" textAnchor="middle" fontSize="11" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Cut 1: Exam = 60</text>
+				<text x="315" y="100" textAnchor="middle" fontSize="8.5" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Cut 1: Exam = 60</text>
 
-				{/* Vertical Cut (Practice = 50 - no box) */}
+				{/* Vertical Cut (Practice = 50 - no box, smaller font) */}
 				<line x1="345" y1="110" x2="345" y2="235" stroke={COLOR_NAVY} strokeWidth="2.5" />
-				<text x="355" y="218" textAnchor="start" fontSize="11" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Cut 2: Practice = 50</text>
+				<text x="352" y="218" textAnchor="start" fontSize="8.5" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Cut 2: Practice = 50</text>
 
 				{/* Right side explainer card */}
 				<rect x="475" y="25" width="220" height="210" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
@@ -434,14 +434,14 @@ export function XGBoostDiagram() {
 
 				{/* Forward arrow */}
 				<path d="M 135 77 L 158 77" stroke="#ea580c" strokeWidth="3" markerEnd="url(#arrow-xgb-1)" />
-				<text x="146" y="68" textAnchor="middle" fontSize="9.5" fontWeight="bold" fill="#ea580c" fontFamily={FONT_FAMILY}>Residual</text>
+				<text x="146" y="58" textAnchor="middle" fontSize="9.5" fontWeight="bold" fill="#ea580c" fontFamily={FONT_FAMILY}>Residual</text>
 
 				{/* Step 2 Tree */}
 				<g transform="translate(165, 25)">
 					<rect x="0" y="0" width="105" height="105" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
 					<text x="52" y="22" textAnchor="middle" fontSize="12" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Stage 2 Tree</text>
 					<text x="52" y="40" textAnchor="middle" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Targets errors</text>
-					<circle cx="52" cy="58" r="5" fill="#ea580c" />
+					<circle cx="52" cy="58" r="5" fill="#0d9488" />
 					<rect x="10" y="72" width="85" height="20" rx="4" fill="#fee2e2" />
 					<text x="52" y="86" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#b91c1c" fontFamily={FONT_FAMILY}>1 Mistake Left</text>
 				</g>

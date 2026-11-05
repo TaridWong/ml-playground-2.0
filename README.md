@@ -130,10 +130,10 @@ To deploy your own fork:
 If you use Machine Learning Playground 2.0 in your research, teaching, curriculum, or publications, please cite it as:
 
 ```bibtex
-@software{wongvorachan2025mlplayground2,
+@software{wongvorachan2026mlplayground2,
   author = {Wongvorachan, Tarid},
   title = {Machine Learning Playground 2.0 for Learning Analytics & Educational Data Mining},
-  year = {2025},
+  year = {2026},
   url = {https://github.com/TaridWong/ml-playground-2.0}
 }
 ```
@@ -143,4 +143,4 @@ If you use Machine Learning Playground 2.0 in your research, teaching, curriculu
 ## License
 
 This project is licensed under the [MIT License](LICENSE) - see the [LICENSE](LICENSE) file for full details.
-Original work copyright (c) 2017 Jo Chuang. Version 2.0 enhancements and extensions copyright (c) 2024-2026 Tarid Wongvorachan.
+Original work copyright (c) 2017 Jo Chuang. Version 2.0 enhancements and extensions copyright (c) 2026 Tarid Wongvorachan.

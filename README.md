@@ -143,4 +143,4 @@ If you use Machine Learning Playground 2.0 in your research, teaching, curriculu
 ## License
 
 This project is licensed under the [MIT License](LICENSE) - see the [LICENSE](LICENSE) file for full details.
-Original work copyright (c) 2017 Jo Chuang. Version 2.0 enhancements and extensions copyright (c) 2024-2025 Tarid Wongvorachan.
+Original work copyright (c) 2017 Jo Chuang. Version 2.0 enhancements and extensions copyright (c) 2024-2026 Tarid Wongvorachan.

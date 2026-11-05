@@ -423,49 +423,49 @@ export function XGBoostDiagram() {
 				</defs>
 
 				{/* Step 1 Tree */}
-				<g transform="translate(25, 25)">
-					<rect x="0" y="0" width="105" height="105" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
-					<text x="52" y="22" textAnchor="middle" fontSize="12" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Stage 1 Tree</text>
-					<text x="52" y="40" textAnchor="middle" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Base estimate</text>
-					<circle cx="52" cy="58" r="5" fill="#0d9488" />
-					<rect x="10" y="72" width="85" height="20" rx="4" fill="#fee2e2" />
-					<text x="52" y="86" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#b91c1c" fontFamily={FONT_FAMILY}>2 Mistakes Left</text>
+				<g transform="translate(20, 25)">
+					<rect x="0" y="0" width="96" height="105" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
+					<text x="48" y="22" textAnchor="middle" fontSize="11.5" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Stage 1 Tree</text>
+					<text x="48" y="39" textAnchor="middle" fontSize="10" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Base estimate</text>
+					<circle cx="48" cy="56" r="5" fill="#0d9488" />
+					<rect x="8" y="72" width="80" height="20" rx="4" fill="#fee2e2" />
+					<text x="48" y="86" textAnchor="middle" fontSize="9.5" fontWeight="bold" fill="#b91c1c" fontFamily={FONT_FAMILY}>2 Mistakes Left</text>
 				</g>
 
-				{/* Forward arrow */}
-				<path d="M 135 77 L 158 77" stroke="#ea580c" strokeWidth="3" markerEnd="url(#arrow-xgb-1)" />
-				<text x="146" y="58" textAnchor="middle" fontSize="9.5" fontWeight="bold" fill="#ea580c" fontFamily={FONT_FAMILY}>Residual</text>
+				{/* Forward arrow with widened gap so Residual never gets squeezed */}
+				<path d="M 124 77 L 164 77" stroke="#ea580c" strokeWidth="2.5" markerEnd="url(#arrow-xgb-1)" />
+				<text x="144" y="60" textAnchor="middle" fontSize="8.5" fontWeight="bold" fill="#ea580c" fontFamily={FONT_FAMILY}>Residual</text>
 
 				{/* Step 2 Tree */}
-				<g transform="translate(165, 25)">
-					<rect x="0" y="0" width="105" height="105" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
-					<text x="52" y="22" textAnchor="middle" fontSize="12" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Stage 2 Tree</text>
-					<text x="52" y="40" textAnchor="middle" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Targets errors</text>
-					<circle cx="52" cy="58" r="5" fill="#0d9488" />
-					<rect x="10" y="72" width="85" height="20" rx="4" fill="#fee2e2" />
-					<text x="52" y="86" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#b91c1c" fontFamily={FONT_FAMILY}>1 Mistake Left</text>
+				<g transform="translate(172, 25)">
+					<rect x="0" y="0" width="96" height="105" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
+					<text x="48" y="22" textAnchor="middle" fontSize="11.5" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Stage 2 Tree</text>
+					<text x="48" y="39" textAnchor="middle" fontSize="10" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Targets errors</text>
+					<circle cx="48" cy="56" r="5" fill="#0d9488" />
+					<rect x="8" y="72" width="80" height="20" rx="4" fill="#fee2e2" />
+					<text x="48" y="86" textAnchor="middle" fontSize="9.5" fontWeight="bold" fill="#b91c1c" fontFamily={FONT_FAMILY}>1 Mistake Left</text>
 				</g>
 
 				{/* Forward arrow */}
-				<path d="M 275 77 L 298 77" stroke="#ea580c" strokeWidth="3" markerEnd="url(#arrow-xgb-2)" />
+				<path d="M 276 77 L 316 77" stroke="#ea580c" strokeWidth="2.5" markerEnd="url(#arrow-xgb-2)" />
 
 				{/* Step 3 Tree */}
-				<g transform="translate(305, 25)">
-					<rect x="0" y="0" width="105" height="105" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
-					<text x="52" y="22" textAnchor="middle" fontSize="12" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Stage 3 Tree</text>
-					<text x="52" y="40" textAnchor="middle" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Fine-tunes fit</text>
-					<circle cx="52" cy="58" r="5" fill="#0d9488" />
-					<rect x="10" y="72" width="85" height="20" rx="4" fill="#dcfce7" />
-					<text x="52" y="86" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#15803d" fontFamily={FONT_FAMILY}>0 Mistakes</text>
+				<g transform="translate(324, 25)">
+					<rect x="0" y="0" width="96" height="105" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
+					<text x="48" y="22" textAnchor="middle" fontSize="11.5" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Stage 3 Tree</text>
+					<text x="48" y="39" textAnchor="middle" fontSize="10" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Fine-tunes fit</text>
+					<circle cx="48" cy="56" r="5" fill="#0d9488" />
+					<rect x="8" y="72" width="80" height="20" rx="4" fill="#dcfce7" />
+					<text x="48" y="86" textAnchor="middle" fontSize="9.5" fontWeight="bold" fill="#15803d" fontFamily={FONT_FAMILY}>0 Mistakes</text>
 				</g>
 
 				{/* Bottom Formula Banner */}
-				<rect x="25" y="155" width="385" height="65" rx="8" fill="#0f172a" />
-				<text x="217" y="178" textAnchor="middle" fontSize="12" fill="#94a3b8" fontFamily={FONT_FAMILY}>Sequential Additive Model:</text>
-				<text x="217" y="202" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#38bdf8" fontFamily={FONT_FAMILY}>Prediction = Tree 1 + (η × Tree 2) + (η × Tree 3)</text>
+				<rect x="20" y="155" width="400" height="65" rx="8" fill="#0f172a" />
+				<text x="220" y="178" textAnchor="middle" fontSize="12" fill="#94a3b8" fontFamily={FONT_FAMILY}>Sequential Additive Model:</text>
+				<text x="220" y="202" textAnchor="middle" fontSize="12.5" fontWeight="bold" fill="#38bdf8" fontFamily={FONT_FAMILY}>Prediction = Tree 1 + (η × Tree 2) + (η × Tree 3)</text>
 
 				{/* Right side explainer card */}
-				<rect x="430" y="25" width="265" height="210" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
+				<rect x="435" y="25" width="265" height="210" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
 				<text x="447" y="55" fontSize="15" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Relay Correction</text>
 				<text x="447" y="85" fontSize="12" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>1. Trains in a relay sequence:</text>
 				<text x="463" y="103" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Each new tree specifically</text>

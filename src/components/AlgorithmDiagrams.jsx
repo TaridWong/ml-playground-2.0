@@ -59,7 +59,8 @@ export function KNNDiagram() {
 				{/* Conclusion banner */}
 				<rect x="380" y="148" width="295" height="38" rx="6" fill="#ccfbf1" stroke="#99f6e4" strokeWidth="1" />
 				<text x="527" y="172" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#0f766e" fontFamily={FONT_FAMILY}>Majority Vote: Predicts On-Track</text>
-				<text x="380" y="212" fontSize="11" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Classifies unseen student by finding their 5 nearest neighbors.</text>
+				<text x="380" y="205" fontSize="11" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Classifies unseen students by finding their</text>
+				<text x="380" y="221" fontSize="11" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>5 closest peer neighbors.</text>
 			</svg>
 		</div>
 	);
@@ -140,8 +141,7 @@ export function NaiveBayesDiagram() {
 
 				{/* Boundary curve where densities match */}
 				<path d="M 170 20 Q 205 130, 230 240" fill="none" stroke={COLOR_NAVY} strokeWidth="3" />
-				<rect x="180" y="32" width="135" height="22" rx="4" fill="#ffffff" stroke={COLOR_NAVY} strokeWidth="1.5" />
-				<text x="247" y="47" textAnchor="middle" fontSize="10.5" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Equal Odds Boundary</text>
+				<text x="247" y="47" textAnchor="middle" fontSize="11" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Equal Odds Boundary</text>
 
 				{/* Right side explainer card */}
 				<rect x="415" y="20" width="280" height="220" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
@@ -183,14 +183,11 @@ export function PerceptronDiagram() {
 
 				{/* Misclassified student causing tilt */}
 				<circle cx="160" cy="100" r="8" fill={COLOR_ROSE} stroke="#000000" strokeWidth="1.5" />
-				<rect x="110" y="62" width="100" height="22" rx="4" fill="#fee2e2" stroke="#fca5a5" strokeWidth="1" />
-				<text x="160" y="77" textAnchor="middle" fontSize="10.5" fontWeight="bold" fill="#b91c1c" fontFamily={FONT_FAMILY}>Mistake Point</text>
+				<text x="160" y="82" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#b91c1c" fontFamily={FONT_FAMILY}>Mistake Point</text>
 
 				{/* Old line */}
 				<line x1="60" y1="80" x2="320" y2="180" stroke="#94a3b8" strokeWidth="2" strokeDasharray="5 4" />
-				<rect x="45" y="42" width="80" height="22" rx="4" fill="#f8fafc" stroke="#cbd5e1" strokeWidth="1" />
-				<text x="85" y="57" textAnchor="middle" fontSize="11" fontWeight="600" fill="#64748b" fontFamily={FONT_FAMILY}>Old Fence</text>
-				<line x1="85" y1="64" x2="85" y2="86" stroke="#94a3b8" strokeWidth="1" strokeDasharray="2 2" />
+				<text x="100" y="118" fontSize="11" fontWeight="bold" fill="#64748b" fontFamily={FONT_FAMILY}>Old Fence</text>
 
 				{/* Tilt adjustment arrow */}
 				<path d="M 180 125 A 40 40 0 0 1 205 160" fill="none" stroke="#ea580c" strokeWidth="2.5" markerEnd="url(#arrow-percep)" />
@@ -198,8 +195,7 @@ export function PerceptronDiagram() {
 
 				{/* Corrected new line */}
 				<line x1="80" y1="35" x2="260" y2="225" stroke={COLOR_NAVY} strokeWidth="3" />
-				<rect x="245" y="198" width="105" height="24" rx="4" fill="#ffffff" stroke={COLOR_NAVY} strokeWidth="1.5" />
-				<text x="297" y="214" textAnchor="middle" fontSize="11" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Corrected Line</text>
+				<text x="268" y="224" fontSize="11" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Corrected Line</text>
 
 				{/* Right side explainer card */}
 				<rect x="415" y="20" width="280" height="220" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
@@ -233,10 +229,9 @@ export function SVMDiagram() {
 				{/* Center dividing boundary (Road divider) */}
 				<line x1="180" y1="20" x2="280" y2="240" stroke={COLOR_NAVY} strokeWidth="3" />
 
-				{/* Clear Safety Margin Explanation Badge inside street */}
-				<rect x="145" y="30" width="170" height="42" rx="6" fill="#ffffff" stroke="#0284c7" strokeWidth="1.5" />
-				<text x="230" y="47" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#0284c7" fontFamily={FONT_FAMILY}>Safety Margin (Street)</text>
-				<text x="230" y="62" textAnchor="middle" fontSize="9.5" fill="#64748b" fontFamily={FONT_FAMILY}>Empty buffer separating groups</text>
+				{/* Clear Safety Margin Explanation Text inside street (no box) */}
+				<text x="230" y="45" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#0284c7" fontFamily={FONT_FAMILY}>Safety Margin (Street)</text>
+				<text x="230" y="60" textAnchor="middle" fontSize="9.5" fill="#64748b" fontFamily={FONT_FAMILY}>Empty buffer separating groups</text>
 
 				{/* Students far away (non-support vectors) */}
 				<circle cx="55" cy="60" r="5" fill={COLOR_ROSE} />
@@ -244,12 +239,11 @@ export function SVMDiagram() {
 				<circle cx="365" cy="65" r="5" fill={COLOR_TEAL} />
 				<circle cx="375" cy="130" r="5" fill={COLOR_TEAL} />
 
-				{/* Support vectors (touching road edge with glow halo) */}
+				{/* Support vectors (touching road edge with glow halo - no boxes) */}
 				<circle cx="165" cy="115" r="13" fill="none" stroke="#0284c7" strokeWidth="2" />
 				<circle cx="165" cy="115" r="6" fill={COLOR_ROSE} />
-				<rect x="35" y="103" width="105" height="24" rx="4" fill="#ffffff" stroke="#0284c7" strokeWidth="1.2" />
-				<text x="87" y="119" textAnchor="middle" fontSize="10.5" fontWeight="bold" fill="#0284c7" fontFamily={FONT_FAMILY}>Support Vector</text>
-				<line x1="140" y1="115" x2="152" y2="115" stroke="#0284c7" strokeWidth="1.5" />
+				<text x="45" y="119" fontSize="11" fontWeight="bold" fill="#0284c7" fontFamily={FONT_FAMILY}>Support Vector</text>
+				<line x1="135" y1="115" x2="152" y2="115" stroke="#0284c7" strokeWidth="1.5" />
 
 				<circle cx="275" cy="95" r="13" fill="none" stroke="#0284c7" strokeWidth="2" />
 				<circle cx="275" cy="95" r="6" fill={COLOR_TEAL} />
@@ -257,25 +251,28 @@ export function SVMDiagram() {
 				<circle cx="305" cy="160" r="13" fill="none" stroke="#0284c7" strokeWidth="2" />
 				<circle cx="305" cy="160" r="6" fill={COLOR_TEAL} />
 
-				<rect x="305" y="185" width="100" height="24" rx="4" fill="#ffffff" stroke="#0284c7" strokeWidth="1.2" />
-				<text x="355" y="201" textAnchor="middle" fontSize="10.5" fontWeight="bold" fill="#0284c7" fontFamily={FONT_FAMILY}>Support Vector</text>
-				<line x1="315" y1="185" x2="310" y2="173" stroke="#0284c7" strokeWidth="1.5" />
+				<text x="320" y="200" fontSize="11" fontWeight="bold" fill="#0284c7" fontFamily={FONT_FAMILY}>Support Vector</text>
+				<line x1="315" y1="188" x2="308" y2="173" stroke="#0284c7" strokeWidth="1.5" />
 
-				{/* Decision Line Badge at bottom */}
-				<rect x="180" y="205" width="100" height="24" rx="4" fill="#ffffff" stroke={COLOR_NAVY} strokeWidth="1.5" />
-				<text x="230" y="221" textAnchor="middle" fontSize="11" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Decision Line</text>
+				{/* Decision Line Text at bottom (no box) */}
+				<text x="230" y="228" textAnchor="middle" fontSize="11" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Decision Line</text>
 
 				{/* Right side explainer card */}
-				<rect x="435" y="20" width="260" height="220" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
-				<text x="452" y="52" fontSize="15" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>The Widest Street</text>
-				<text x="452" y="80" fontSize="12" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>1. Maximizes safety margin:</text>
-				<text x="468" y="98" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Widens the shaded street until</text>
-				<text x="468" y="114" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>it touches the nearest students.</text>
-				<text x="452" y="142" fontSize="12" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>2. Support Vectors matter most:</text>
-				<text x="468" y="160" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Only edge students hold the road.</text>
-				<text x="468" y="176" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Students far away have zero effect.</text>
-				<rect x="452" y="192" width="225" height="30" rx="4" fill="#e0f2fe" stroke="#bae6fd" />
-				<text x="564" y="211" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#0369a1" fontFamily={FONT_FAMILY}>Clean boundary with max confidence</text>
+				<rect x="420" y="20" width="280" height="225" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
+				<text x="435" y="44" fontSize="14" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>The Widest Street</text>
+				<text x="435" y="66" fontSize="11" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>1. Maximizes safety margin:</text>
+				<text x="450" y="81" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Widens the shaded street until it touches the closest students.</text>
+
+				<text x="435" y="103" fontSize="11" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>2. Support Vectors matter most:</text>
+				<text x="450" y="118" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Only edge students hold the road. Outer students have zero effect.</text>
+
+				<text x="435" y="140" fontSize="11" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>3. Students inside the empty buffer:</text>
+				<text x="450" y="155" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Indicate borderline overlap or noise. The model uses soft</text>
+				<text x="450" y="169" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>margin penalties to tolerate small intrusion, or bends the</text>
+				<text x="450" y="183" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>decision boundary with kernels to resolve complex patterns.</text>
+
+				<rect x="435" y="198" width="250" height="24" rx="4" fill="#e0f2fe" stroke="#bae6fd" />
+				<text x="560" y="214" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#0369a1" fontFamily={FONT_FAMILY}>Tolerates noise gracefully without erratic shifts</text>
 			</svg>
 		</div>
 	);
@@ -323,15 +320,13 @@ export function TreeDiagram() {
 				<rect x="345" y="110" width="110" height="125" fill="#ccfbf1" fillOpacity="0.45" />
 				<rect x="235" y="110" width="110" height="125" fill="#ffe4e6" fillOpacity="0.5" />
 
-				{/* Horizontal Cut (Exam = 60) */}
+				{/* Horizontal Cut (Exam = 60 - no box) */}
 				<line x1="235" y1="110" x2="455" y2="110" stroke={COLOR_NAVY} strokeWidth="2.5" />
-				<rect x="245" y="80" width="140" height="24" rx="4" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1" />
-				<text x="315" y="96" textAnchor="middle" fontSize="11" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Cut 1: Exam = 60</text>
+				<text x="315" y="100" textAnchor="middle" fontSize="11" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Cut 1: Exam = 60</text>
 
-				{/* Vertical Cut (Practice = 50) */}
+				{/* Vertical Cut (Practice = 50 - no box) */}
 				<line x1="345" y1="110" x2="345" y2="235" stroke={COLOR_NAVY} strokeWidth="2.5" />
-				<rect x="285" y="195" width="150" height="26" rx="4" fill="#ffffff" stroke={COLOR_NAVY} strokeWidth="1.5" />
-				<text x="360" y="212" textAnchor="middle" fontSize="11" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Cut 2: Practice = 50</text>
+				<text x="355" y="218" textAnchor="start" fontSize="11" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Cut 2: Practice = 50</text>
 
 				{/* Right side explainer card */}
 				<rect x="475" y="25" width="220" height="210" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
@@ -410,7 +405,7 @@ export function RandomForestDiagram() {
 				<text x="428" y="119" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>subsample of students.</text>
 				<text x="412" y="147" fontSize="12" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>2. Voting smooths out mistakes:</text>
 				<text x="428" y="165" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Voting cancels out the erratic</text>
-				<text x="428" y="181" fontSize="11.5" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>mistakes of any single tree.</text>
+				<text x="428" y="181" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>mistakes of any single tree.</text>
 				<text x="412" y="212" fontSize="11" fontWeight="bold" fill="#0f766e" fontFamily={FONT_FAMILY}>Far more resilient and stable.</text>
 			</svg>
 		</div>

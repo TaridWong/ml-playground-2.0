@@ -121,10 +121,26 @@ To deploy your own fork:
 ## Authors & Acknowledgments
 
 * **Original ML Playground:** Conceived and built by [Jo Chuang](https://github.com/josephch405) ([mldemos](https://github.com/josephch405/mldemos)).
-* **Version 2.0 Architecture & LA/EDM Extensions:** Designed and developed by [Tarid Wongvorachan](https://github.com/TaridWong).
+* **Version 2.0 Architecture & LA/EDM Extensions:** Designed and developed by [Tarid Wongvorachan](https://github.com/TaridWong) ([Website](https://sites.google.com/view/tarid2/)).
+
+---
+
+## Citation
+
+If you use Machine Learning Playground 2.0 in your research, teaching, curriculum, or publications, please cite it as:
+
+```bibtex
+@software{wongvorachan2025mlplayground2,
+  author = {Wongvorachan, Tarid},
+  title = {Machine Learning Playground 2.0 for Learning Analytics & Educational Data Mining},
+  year = {2025},
+  url = {https://github.com/TaridWong/ml-playground-2.0}
+}
+```
 
 ---
 
 ## License
 
-This project is open-source and available under the MIT License.
+This project is licensed under the [MIT License](LICENSE) - see the [LICENSE](LICENSE) file for full details.
+Original work copyright (c) 2017 Jo Chuang. Version 2.0 enhancements and extensions copyright (c) 2024-2025 Tarid Wongvorachan.

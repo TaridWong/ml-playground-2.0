@@ -61,7 +61,7 @@ export default function DecisionTreeVisualizer({ treeData }) {
 			<div className="tree-visualizer-card empty">
 				<div className="xai-title">Decision Tree Flowchart (Explainable AI)</div>
 				<p className="xai-hint">
-					Plot students on the canvas and click <strong>"Train Model"</strong> with Decision Tree selected to generate the transparent decision flowchart.
+					Plot students on the canvas and click <strong>Train Model</strong> with Decision Tree selected to generate the transparent decision flowchart.
 				</p>
 			</div>
 		);

@@ -7,7 +7,7 @@ import { EDUCATIONAL_PRESETS } from "./presets";
 import { calculateMetrics } from "./metrics";
 import MetricsDashboard from "./components/MetricsDashboard";
 import PatternGuideModal from "./components/PatternGuideModal";
-import DecisionTreeVisualizer from "./components/DecisionTreeVisualizer";
+import ModelInspector from "./components/ModelInspector";
 import ModelComparisonModal from "./components/ModelComparisonModal";
 
 export default function App() {
@@ -441,12 +441,18 @@ export default function App() {
 					</section>
 				</div>
 
-				{/* XAI: Transparent Decision Tree Visualizer (shown when Decision Tree is active) */}
-				{activeModel === "tree" && (
-					<section className="tree-visualizer-section">
-						<DecisionTreeVisualizer treeData={treeHierarchy} />
-					</section>
-				)}
+				{/* XAI: Transparent Model Inspector across all 10 algorithms */}
+				<section className="tree-visualizer-section">
+					<ModelInspector
+						activeModel={activeModel}
+						store={store}
+						treeHierarchy={treeHierarchy}
+						isTrained={Boolean(metrics)}
+						xLabel={activePreset ? activePreset.xAxis : "Feature X"}
+						yLabel={activePreset ? activePreset.yAxis : "Feature Y"}
+						hoverProbe={hoverProbe}
+					/>
+				</section>
 
 				{/* Middle: Educational Metrics Dashboard & Intervention Impact */}
 				<section className="metrics-section">

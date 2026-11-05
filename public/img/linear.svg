@@ -73,35 +73,35 @@
      id="layer1"
      transform="translate(0,-652.36216)">
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#ff7f2a;stroke-width:20;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;fill-rule:evenodd;stroke:#0D9488;stroke-width:20;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="M 40,1012.3622 360,692.36216"
        id="path4872"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:#ff7f2a;stroke-width:20;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#ffffff;fill-opacity:1;stroke:#0D9488;stroke-width:20;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect4870"
        width="80"
        height="80"
        x="160"
        y="812.36212" />
     <rect
-       style="fill:#ff7f2a;fill-opacity:1;stroke:none;stroke-width:20;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#0D9488;fill-opacity:1;stroke:none;stroke-width:20;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect4166"
        width="40"
        height="40"
        x="100"
        y="972.36218" />
     <rect
-       style="fill:#ff7f2a;fill-opacity:1;stroke:none;stroke-width:20;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect4166-3"
+       style="fill:#0D9488;fill-opacity:1;stroke:none;stroke-width:20;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4166-3" style="fill:#E11D48;fill-opacity:1;stroke:none;"
        width="40"
        height="40"
        x="100"
        y="752.36218" />
     <rect
-       style="fill:#ff7f2a;fill-opacity:1;stroke:none;stroke-width:20;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect4166-6"
+       style="fill:#0D9488;fill-opacity:1;stroke:none;stroke-width:20;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4166-6" style="fill:#E11D48;fill-opacity:1;stroke:none;"
        width="40"
        height="40"
        x="320"

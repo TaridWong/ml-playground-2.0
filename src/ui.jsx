@@ -110,16 +110,16 @@ export default class UI extends React.Component {
 		const isTraining = this.props.isTraining;
 
 		const modelDefs = [
-			{ id: "knn", name: "K Nearest Neighbors", icon: "./img/knn.png" },
+			{ id: "knn", name: "K Nearest Neighbors", icon: "./img/knn.svg" },
 			{ id: "logistic", name: "Logistic Regression", icon: "./img/logistic.svg" },
 			{ id: "naivebayes", name: "Gaussian Naive Bayes", icon: "./img/naivebayes.svg" },
-			{ id: "perceptron", name: "Perceptron", icon: "./img/perceptron.png" },
-			{ id: "svm", name: "Support Vector Machine", icon: "./img/linear.png" },
-			{ id: "tree", name: "Decision Tree", icon: "./img/tree.png" },
+			{ id: "perceptron", name: "Perceptron", icon: "./img/perceptron.svg" },
+			{ id: "svm", name: "Support Vector Machine", icon: "./img/linear.svg" },
+			{ id: "tree", name: "Decision Tree", icon: "./img/tree.svg" },
 			{ id: "randomforest", name: "Random Forest", icon: "./img/randomforest.svg" },
 			{ id: "xgboost", name: "XGBoost", icon: "./img/xgboost.svg" },
 			{ id: "cba", name: "Association Rules (CBA)", icon: "./img/cba.svg" },
-			{ id: "ann", name: "Neural Network (ANN)", icon: "./img/ann.png" }
+			{ id: "ann", name: "Neural Network (ANN)", icon: "./img/ann.svg" }
 		];
 
 		return (

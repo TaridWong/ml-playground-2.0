@@ -50,7 +50,7 @@ Students and educators can plot student data points, observe how 10 machine lear
 * Ranks models by F1 score and Accuracy to demonstrate that the best algorithm depends on the geometric shape of student behaviors.
 
 ### 5. Curated Educational Data Patterns
-* **Higher Ed Early Warning Dropout:** Linear separable student cohort based on LMS login activity and assignment completion.
+* **Higher Ed Early Warning Dropout:** Linear separable student cohort based on engagement, class attendance, and assignment completion.
 * **K-12 Formative Assessment Mastery:** L-shaped rule-based relationship where passing can occur through high diagnostic scores or high practice volume.
 * **EDM Classic (Gaming the System):** Non-linear enclosed island based on rapid guessing and hint abuse.
 

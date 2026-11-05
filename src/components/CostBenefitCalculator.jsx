@@ -86,7 +86,7 @@ export default function CostBenefitCalculator({ metrics }) {
 							</span>
 						</label>
 						<p className="cb-input-hint">
-							Teacher time to draft outreach email and review LMS history for a student who was actually on-track.
+							Teacher time to draft outreach email and review student records for a student who was actually on-track.
 						</p>
 						{costUnit === "time" ? (
 							<input

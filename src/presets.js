@@ -25,14 +25,14 @@ export const EDUCATIONAL_PRESETS = [
 		title: "Higher Ed: Early Warning Dropout",
 		level: "Higher Education",
 		shape: "Linear Corridor (Straight Fence)",
-		xAxis: "LMS Engagement (Weekly Logins & Video %)",
+		xAxis: "Engagement and Class Attendance (%)",
 		yAxis: "Assignment Completion Rate (%)",
 		positiveLabel: "At-Risk (Needs Intervention)",
 		negativeLabel: "On-Track (Passing)",
 		pedagogicalLesson:
 			"Linear Separable: A single straight line (Perceptron, Logistic Regression, Linear SVM) can separate these students. High interpretability: If engagement plus assignments exceeds the threshold, the student is on-track.",
 		description:
-			"Predicting whether undergraduate students in an online course are at risk of dropping out based on their LMS activity and homework completion.",
+			"Predicting whether students are at risk of dropping out based on attendance, classroom engagement, and assignment completion.",
 		points: [
 			// On-Track Students (Class 1: Top-Right Diagonal Band)
 			{ x: [30, 40], y: 1 },

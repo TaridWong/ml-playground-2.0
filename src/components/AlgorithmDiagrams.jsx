@@ -227,14 +227,14 @@ export function SVMDiagram() {
 				{/* Center dividing boundary (Road divider) */}
 				<line x1="180" y1="20" x2="280" y2="240" stroke={COLOR_NAVY} strokeWidth="3" />
 
-				{/* Clear Safety Margin Explanation Text inside street (30% smaller, moved right) */}
-				<text x="265" y="42" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#0284c7" fontFamily={FONT_FAMILY}>Safety Margin (Street)</text>
-				<text x="265" y="55" textAnchor="middle" fontSize="6.8" fill="#64748b" fontFamily={FONT_FAMILY}>Empty buffer separating groups</text>
+				{/* Clear Safety Margin Explanation Text: font +30%, placed to the right of dashed line */}
+				<text x="258" y="38" textAnchor="start" fontSize="10.5" fontWeight="bold" fill="#0284c7" fontFamily={FONT_FAMILY}>Safety Margin (Street)</text>
+				<text x="258" y="52" textAnchor="start" fontSize="8.8" fill="#64748b" fontFamily={FONT_FAMILY}>Empty buffer separating groups</text>
 
 				{/* Students far away (non-support vectors) */}
 				<circle cx="55" cy="60" r="5" fill={COLOR_ROSE} />
 				<circle cx="70" cy="165" r="5" fill={COLOR_ROSE} />
-				<circle cx="365" cy="65" r="5" fill={COLOR_TEAL} />
+				<circle cx="365" cy="72" r="5" fill={COLOR_TEAL} />
 				<circle cx="375" cy="130" r="5" fill={COLOR_TEAL} />
 
 				{/* Support vectors (touching road edge with glow halo - no boxes) */}

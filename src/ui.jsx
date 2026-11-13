@@ -148,10 +148,10 @@ export default class UI extends React.Component {
 					<button
 						type="button"
 						className="btn-io"
-						onClick={() => this.props.onOpenAuditReport && this.props.onOpenAuditReport()}
-						title="Open 1-page Educator Algorithmic Audit and Counterfactual Intervention Report"
+						onClick={() => this.props.onSavePng && this.props.onSavePng()}
+						title="Export a high-resolution (2x DPI) PNG image of the active plot"
 					>
-						Audit Report
+						Save PNG
 					</button>
 					<button
 						type="button"

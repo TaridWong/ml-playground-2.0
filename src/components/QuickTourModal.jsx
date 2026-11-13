@@ -40,14 +40,14 @@ const TOUR_STEPS = [
 	},
 	{
 		step: 4,
-		badge: "Step 4 of 4: Psychometric Metrics & Educator Audit Report",
-		title: "Evaluate Intervention Impact & Export Reports",
+		badge: "Step 4 of 4: Psychometric Metrics & High-Res Plot Export",
+		title: "Evaluate Intervention Impact & Save Plot PNG",
 		targetSelector: ".metrics-section",
 		description:
-			"Bridge machine learning metrics (Precision, Recall, F1, ROC AUC) with real educational intervention costs, and export a 1-page Audit Report.",
+			"Bridge machine learning metrics (Precision, Recall, F1, ROC AUC) with real educational intervention costs, and export a high-resolution plot image.",
 		highlights: [
 			"Inspect the Confusion Matrix to balance False Alarms against Missed At-Risk students.",
-			"Click Audit Report in the toolbar to view or download a complete Markdown / PDF executive summary."
+			"Click Save PNG in the toolbar to export a high-resolution (2x DPI) image of the active plot."
 		]
 	}
 ];
@@ -56,7 +56,7 @@ export default function QuickTourModal({
 	isOpen,
 	onClose,
 	onLoadSampleAndTrain,
-	onOpenAuditReport,
+	onSavePng,
 	onOpenComparison
 }) {
 	const [currentIdx, setCurrentIdx] = useState(0);
@@ -205,13 +205,13 @@ export default function QuickTourModal({
 								Open 10-Model Benchmark Matrix →
 							</button>
 						)}
-						{currentIdx === 3 && onOpenAuditReport && (
+						{currentIdx === 3 && onSavePng && (
 							<button
 								type="button"
 								className="btn-io"
 								onClick={() => {
 									onClose();
-									onOpenAuditReport();
+									onSavePng();
 								}}
 								style={{
 									cursor: "pointer",
@@ -224,7 +224,7 @@ export default function QuickTourModal({
 									fontWeight: 600
 								}}
 							>
-								Preview Educator Audit Report →
+								Save High-Res Plot PNG →
 							</button>
 						)}
 					</div>

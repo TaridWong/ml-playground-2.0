@@ -9,12 +9,135 @@ import MetricsDashboard from "./components/MetricsDashboard";
 import PatternGuideModal from "./components/PatternGuideModal";
 import ModelInspector from "./components/ModelInspector";
 import ModelComparisonModal from "./components/ModelComparisonModal";
-import AuditReportModal from "./components/AuditReportModal";
 import QuickTourModal from "./components/QuickTourModal";
+
+const MODEL_NAMES = {
+	knn: "K-Nearest Neighbors (KNN)",
+	logistic: "Logistic Regression",
+	naivebayes: "Gaussian Naive Bayes",
+	perceptron: "Perceptron",
+	svm: "Support Vector Machine (SVM)",
+	tree: "Decision Tree",
+	randomforest: "Random Forest Ensemble",
+	xgboost: "XGBoost Gradient Boosting",
+	cba: "Association Rules (CBA)",
+	ann: "Artificial Neural Network (ANN)"
+};
+
+function PlotCanvas({
+	canvasRef,
+	exportPngRef,
+	activeModel,
+	algoTitle,
+	datasetTitle,
+	pointCount,
+	xAxisLabel,
+	yAxisLabel
+}) {
+	const svgRef = useRef(null);
+
+	useEffect(() => {
+		if (!exportPngRef) return;
+		exportPngRef.current = () => {
+			const bgCanvas = canvasRef.current;
+			const svgEl = svgRef.current;
+			if (!bgCanvas || !svgEl) return;
+
+			const W = S.canvasW;
+			const H = S.canvasH;
+			const scale = 2;
+			const padLeft = 42;
+			const padRight = 24;
+			const padTop = 58;
+			const padBottom = 42;
+			const outW = W + padLeft + padRight;
+			const outH = H + padTop + padBottom;
+
+			const outCanvas = document.createElement("canvas");
+			outCanvas.width = outW * scale;
+			outCanvas.height = outH * scale;
+			const ctx = outCanvas.getContext("2d");
+			ctx.scale(scale, scale);
+
+			// Clean white background
+			ctx.fillStyle = "#ffffff";
+			ctx.fillRect(0, 0, outW, outH);
+
+			// Header title & subtitle
+			ctx.fillStyle = "#0f172a";
+			ctx.font = "bold 14px system-ui, -apple-system, Segoe UI, sans-serif";
+			ctx.fillText(algoTitle || "Machine Learning Playground 2.0", padLeft, 24);
+
+			ctx.fillStyle = "#475569";
+			ctx.font = "11px system-ui, -apple-system, Segoe UI, sans-serif";
+			const sub = `${datasetTitle || "Custom Open Sandbox Cohort"} | ${pointCount} Points`;
+			ctx.fillText(sub, padLeft, 42);
+
+			// Y Axis label rotated
+			ctx.save();
+			ctx.translate(18, padTop + H / 2);
+			ctx.rotate(-Math.PI / 2);
+			ctx.textAlign = "center";
+			ctx.fillStyle = "#334155";
+			ctx.font = "600 11px system-ui, -apple-system, Segoe UI, sans-serif";
+			ctx.fillText(yAxisLabel || "Feature Y", 0, 0);
+			ctx.restore();
+
+			// X Axis label centered at bottom
+			ctx.textAlign = "center";
+			ctx.fillStyle = "#334155";
+			ctx.font = "600 11px system-ui, -apple-system, Segoe UI, sans-serif";
+			ctx.fillText(xAxisLabel || "Feature X", padLeft + W / 2, padTop + H + 26);
+
+			// Draw background canvas bitmap onto plot region
+			ctx.drawImage(bgCanvas, padLeft, padTop, W, H);
+
+			// Frame border around plot stage
+			ctx.strokeStyle = "#cbd5e1";
+			ctx.lineWidth = 1;
+			ctx.strokeRect(padLeft, padTop, W, H);
+
+			// Serialize inline SVG overlay and draw atop background canvas
+			const serializer = new XMLSerializer();
+			const svgStr = serializer.serializeToString(svgEl);
+			const svgBlob = new Blob([svgStr], { type: "image/svg+xml;charset=utf-8" });
+			const svgUrl = URL.createObjectURL(svgBlob);
+			const img = new Image();
+			img.onload = () => {
+				ctx.drawImage(img, padLeft, padTop, W, H);
+				URL.revokeObjectURL(svgUrl);
+				const link = document.createElement("a");
+				link.download = `ml-playground-${activeModel || "plot"}.png`;
+				link.href = outCanvas.toDataURL("image/png");
+				link.click();
+			};
+			img.onerror = () => {
+				URL.revokeObjectURL(svgUrl);
+			};
+			img.src = svgUrl;
+		};
+	}, [canvasRef, exportPngRef, activeModel, algoTitle, datasetTitle, pointCount, xAxisLabel, yAxisLabel]);
+
+	return (
+		<div id="canvasDiv">
+			<canvas id="canvas" ref={canvasRef}></canvas>
+			<svg
+				ref={svgRef}
+				xmlns="http://www.w3.org/2000/svg"
+				width={S.canvasW}
+				height={S.canvasH}
+				viewBox={`0 0 ${S.canvasW} ${S.canvasH}`}
+				style={{ position: "absolute", top: 0, left: 0, pointerEvents: "none" }}
+			/>
+		</div>
+	);
+}
 
 export default function App() {
 	const canvasRef = useRef(null);
 	const canvasObjRef = useRef(null);
+	const exportPngRef = useRef(null);
+	const toastTimerRef = useRef(null);
 
 	// Create store once so UI is ready immediately on initial render
 	const store = useMemo(() => new Store(), []);
@@ -29,9 +152,9 @@ export default function App() {
 	const [metrics, setMetrics] = useState(null);
 	const [isGuideOpen, setIsGuideOpen] = useState(false);
 	const [isComparisonOpen, setIsComparisonOpen] = useState(false);
-	const [isAuditOpen, setIsAuditOpen] = useState(false);
 	const [isTourOpen, setIsTourOpen] = useState(false);
 	const [shareCopied, setShareCopied] = useState(false);
+	const [toastMessage, setToastMessage] = useState(null);
 	const [viewMode, setViewMode] = useState("boundary"); // "boundary" | "confidence"
 	const [hoverProbe, setHoverProbe] = useState(null);
 	const [treeHierarchy, setTreeHierarchy] = useState(null);
@@ -277,6 +400,23 @@ export default function App() {
 		setTimeout(() => setShareCopied(false), 2200);
 	};
 
+	const showToast = (msg) => {
+		setToastMessage(msg);
+		if (toastTimerRef.current) {
+			clearTimeout(toastTimerRef.current);
+		}
+		toastTimerRef.current = setTimeout(() => {
+			setToastMessage(null);
+		}, 3000);
+	};
+
+	const handleSavePng = () => {
+		if (exportPngRef.current) {
+			exportPngRef.current();
+			showToast("Saved high-resolution canvas PNG.");
+		}
+	};
+
 	const handleLoadSampleAndTrain = () => {
 		const sampleId = "higher_ed_retention";
 		handlePresetChange(sampleId);
@@ -398,6 +538,8 @@ export default function App() {
 				</div>
 			</header>
 
+			{toastMessage && <div className="toast-banner">{toastMessage}</div>}
+
 			{/* Main Workspace */}
 			<main className="container-fluid">
 				{/* Context Banner: Displays pedagogical notes only when a template is loaded from the Data Patterns Guide */}
@@ -502,9 +644,16 @@ export default function App() {
 								)}
 							</div>
 
-							<div id="canvasDiv">
-								<canvas id="canvas" ref={canvasRef}></canvas>
-							</div>
+							<PlotCanvas
+								canvasRef={canvasRef}
+								exportPngRef={exportPngRef}
+								activeModel={activeModel}
+								algoTitle={MODEL_NAMES[activeModel] || activeModel}
+								datasetTitle={activePreset ? activePreset.title : "Custom Open Sandbox Cohort"}
+								pointCount={pointCounts.total}
+								xAxisLabel={activePreset ? activePreset.xAxis : "Feature X (e.g. Engagement / Practice)"}
+								yAxisLabel={activePreset ? activePreset.yAxis : "Feature Y (e.g. Exam / Quiz %)"}
+							/>
 
 							<div className="canvas-footer">
 								<span className="axis-title-x">
@@ -527,7 +676,7 @@ export default function App() {
 							openComparison={() => setIsComparisonOpen(true)}
 							onShareLink={handleShareLink}
 							shareCopied={shareCopied}
-							onOpenAuditReport={() => setIsAuditOpen(true)}
+							onSavePng={handleSavePng}
 							onStartTour={() => setIsTourOpen(true)}
 							selectedModel={activeModel}
 							renderInfo={(info) => setInfoContent(info)}
@@ -585,22 +734,12 @@ export default function App() {
 				activePreset={activePreset}
 			/>
 
-			{/* Educator Algorithmic Audit & Intervention Report Modal */}
-			<AuditReportModal
-				isOpen={isAuditOpen}
-				onClose={() => setIsAuditOpen(false)}
-				activeModel={activeModel}
-				store={store}
-				metrics={metrics}
-				activePreset={activePreset}
-			/>
-
 			{/* 45-Second Interactive Quick Tour Modal */}
 			<QuickTourModal
 				isOpen={isTourOpen}
 				onClose={() => setIsTourOpen(false)}
 				onLoadSampleAndTrain={handleLoadSampleAndTrain}
-				onOpenAuditReport={() => setIsAuditOpen(true)}
+				onSavePng={handleSavePng}
 				onOpenComparison={() => setIsComparisonOpen(true)}
 			/>
 		</div>

@@ -3,6 +3,7 @@ import React from "react";
 import * as m from "mathjs";
 import MLModel from "./mlmodel";
 import { ANNDiagram } from "./components/AlgorithmDiagrams";
+import { doWeightsMatchLayers } from "./components/NeuralNetworkDiagram";
 
 const norm = 100;
 const MAX_PER_LAYER = 10;
@@ -12,6 +13,7 @@ export default class Ann extends MLModel {
 	constructor() {
 		super();
 		this.layers = [2, 4, 3, 1];
+		this.trainedLayers = null;
 		this.shuffleWeights();
 		this.classif = this.classif.bind(this);
 		this.score = this.score.bind(this);
@@ -154,36 +156,66 @@ export default class Ann extends MLModel {
 				break;
 			}
 		}
+		this.trainedLayers = [...this.layers];
+	}
+
+	updateLayerTopology(mutator) {
+		const next = [...this.layers];
+		if (mutator(next)) {
+			this.layers = next;
+			this.trainedLayers = null;
+			this.shuffleWeights();
+		}
+		return [...this.layers];
 	}
 
 	addNeuron(layer) {
-		if (layer && layer > 0 && layer < this.layers.length - 1 && this.layers[layer] < MAX_PER_LAYER) {
-			this.layers[layer] += 1;
-		}
-		return this.layers;
+		return this.updateLayerTopology((next) => {
+			if (layer && layer > 0 && layer < next.length - 1 && next[layer] < MAX_PER_LAYER) {
+				next[layer] += 1;
+				return true;
+			}
+			return false;
+		});
 	}
 
 	removeNeuron(layer) {
-		if (layer && layer > 0 && layer < this.layers.length - 1 && this.layers[layer] > 1) {
-			this.layers[layer] -= 1;
-		}
-		return this.layers;
+		return this.updateLayerTopology((next) => {
+			if (layer && layer > 0 && layer < next.length - 1 && next[layer] > 1) {
+				next[layer] -= 1;
+				return true;
+			}
+			return false;
+		});
 	}
 
 	addLayer() {
-		if (this.layers.length < MAX_LAYERS) {
-			this.layers.splice(this.layers.length - 1, 0, 2);
-			this.shuffleWeights();
-		}
-		return this.layers;
+		return this.updateLayerTopology((next) => {
+			if (next.length < MAX_LAYERS) {
+				next.splice(next.length - 1, 0, 2);
+				return true;
+			}
+			return false;
+		});
 	}
 
 	removeLayer() {
-		if (this.layers.length > 3) {
-			this.layers.splice(this.layers.length - 2, 1);
-			this.shuffleWeights();
-		}
-		return this.layers;
+		return this.updateLayerTopology((next) => {
+			if (next.length > 3) {
+				next.splice(next.length - 2, 1);
+				return true;
+			}
+			return false;
+		});
+	}
+
+	hasMatchingTrainedWeights() {
+		return Boolean(
+			this.trainedLayers &&
+				this.trainedLayers.length === this.layers.length &&
+				this.trainedLayers.every((val, idx) => val === this.layers[idx]) &&
+				doWeightsMatchLayers(this.A, this.layers)
+		);
 	}
 
 	setAlpha(a) {
@@ -216,24 +248,26 @@ export default class Ann extends MLModel {
 					alpha: self.alpha,
 					maxEpochs: self.maxEpochs,
 					maxError: self.maxError,
-					layers: self.layers
+					layers: [...self.layers]
 				};
 			}
 
 			dispatch(type, n) {
+				const layerOps = {
+					"n+": () => self.addNeuron(n),
+					"n-": () => self.removeNeuron(n),
+					"l+": () => self.addLayer(),
+					"l-": () => self.removeLayer()
+				};
+				if (layerOps[type]) {
+					const nextLayers = layerOps[type]();
+					this.setState({ layers: nextLayers });
+					if (typeof this.props.onConfigChange === "function") {
+						this.props.onConfigChange(nextLayers);
+					}
+					return;
+				}
 				switch (type) {
-					case "n+":
-						this.setState({ layers: self.addNeuron(n) });
-						break;
-					case "n-":
-						this.setState({ layers: self.removeNeuron(n) });
-						break;
-					case "l+":
-						this.setState({ layers: self.addLayer() });
-						break;
-					case "l-":
-						this.setState({ layers: self.removeLayer() });
-						break;
 					case "a":
 						this.setState({ alpha: self.setAlpha(n) });
 						break;
@@ -267,12 +301,16 @@ export default class Ann extends MLModel {
 				for (var i = 1; i < self.layers.length - 1; i++) {
 					var layer = [];
 					var l = i;
+					var isMinNeurons = self.layers[i] <= 1;
+					var isMaxNeurons = self.layers[i] >= MAX_PER_LAYER;
 					for (var ii = 0; ii < self.layers[i]; ii++) {
 						layer.push(
 							<button
+								type="button"
 								key={ii}
+								disabled={isMinNeurons}
 								onClick={this.createDispatch("n-", l)}
-								title="Click neuron to remove"
+								title={isMinNeurons ? "Minimum 1 neuron per hidden layer" : "Click neuron to remove"}
 							>
 								•
 							</button>
@@ -280,10 +318,12 @@ export default class Ann extends MLModel {
 					}
 					layer.push(
 						<button
+							type="button"
 							key="add"
 							className="flipped"
+							disabled={isMaxNeurons}
 							onClick={this.createDispatch("n+", l)}
-							title="Add neuron to layer"
+							title={isMaxNeurons ? "Maximum 10 neurons per hidden layer" : "Add neuron to layer"}
 						>
 							+
 						</button>
@@ -297,14 +337,30 @@ export default class Ann extends MLModel {
 				// last output layer
 				layers.push(
 					<div key={self.layers.length - 1} className="layer">
-						<button title="Output Prediction">Out</button>
+						<button type="button" title="Output Prediction">Out</button>
 					</div>
 				);
 				layers.push(
 					<div key={self.layers.length} className="layer">
 						<span style={{ fontSize: "0.68rem" }}>Layers</span>
-						<button className="flipped" onClick={this.createDispatch("l+")} title="Add hidden layer">+</button>
-						<button className="flipped" onClick={this.createDispatch("l-")} title="Remove hidden layer">-</button>
+						<button
+							type="button"
+							className="flipped"
+							disabled={self.layers.length >= MAX_LAYERS}
+							onClick={this.createDispatch("l+")}
+							title={self.layers.length >= MAX_LAYERS ? "Maximum 8 total layers" : "Add hidden layer"}
+						>
+							+
+						</button>
+						<button
+							type="button"
+							className="flipped"
+							disabled={self.layers.length <= 3}
+							onClick={this.createDispatch("l-")}
+							title={self.layers.length <= 3 ? "Minimum 1 hidden layer required" : "Remove hidden layer"}
+						>
+							-
+						</button>
 					</div>
 				);
 
@@ -353,7 +409,7 @@ export default class Ann extends MLModel {
 					Stacking multiple layers of weighted S-shaped units lets the network bend straight inputs into curves and enclosed shapes. Because training starts from random weights, two runs on the same points can settle on different boundaries.
 				</p>
 			),
-			diagram: <ANNDiagram key="ann_diag" />,
+			diagram: <ANNDiagram key="ann_diag" layers={[...this.layers]} />,
 			params: [
 				"Learning Rate (alpha): Default 0.05. Gradient step size per training sample update; overly high values cause oscillating boundaries, while very low values require more epochs.",
 				"Epochs: Default 200. Maximum full shuffled passes over the training set before stopping (unless Mean Absolute Error falls below 0.02 earlier).",

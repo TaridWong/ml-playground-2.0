@@ -1,4 +1,5 @@
 import React from "react";
+import { NetworkSvgCore, getNetworkStats } from "./NeuralNetworkDiagram";
 
 // Shared style constants
 const FONT_FAMILY = "Inter, system-ui, -apple-system, sans-serif";
@@ -545,48 +546,35 @@ export function CBADiagram() {
 	);
 }
 
-export function ANNDiagram() {
+export function ANNDiagram({ layers = [2, 4, 3, 1] }) {
+	const stats = getNetworkStats(layers);
 	return (
 		<div className="algo-diagram-container" style={{ margin: "1rem 0" }}>
 			<svg viewBox="0 0 720 260" width="100%" style={{ maxHeight: "300px", display: "block", background: "#f8fafc", borderRadius: "10px", border: "1px solid #e2e8f0" }}>
-				{/* Neural Network Architecture on left */}
+				{/* Dynamic Neural Network Architecture on left */}
 				<rect x="25" y="25" width="340" height="210" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
 
-				{/* Input Layer */}
-				<circle cx="65" cy="85" r="18" fill="#ffffff" stroke={COLOR_NAVY} strokeWidth="2.5" />
-				<text x="65" y="90" textAnchor="middle" fontSize="12" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>X</text>
-				<text x="65" y="60" textAnchor="middle" fontSize="10" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Exam</text>
+				<NetworkSvgCore
+					layers={stats.layers}
+					originX={25}
+					originY={25}
+					width={340}
+					height={210}
+					padLeft={46}
+					padRight={42}
+					padTop={34}
+					padBottom={34}
+					minRadius={4.5}
+					maxRadius={15}
+					compact={true}
+					showInputAxisLabels={false}
+					xLabel="Exam"
+					yLabel="Practice"
+				/>
 
-				<circle cx="65" cy="165" r="18" fill="#ffffff" stroke={COLOR_NAVY} strokeWidth="2.5" />
-				<text x="65" y="170" textAnchor="middle" fontSize="12" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Y</text>
-				<text x="65" y="195" textAnchor="middle" fontSize="10" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Practice</text>
-
-				<text x="65" y="42" textAnchor="middle" fontSize="11" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Inputs</text>
-
-				{/* Hidden Layer */}
-				<circle cx="185" cy="65" r="16" fill="#f0fdfa" stroke={COLOR_TEAL} strokeWidth="2.5" />
-				<circle cx="185" cy="125" r="16" fill="#f0fdfa" stroke={COLOR_TEAL} strokeWidth="2.5" />
-				<circle cx="185" cy="185" r="16" fill="#f0fdfa" stroke={COLOR_TEAL} strokeWidth="2.5" />
-				<text x="185" y="42" textAnchor="middle" fontSize="11" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Hidden</text>
-
-				{/* Output Layer */}
-				<circle cx="305" cy="125" r="18" fill="#fff1f2" stroke={COLOR_ROSE} strokeWidth="2.5" />
-				<text x="305" y="130" textAnchor="middle" fontSize="11" fontWeight="bold" fill={COLOR_ROSE} fontFamily={FONT_FAMILY}>Risk</text>
-				<text x="305" y="42" textAnchor="middle" fontSize="11" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Output</text>
-
-				{/* Connecting Synapse Lines (Input to Hidden) */}
-				<line x1="83" y1="85" x2="169" y2="65" stroke="#94a3b8" strokeWidth="1.5" />
-				<line x1="83" y1="85" x2="169" y2="125" stroke="#94a3b8" strokeWidth="2.5" />
-				<line x1="83" y1="85" x2="169" y2="185" stroke="#94a3b8" strokeWidth="1.5" />
-
-				<line x1="83" y1="165" x2="169" y2="65" stroke="#94a3b8" strokeWidth="1.5" />
-				<line x1="83" y1="165" x2="169" y2="125" stroke="#94a3b8" strokeWidth="1.5" />
-				<line x1="83" y1="165" x2="169" y2="185" stroke="#94a3b8" strokeWidth="2.5" />
-
-				{/* Connecting Synapse Lines (Hidden to Output) */}
-				<line x1="201" y1="65" x2="287" y2="125" stroke="#94a3b8" strokeWidth="2.5" />
-				<line x1="201" y1="125" x2="287" y2="125" stroke="#94a3b8" strokeWidth="1.5" />
-				<line x1="201" y1="185" x2="287" y2="125" stroke="#94a3b8" strokeWidth="2.5" />
+				<text x="195" y="224" textAnchor="middle" fontSize="10" fontWeight="600" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>
+					Active Topology: {stats.layers.join(" \u2192 ")} ({stats.totalParams} parameters)
+				</text>
 
 				{/* Right side explainer card with generous width and padding */}
 				<rect x="380" y="25" width="315" height="210" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />

@@ -152,6 +152,13 @@ export default function App() {
 	const [metrics, setMetrics] = useState(null);
 	const [isGuideOpen, setIsGuideOpen] = useState(false);
 	const [isComparisonOpen, setIsComparisonOpen] = useState(false);
+	const [modelConfigTick, setModelConfigTick] = useState(0);
+	const handleModelConfigChange = () => {
+		setModelConfigTick((prev) => prev + 1);
+		if (store && store.classif && typeof store.classif.info === "function") {
+			setInfoContent(store.classif.info());
+		}
+	};
 	const [isTourOpen, setIsTourOpen] = useState(false);
 	const [shareCopied, setShareCopied] = useState(false);
 	const [toastMessage, setToastMessage] = useState(null);
@@ -669,6 +676,7 @@ export default function App() {
 							setClass={handleSetClass}
 							train={handleTrain}
 							reclassify={handleReclassify}
+							onModelConfigChange={handleModelConfigChange}
 							isTraining={isTraining}
 							repaint={handleRepaint}
 							clearAll={handleClearAll}
@@ -701,6 +709,7 @@ export default function App() {
 						xLabel={activePreset ? activePreset.xAxis : "Feature X"}
 						yLabel={activePreset ? activePreset.yAxis : "Feature Y"}
 						hoverProbe={hoverProbe}
+						modelConfigTick={modelConfigTick}
 					/>
 				</section>
 

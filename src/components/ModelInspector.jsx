@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import S from "../s";
 import DecisionTreeVisualizer from "./DecisionTreeVisualizer";
 import WhatIfCounterfactualPanel from "./WhatIfCounterfactualPanel";
+import NeuralNetworkDiagram, { doWeightsMatchLayers, getNetworkStats } from "./NeuralNetworkDiagram";
 
 // Helper to recursively count feature splits in a decision tree or XGBoost tree
 function countTreeSplits(node, counts) {
@@ -32,7 +33,8 @@ export default function ModelInspector({
 	isTrained,
 	xLabel = "Feature X",
 	yLabel = "Feature Y",
-	hoverProbe = null
+	hoverProbe = null,
+	modelConfigTick = 0
 }) {
 	const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -105,7 +107,20 @@ export default function ModelInspector({
 		subtitle: "Inspect the internal rules and weights learned by the active algorithm."
 	};
 
-	if (!isTrained || !model || xTr.length < 2) {
+	const annLayers = activeModel === "ann" && model && Array.isArray(model.layers) ? model.layers : [2, 4, 3, 1];
+	const annWeightsMatch =
+		activeModel === "ann" &&
+		Boolean(
+			modelConfigTick >= 0 &&
+				isTrained &&
+				model &&
+				xTr.length >= 2 &&
+				(typeof model.hasMatchingTrainedWeights === "function"
+					? model.hasMatchingTrainedWeights()
+					: doWeightsMatchLayers(model.A, annLayers))
+		);
+
+	if (activeModel !== "ann" && (!isTrained || !model || xTr.length < 2)) {
 		return (
 			<div className="tree-visualizer-card empty">
 				<div className="xai-title">{meta.title}</div>
@@ -606,12 +621,12 @@ export default function ModelInspector({
 
 		// 9. ANN: Neural Network Architecture & Input Weight Sensitivity
 		if (activeModel === "ann") {
-			const layers = model.layers || [2, 4, 3, 1];
+			const layers = annLayers;
+			const stats = getNetworkStats(layers);
 			let xStrength = 0;
 			let yStrength = 0;
-			let totalWeights = 0;
 
-			if (model.A && model.A.length > 0) {
+			if (annWeightsMatch && model && model.A && model.A.length > 0) {
 				const firstMat = model.A[0].valueOf ? model.A[0].valueOf() : model.A[0];
 				if (Array.isArray(firstMat)) {
 					for (let r = 0; r < firstMat.length; r++) {
@@ -621,9 +636,6 @@ export default function ModelInspector({
 						}
 					}
 				}
-				for (let l = 0; l < layers.length - 1; l++) {
-					totalWeights += layers[l] * layers[l + 1] + layers[l + 1];
-				}
 			}
 
 			const sumStrength = Math.max(0.001, xStrength + yStrength);
@@ -631,42 +643,69 @@ export default function ModelInspector({
 			const yPct = 100 - xPct;
 
 			return (
-				<div className="inspector-two-col">
-					<div>
-						<div className="inspector-col-heading">
-							Input-Layer Weight Magnitude
-						</div>
-						<div className="inspector-bar-item">
-							<div className="inspector-bar-row">
-								<span className="inspector-bar-label">{xLabel} Weight Share</span>
-								<span className="inspector-bar-val">{xPct}%</span>
-							</div>
-							<div className="inspector-bar-track">
-								<div className="inspector-bar-fill is-x" style={{ width: `${xPct}%` }} />
-							</div>
-						</div>
-						<div className="inspector-bar-item">
-							<div className="inspector-bar-row">
-								<span className="inspector-bar-label">{yLabel} Weight Share</span>
-								<span className="inspector-bar-val">{yPct}%</span>
-							</div>
-							<div className="inspector-bar-track">
-								<div className="inspector-bar-fill is-y" style={{ width: `${yPct}%` }} />
-							</div>
-						</div>
-					</div>
+				<div>
+					<NeuralNetworkDiagram
+						layers={layers}
+						weights={annWeightsMatch ? model.A : null}
+						biases={annWeightsMatch ? model.b : null}
+						showWeights={annWeightsMatch}
+						xLabel={xLabel}
+						yLabel={yLabel}
+					/>
 
-					<div className="inspector-note">
-						<div className="inspector-col-heading">
-							Network Topology
+					{annWeightsMatch ? (
+						<div className="inspector-two-col" style={{ marginTop: "1rem" }}>
+							<div>
+								<div className="inspector-col-heading">
+									Input-Layer Weight Magnitude
+								</div>
+								<div className="inspector-bar-item">
+									<div className="inspector-bar-row">
+										<span className="inspector-bar-label">{xLabel} Weight Share</span>
+										<span className="inspector-bar-val">{xPct}%</span>
+									</div>
+									<div className="inspector-bar-track">
+										<div className="inspector-bar-fill is-x" style={{ width: `${xPct}%` }} />
+									</div>
+								</div>
+								<div className="inspector-bar-item">
+									<div className="inspector-bar-row">
+										<span className="inspector-bar-label">{yLabel} Weight Share</span>
+										<span className="inspector-bar-val">{yPct}%</span>
+									</div>
+									<div className="inspector-bar-track">
+										<div className="inspector-bar-fill is-y" style={{ width: `${yPct}%` }} />
+									</div>
+								</div>
+							</div>
+
+							<div className="inspector-note">
+								<div className="inspector-col-heading">
+									Network Topology
+								</div>
+								<div className="inspector-topology-line">
+									Layers: {layers.join(" \u2192 ")} ({stats.totalParams} Trainable Parameters: {stats.weights} weights, {stats.biases} biases)
+								</div>
+								<div className="inspector-subnote">
+									Hidden units apply the hyperbolic tangent (tanh) activation function to represent nonlinear decision boundaries. Hover over connections or hidden units above to inspect individual weights and biases.
+								</div>
+							</div>
 						</div>
-						<div className="inspector-topology-line">
-							Layers: {layers.join(" → ")} Neurons ({totalWeights} Trainable Parameters)
+					) : (
+						<div className="inspector-note" style={{ marginTop: "1rem" }}>
+							<div className="inspector-col-heading">
+								Configured Topology Preview
+							</div>
+							<div className="inspector-topology-line">
+								Layers: {layers.join(" \u2192 ")} ({stats.totalParams} Trainable Parameters: {stats.weights} weights, {stats.biases} biases)
+							</div>
+							<div className="inspector-subnote">
+								{isTrained && xTr.length >= 2
+									? "The layer configuration changed after training. Click Train Model to fit weights for this architecture and view input sensitivities."
+									: "Adjust hidden layers and neurons in Parameters, plot students on the canvas, and click Train Model to fit connection weights."}
+							</div>
 						</div>
-						<div className="inspector-subnote">
-							Hidden units apply the hyperbolic tangent (tanh) activation function to represent nonlinear decision boundaries.
-						</div>
-					</div>
+					)}
 				</div>
 			);
 		}
@@ -693,14 +732,16 @@ export default function ModelInspector({
 			{!isCollapsed && (
 				<div>
 					{renderContent()}
-					<WhatIfCounterfactualPanel
-						model={model}
-						xTr={xTr}
-						yTr={yTr}
-						xLabel={xLabel}
-						yLabel={yLabel}
-						hoverProbe={hoverProbe}
-					/>
+					{(activeModel !== "ann" || annWeightsMatch) && (
+						<WhatIfCounterfactualPanel
+							model={model}
+							xTr={xTr}
+							yTr={yTr}
+							xLabel={xLabel}
+							yLabel={yLabel}
+							hoverProbe={hoverProbe}
+						/>
+					)}
 				</div>
 			)}
 		</div>

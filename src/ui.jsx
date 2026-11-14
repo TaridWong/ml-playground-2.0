@@ -204,7 +204,7 @@ export default class UI extends React.Component {
 				<div id="parameters">
 					<h3>Parameters</h3>
 					<div className="parameters-body">
-						{ModelUiComponent && <ModelUiComponent reclassify={this.props.reclassify} />}
+						{ModelUiComponent && <ModelUiComponent reclassify={this.props.reclassify} onConfigChange={this.props.onModelConfigChange} />}
 					</div>
 				</div>
 

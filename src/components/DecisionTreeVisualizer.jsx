@@ -59,9 +59,9 @@ export default function DecisionTreeVisualizer({ treeData }) {
 	if (!treeData) {
 		return (
 			<div className="tree-visualizer-card empty">
-				<div className="xai-title">Decision Tree Flowchart (Explainable AI)</div>
+				<div className="xai-title">Decision Tree Structure</div>
 				<p className="xai-hint">
-					Plot students on the canvas and click <strong>Train Model</strong> with Decision Tree selected to generate the transparent decision flowchart.
+					Plot students on the canvas and click <strong>Train Model</strong> with Decision Tree selected to display the split hierarchy.
 				</p>
 			</div>
 		);
@@ -71,9 +71,9 @@ export default function DecisionTreeVisualizer({ treeData }) {
 		<div className="tree-visualizer-card">
 			<div className="xai-header">
 				<div>
-					<h3 className="xai-title">Decision Tree Flowchart (Explainable AI)</h3>
+					<h3 className="xai-title">Decision Tree Structure</h3>
 					<span className="xai-subtitle">
-						Every prediction can be audited step-by-step from root to leaf by educators, parents, and students.
+						Root-to-leaf threshold rules learned from the current dataset.
 					</span>
 				</div>
 			</div>

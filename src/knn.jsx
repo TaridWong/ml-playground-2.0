@@ -169,7 +169,7 @@ export default class Knn extends MLModel {
 										cursor: "pointer"
 									}}
 								>
-									Uniform (1 vote each)
+									Uniform Weight
 								</button>
 								<button
 									type="button"
@@ -192,8 +192,8 @@ export default class Knn extends MLModel {
 							</div>
 							<div style={{ fontSize: "0.72rem", color: "#64748b", marginTop: "0.25rem" }}>
 								{this.state.weighting === "distance"
-									? "Closer peers have much greater influence than distant neighbors."
-									: "All K neighbors cast an equal democratic vote regardless of distance."}
+									? "Closer neighbors receive higher weight than more distant neighbors."
+									: "All K neighbors receive equal weight regardless of distance."}
 							</div>
 						</div>
 					</div>
@@ -204,40 +204,44 @@ export default class Knn extends MLModel {
 
 	info() {
 		return this.generateInfo({
-			name: "K Nearest Neighbors (KNN)",
-			tldr: "Looking at your closest peers to make a guess",
-			expl1: (
-				<div>
-					When predicting a new student, the algorithm looks at the <b>K closest students on the chart</b> and takes a majority vote.
-				</div>
+			name: "K-Nearest Neighbors (KNN)",
+			overview: (
+				<p>
+					K-Nearest Neighbors is a non-parametric, instance-based classifier that estimates class membership directly from the closest labeled points in the feature space rather than fitting global parameters.
+				</p>
 			),
+			steps: [
+				"Keep all plotted points and their labels in memory without fitting a separate line or curve.",
+				"When classifying a new point, measure the straight-line distance from that point to every stored point on the chart.",
+				"Pick the K closest points (neighbors) to the new point.",
+				"Count the neighbor votes (either equal votes or weighted so closer points count more) and assign At-Risk if at least half of the vote score points to At-Risk."
+			],
+			mathNote: (
+				<p>
+					KNN does its work at prediction time rather than during training. Small values of K follow local clusters closely, while larger values of K average across more neighbors and produce smoother borders.
+				</p>
+			),
+			diagram: <KNNDiagram key="knn_diag" />,
 			params: [
-				"Number of Neighbors (K): How many nearby students get a vote. Looking at only 1 neighbor reacts to every single fluke, while looking at 15 neighbors requires broad agreement.",
-				"Voting Weight: Choose whether all neighbors get an equal vote or closer neighbors have a stronger voice."
-			],
-			usecase: [
-				"Finding natural clusters where similar students group together",
-				"Spotting isolated pockets of students without needing a straight boundary",
-				"Simple classification tasks where you want to explain a decision by pointing to similar peer examples",
-				"Quick baselines because it does not require an upfront training calculation"
-			],
-			expl2: [
-				"The core intuition is that students with similar study habits and quiz scores tend to have similar academic outcomes.",
-				<KNNDiagram key="knn_diag" />,
-				"If a student sits close to several peers who passed, the model predicts they will pass too.",
-				"When K is set to 1, the model creates tiny bubbles around every individual student. If one student guessed randomly on a quiz, that single point can warp the boundary. Increasing K smooths out these bubbles so isolated accidents do not mislead the overall prediction."
+				"K (Nearest Neighbors): Default 3 (slider 1 to 25; setter accepts 1 to 50). Setting K = 1 assigns each point to its single nearest neighbor and reacts to isolated outliers. Odd values such as 3, 5, or 7 break unweighted binary ties.",
+				"Neighbor Voting Weight: Uniform (default) weights all K neighbors equally, while Inverse Distance weights each neighbor by 1 / (d + 1), reducing the impact of distant points inside sparse neighborhoods."
 			],
 			pros: [
-				"Very intuitive to explain to teachers, parents, and students.",
-				"Adapts to unusual shapes, curves, and separate groups without special math formulas."
+				"Requires no assumptions about functional form and captures curved, disjoint, or enclosed decision regions.",
+				"New observations can be added to the reference set without retraining parameters.",
+				"Predictions can be audited by inspecting the exact K neighboring cases."
 			],
 			cons: [
-				"Predictions become slower as your dataset grows because it has to calculate distances to every past student.",
-				"Can get confused if one feature uses large numbers like total minutes and another uses small numbers like quiz counts."
+				"Prediction cost scales linearly with dataset size n because every query scans all stored points.",
+				"Sensitive to differences in feature scale when one variable spans a wider numerical range than another."
+			],
+			applied: [
+				"Case-based advising where educators explain an At-Risk classification by referencing students with comparable attendance and assessment records.",
+				"Detecting localized behavioral subgroups, such as gaming-the-system clusters embedded inside broader student cohorts."
 			],
 			links: [
 				["https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm", "Wikipedia: k-nearest neighbors algorithm"],
-				["http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html", "Scikit-Learn KNN classifier"]
+				["http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html", "Scikit-Learn KNeighborsClassifier"]
 			]
 		});
 	}

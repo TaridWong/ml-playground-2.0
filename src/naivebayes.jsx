@@ -284,37 +284,40 @@ export default class GaussianNaiveBayes extends MLModel {
 	info() {
 		return this.generateInfo({
 			name: "Gaussian Naive Bayes",
-			tldr: "Weighing evidence using school base rates and bell curves",
-			expl1: (
-				<div>
-					Estimates the likelihood of each student outcome by creating a bell curve cloud for each group and multiplying the odds.
-				</div>
+			overview: (
+				<p>
+					Gaussian Naive Bayes applies Bayes' theorem under the assumption that features are conditionally independent given the class label and normally distributed within each class.
+				</p>
 			),
+			steps: [
+				"Record how common On-Track and At-Risk points are in the cohort (or treat both groups as an equal 50/50 split when Equal priors are selected).",
+				"Find the average value and spread of X and Y separately for On-Track and At-Risk points, adding a variance smoothing buffer so tight groups stay stable.",
+				"For a new point, check how closely its X and Y values match each group's bell-curve average and spread, then factor in each group's starting rate.",
+				"Compare both group likelihoods to produce a risk score from 0% to 100%, predicting At-Risk when it meets or passes the threshold."
+			],
+			mathNote: (
+				<p>
+					Training passes through the points once to compute each group's average and spread. The dividing border falls where both groups become equally likely, which forms a curved boundary when the two groups have different spreads.
+				</p>
+			),
+			diagram: <NaiveBayesDiagram key="nb_diag" />,
 			params: [
-				"Decision Threshold: Cutoff probability for flagging student intervention.",
-				"Class Prior Mode: Accounts for school base rates where passing and struggling groups have different sizes.",
-				"Variance Smoothing: Spreads the bell curve slightly so single dots do not cause sharp spikes."
-			],
-			usecase: [
-				"Classes where passing and struggling groups have very unequal sizes",
-				"Rapid screening across student records with very little computer processing time",
-				"Combining multiple independent indicators such as forum posts, attendance, and quiz completion",
-				"Providing a quick probabilistic benchmark on small pilot programs"
-			],
-			expl2: [
-				"Treats each student group as a cloud with an average center and spread.",
-				<NaiveBayesDiagram key="nb_diag" />,
-				"The name Naive means it assumes each study habit acts independently without influencing the others.",
-				"It respects base rates, meaning if course failure is rare, it requires stronger evidence before raising an alarm."
+				"Posterior Risk Threshold: Default 0.50 (range 0.05 to 0.95). Controls how much posterior evidence is needed to assign Class 2 (At-Risk).",
+				"Class Prior Base Rates: Empirical (default) sets priors to observed cohort frequencies; Equal sets both priors to 0.50 so minority classes receive equal baseline weight.",
+				"Variance Smoothing (epsilon): Default 0.05 (range 0.01 to 0.50). Adds a fraction of global variance to each class variance, preventing zero-variance collapse on tight clusters."
 			],
 			pros: [
-				"Extremely fast to train because it only calculates the average and spread for each group.",
-				"Works well on small datasets without memorizing random noise.",
-				"Naturally accounts for unequal class sizes through prior probabilities."
+				"Closed-form parameter estimation completes in O(n) time with no iterative optimization.",
+				"Resists overfitting on small samples because it fits only two means and two variances per class.",
+				"Explicitly incorporates class base rates through prior probabilities."
 			],
 			cons: [
-				"Assumes data follows smooth bell curves and struggles with crescent or spiral shapes.",
-				"Ignores interactions between features because it evaluates each feature on its own."
+				"Conditional independence ignores diagonal covariance between features, preventing tilted elliptical contours.",
+				"Unimodal Gaussian distributions cannot represent multi-modal or ring-shaped classes."
+			],
+			applied: [
+				"Imbalanced course cohorts where low failure base rates must be factored into screening decisions.",
+				"Fast baseline risk estimation from independent engagement, attendance, and quiz summary statistics."
 			],
 			links: [
 				["https://en.wikipedia.org/wiki/Naive_Bayes_classifier", "Wikipedia Naive Bayes Classifier"],

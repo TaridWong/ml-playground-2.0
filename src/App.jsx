@@ -494,8 +494,7 @@ export default function App() {
 					<img id="logo" src="./img/logo.png" alt="Machine Learning Playground 2.0 Logo" />
 					<div className="title-group">
 						<div className="main-title-line">
-							<span className="main-title">Machine Learning Playground</span>
-							<span className="version-badge">2.0</span>
+							<span className="main-title">Machine Learning Playground 2.0</span>
 						</div>
 						<span className="subtitle">for Learning Analytics & Educational Data Mining</span>
 						<span className="authorship-subtitle">Developed by Jo Chuang; Extended by Tarid Wongvorachan</span>
@@ -621,11 +620,11 @@ export default function App() {
 										<div className="hud-row hud-row-student">
 											{hoverProbe.targetStudent ? (
 												<span className={`hud-student-tag ${hoverProbe.targetStudent.actual === hoverProbe.targetStudent.predicted ? "match" : "mismatch"}`}>
-													Student #{hoverProbe.targetStudent.index}: Actual {hoverProbe.targetStudent.actual === 2 ? "At-Risk" : "On-Track"} ({hoverProbe.targetStudent.actual === hoverProbe.targetStudent.predicted ? "✓ Correct" : "⚠ Misclassified"})
+													Student #{hoverProbe.targetStudent.index}: Actual {hoverProbe.targetStudent.actual === 2 ? "At-Risk" : "On-Track"} ({hoverProbe.targetStudent.actual === hoverProbe.targetStudent.predicted ? "Correct" : "Misclassified"})
 												</span>
 											) : (
 												<span className="hud-student-placeholder">
-													Hover near any plotted student dot to inspect their outcome
+													Hover near a plotted student dot to inspect their outcome
 												</span>
 											)}
 										</div>
@@ -633,11 +632,11 @@ export default function App() {
 								) : (
 									<div className="hud-content">
 										<div className="hud-row hud-row-metrics">
-											<span className="hud-idle-title">Real-Time Model Inspector</span>
+											<span className="hud-idle-title">Cursor Probe</span>
 										</div>
 										<div className="hud-row hud-row-student">
 											<span className="hud-student-placeholder">
-												Move cursor across canvas to evaluate risk probabilities and student outcomes
+												Move cursor across canvas to inspect estimated risk probabilities and outcomes
 											</span>
 										</div>
 									</div>
@@ -713,7 +712,7 @@ export default function App() {
 				{/* Bottom: Model Information & Analogies */}
 				<section className="info-section">
 					<div id="infoPanel" className="info-card">
-						{infoContent || <div className="info-loading">Select a model to view pedagogical details.</div>}
+						{infoContent || <div className="info-loading">Select a model to view its documentation.</div>}
 					</div>
 				</section>
 			</main>

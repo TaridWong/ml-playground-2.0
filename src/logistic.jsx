@@ -187,14 +187,14 @@ export default class LogisticRegression extends MLModel {
 							<div style={{ fontSize: "0.73rem", color: "#64748b", marginTop: "0.2rem", lineHeight: 1.35 }}>
 								{this.state.threshold < 0.5 ? (
 									<span style={{ color: "#b91c1c" }}>
-										⚡ <strong>Aggressive Early Warning:</strong> Flags students at lower risk probability (High Sensitivity / Recall, catches struggling students, but triggers more false alarms).
+										<strong>Lower Cutoff (High Sensitivity):</strong> Flags students at lower estimated risk probability, increasing recall along with false positives.
 									</span>
 								) : this.state.threshold > 0.5 ? (
 									<span style={{ color: "#c2410c" }}>
-										🎯 <strong>Conservative Alerts:</strong> Only flags students when risk probability is very high (High Specificity, avoids false alarms, but may miss students).
+										<strong>Higher Cutoff (High Specificity):</strong> Flags students only at high estimated risk probability, reducing false positives at the cost of missed cases.
 									</span>
 								) : (
-									<span>Standard 50% balanced decision boundary.</span>
+									<span>Balanced 50% classification cutoff.</span>
 								)}
 							</div>
 						</div>
@@ -221,7 +221,7 @@ export default class LogisticRegression extends MLModel {
 										cursor: "pointer"
 									}}
 								>
-									Degree 1 (Linear Line)
+									Degree 1 (Linear)
 								</button>
 								<button
 									type="button"
@@ -239,13 +239,13 @@ export default class LogisticRegression extends MLModel {
 										cursor: "pointer"
 									}}
 								>
-									Degree 2 (Polynomial Curve)
+									Degree 2 (Polynomial)
 								</button>
 							</div>
 							<div style={{ fontSize: "0.72rem", color: "#64748b", marginTop: "0.25rem" }}>
 								{this.state.degree === 2
-									? "Degree 2 creates quadratic terms (x², y², xy) allowing parabolas, ellipses, and circular pockets!"
-									: "Degree 1 creates a classic straight linear boundary fence."}
+									? "Degree 2 includes quadratic terms (x², y², xy), permitting parabolic, elliptical, and enclosed boundaries."
+									: "Degree 1 fits a linear hyperplane in the original 2D space."}
 							</div>
 						</div>
 
@@ -260,7 +260,7 @@ export default class LogisticRegression extends MLModel {
 									style={{ width: "50px", marginLeft: "0.3rem" }}
 								/>
 								<span style={{ fontSize: "0.72rem", color: "#64748b", marginLeft: "0.4rem" }}>
-									(Lower C = prevents overfitting)
+									(Lower C = stronger shrinkage)
 								</span>
 							</label>
 						</div>
@@ -273,37 +273,40 @@ export default class LogisticRegression extends MLModel {
 	info() {
 		return this.generateInfo({
 			name: "Logistic Regression",
-			tldr: "Estimating the probability of student risk",
-			expl1: (
-				<div>
-					Draws a smooth boundary that outputs a <b>percentage probability between 0% and 100%</b> instead of just a flat yes or no.
-				</div>
+			overview: (
+				<p>
+					Logistic Regression models the log-odds of class membership as a weighted combination of features and passes the linear predictor through the logistic sigmoid function to produce calibrated probability estimates in (0, 1).
+				</p>
 			),
+			steps: [
+				"Rescale each point's X and Y values and build either straight-line inputs (Degree 1) or curved inputs that include squared and combined X*Y terms (Degree 2).",
+				"Multiply each input by a learned weight, add a baseline offset, and turn that total into a risk score between 0% and 100% using an S-shaped curve.",
+				"Update the weights over 350 passes through the data so predicted risk scores match the plotted labels while keeping weights from growing too large.",
+				"Predict At-Risk when the risk score reaches or passes the Decision Threshold, and On-Track below it."
+			],
+			mathNote: (
+				<p>
+					Because the training error function has a single bottom, repeated weight updates settle on a consistent boundary for a given setting. Moving the decision cutoff from 100% down to 0% traces the ROC curve shown in the metrics panel.
+				</p>
+			),
+			diagram: <LogisticDiagram key="logistic_diag" />,
 			params: [
-				"Decision Threshold: The probability cutoff used to send an alert. A 50% cutoff treats false alarms and missed students equally. Setting it lower, such as 30%, catches struggling students earlier at the cost of more check-in emails.",
-				"Feature Expansion: Degree 1 fits a straight line. Degree 2 adds quadratic terms, allowing the model to bend into smooth curves, bowls, and circular fences.",
-				"Regularization (C): Keeps the model grounded so small noisy samples do not pull the boundary too far in one direction."
-			],
-			usecase: [
-				"Early warning systems where staff need probability percentages rather than hard labels",
-				"Situations where administrators need to tune the alert cutoff based on advisor availability",
-				"Predicting course completion when higher study time steadily increases success odds",
-				"Explaining which student activity has the biggest positive or negative impact on passing"
-			],
-			expl2: [
-				"Ordinary line models can predict values like negative 20% or positive 140%, which makes no sense for probabilities. Logistic regression wraps the calculation in an S-shaped curve so the result stays strictly between 0% and 100%.",
-				<LogisticDiagram key="logistic_diag" />,
-				"In schools, setting the alert cutoff is an educational decision. If guidance counselors only have time to meet 10 students, you raise the threshold to prioritize those with the highest risk. If free automated review materials are available, you lower the threshold so anyone with even a slight risk receives help.",
-				"The Receiver Operating Characteristic curve in your dashboard is created by sweeping this exact threshold from 100% down to 0% and charting the balance between true alerts and false alarms."
+				"Decision Threshold: Default 0.50 (range 0.05 to 0.95). Lowering the threshold prioritizes Sensitivity (fewer missed Class 2 points); raising it prioritizes Specificity (fewer false positives).",
+				"Feature Expansion: Degree 1 (default) constrains the decision boundary to a straight line. Degree 2 fits quadratic curves capable of enclosing interior clusters.",
+				"Regularization (C): Default 10.0. Smaller C increases L2 penalty weight (1 / C), pulling coefficients toward zero to limit variance on small or noisy samples."
 			],
 			pros: [
-				"Provides clear probability scores that help educators prioritize intervention lists.",
-				"Very fast, reliable, and mathematically stable.",
-				"Easy to interpret because each metric receives a clear positive or negative weight."
+				"Outputs continuous probability scores rather than hard labels, supporting threshold tuning after training.",
+				"Individual feature weights correspond directly to changes in log-odds.",
+				"Low computational cost and stable convergence."
 			],
 			cons: [
-				"By default it draws a straight line, so it misses complex curved patterns unless polynomial terms are enabled.",
-				"Struggles when students who pass form isolated islands surrounded by students who struggle."
+				"Restricted to linear boundaries unless polynomial or interaction terms are added.",
+				"Log-odds linearity assumes monotonic effects along each original feature when Degree 1 is active."
+			],
+			applied: [
+				"Early warning systems in which advisors rank students by predicted dropout probability and select a threshold aligned with counseling capacity.",
+				"Evaluating policy trade-offs between unnecessary student outreach (false positives) and unassisted struggling learners (false negatives)."
 			],
 			links: [
 				["https://en.wikipedia.org/wiki/Logistic_regression", "Wikipedia: Logistic regression"],

@@ -3,51 +3,51 @@ import React, { useState, useEffect } from "react";
 const TOUR_STEPS = [
 	{
 		step: 1,
-		badge: "Step 1 of 4: Cohort Sandbox & Real-World Patterns",
+		badge: "Step 1 of 4: Canvas & Presets",
 		title: "Plot Students or Load Classroom Scenarios",
 		targetSelector: ".canvas-section",
 		description:
-			"Click anywhere on the interactive 2D canvas to plot On-Track (Teal) and At-Risk (Rose) students, or open the Data Patterns Guide in the top bar to load realistic Higher Ed and K-12 classroom datasets.",
+			"Click anywhere on the 2D canvas to plot On-Track (Teal) and At-Risk (Rose) students, or open the Data Patterns Guide in the top bar to load Higher Ed and K-12 classroom datasets.",
 		highlights: [
 			"Toggle between Solid Boundary and Probability Heatmap above the canvas.",
-			"Hover over any plotted student dot to see live risk probability in the HUD.",
-			"Use Share Link in the toolbar to copy a deep link to your exact cohort."
+			"Hover over any plotted student dot to inspect risk probability in the Cursor Probe.",
+			"Use Share Link in the toolbar to copy a URL for your current dataset."
 		]
 	},
 	{
 		step: 2,
-		badge: "Step 2 of 4: 10 Pedagogical ML Paradigms",
-		title: "Train & Benchmark 10 Classification Algorithms",
+		badge: "Step 2 of 4: Classification Models",
+		title: "Train & Compare 10 Classification Algorithms",
 		targetSelector: ".options-section",
 		description:
-			"Switch between 10 algorithms spanning instance-based voting (KNN), linear boundaries (Logistic, Perceptron, SVM), rule systems (Decision Tree, CBA), ensembles (Random Forest, XGBoost), and Neural Networks.",
+			"Switch between 10 algorithms spanning instance-based classification (KNN), linear boundaries (Logistic, Perceptron, SVM), rule systems (Decision Tree, CBA), ensembles (Random Forest, XGBoost), and Neural Networks.",
 		highlights: [
-			"Tune hyperparameters with instant visual reclassification.",
-			"Click Compare All Models to benchmark all 10 paradigms side by side on your cohort."
+			"Adjust model parameters to observe how the decision boundary responds.",
+			"Click Compare All Models to evaluate all 10 algorithms side by side on your cohort."
 		]
 	},
 	{
 		step: 3,
-		badge: "Step 3 of 4: Explainable AI & Counterfactuals",
-		title: "Audit White-Box Logic & What-If Interventions",
+		badge: "Step 3 of 4: Model Inspection & Counterfactuals",
+		title: "Inspect Learned Parameters & Counterfactuals",
 		targetSelector: ".tree-visualizer-section",
 		description:
-			"Every algorithm includes a live Explainable AI (XAI) Inspector below the canvas alongside an interactive What-If Counterfactual Explorer.",
+			"Every trained algorithm exposes its learned structure in the parameter inspector below the canvas alongside an interactive Counterfactual Boundary Analysis panel.",
 		highlights: [
-			"Inspect mined rubric rules, feature weight tug-of-war bars, support vectors, and tree committee ballots.",
-			"Use the What-If Counterfactual sliders to find the smallest score boost needed to flip an At-Risk student to On-Track."
+			"Examine discovered rules, feature log-odds weights, support vectors, and ensemble tree votes.",
+			"Use the boundary simulator sliders to measure the minimum change needed to shift an At-Risk student to On-Track."
 		]
 	},
 	{
 		step: 4,
-		badge: "Step 4 of 4: Psychometric Metrics & High-Res Plot Export",
-		title: "Evaluate Intervention Impact & Save Plot PNG",
+		badge: "Step 4 of 4: Evaluation Metrics & Export",
+		title: "Evaluate Classification Metrics & Save Plot PNG",
 		targetSelector: ".metrics-section",
 		description:
-			"Bridge machine learning metrics (Precision, Recall, F1, ROC AUC) with real educational intervention costs, and export a high-resolution plot image.",
+			"Review standard classification metrics (Precision, Recall, F1, ROC AUC) alongside educational intervention cost trade-offs, and export a 2x resolution PNG of the plot.",
 		highlights: [
-			"Inspect the Confusion Matrix to balance False Alarms against Missed At-Risk students.",
-			"Click Save PNG in the toolbar to export a high-resolution (2x DPI) image of the active plot."
+			"Inspect the Confusion Matrix to balance false positives against missed At-Risk students.",
+			"Click Save PNG in the toolbar to export a 2x resolution image of the active plot."
 		]
 	}
 ];
@@ -91,18 +91,7 @@ export default function QuickTourModal({
 			>
 				<div className="modal-header">
 					<div>
-						<div
-							style={{
-								display: "inline-block",
-								fontSize: "0.72rem",
-								fontWeight: 700,
-								background: "#ccfbf1",
-								color: "#0f766e",
-								padding: "0.18rem 0.6rem",
-								borderRadius: "999px",
-								marginBottom: "0.35rem"
-							}}
-						>
+						<div className="tour-step-kicker">
 							{stepObj.badge}
 						</div>
 						<h2 className="modal-title">{stepObj.title}</h2>
@@ -113,118 +102,58 @@ export default function QuickTourModal({
 				</div>
 
 				<div className="modal-body">
-					<p
-						style={{
-							fontSize: "0.9rem",
-							color: "#1e293b",
-							lineHeight: 1.6,
-							marginBottom: "0.9rem"
-						}}
-					>
+					<p className="tour-desc">
 						{stepObj.description}
 					</p>
 
-					<div
-						style={{
-							background: "#f8fafc",
-							border: "1px solid #e2e8f0",
-							borderRadius: "8px",
-							padding: "0.85rem 1rem",
-							marginBottom: "1rem"
-						}}
-					>
-						<div
-							style={{
-								fontSize: "0.78rem",
-								fontWeight: 700,
-								color: "#0f172a",
-								marginBottom: "0.45rem"
-							}}
-						>
-							Key Capabilities to Try:
+					<div className="tour-highlights-box">
+						<div className="tour-highlights-heading">
+							Try in this panel:
 						</div>
-						<ul
-							style={{
-								margin: 0,
-								paddingLeft: "1.15rem",
-								fontSize: "0.82rem",
-								color: "#334155",
-								lineHeight: 1.6
-							}}
-						>
+						<ul className="tour-highlights-list">
 							{stepObj.highlights.map((item, i) => (
-								<li key={i} style={{ marginBottom: "0.25rem" }}>
+								<li key={i}>
 									{item}
 								</li>
 							))}
 						</ul>
 					</div>
 
-					{/* Step-Specific 1-Click Demo Action */}
-					<div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+					{/* Step-Specific Demo Action */}
+					<div className="tour-action-row">
 						{currentIdx === 0 && onLoadSampleAndTrain && (
 							<button
 								type="button"
-								className="btn-io"
+								className="btn-io tour-action-primary"
 								onClick={() => {
 									onLoadSampleAndTrain();
 								}}
-								style={{
-									cursor: "pointer",
-									background: "#0f766e",
-									color: "#ffffff",
-									border: "1px solid #0f766e",
-									borderRadius: "6px",
-									padding: "0.4rem 0.85rem",
-									fontSize: "0.8rem",
-									fontWeight: 600
-								}}
 							>
-								⚡ Load Sample Cohort & Train Now
+								Load Sample Cohort &amp; Train
 							</button>
 						)}
 						{currentIdx === 1 && onOpenComparison && (
 							<button
 								type="button"
-								className="btn-io"
+								className="btn-io tour-action-secondary"
 								onClick={() => {
 									onClose();
 									onOpenComparison();
 								}}
-								style={{
-									cursor: "pointer",
-									background: "#0f172a",
-									color: "#ffffff",
-									border: "1px solid #0f172a",
-									borderRadius: "6px",
-									padding: "0.4rem 0.85rem",
-									fontSize: "0.8rem",
-									fontWeight: 600
-								}}
 							>
-								Open 10-Model Benchmark Matrix →
+								Open Model Comparison →
 							</button>
 						)}
 						{currentIdx === 3 && onSavePng && (
 							<button
 								type="button"
-								className="btn-io"
+								className="btn-io tour-action-primary"
 								onClick={() => {
 									onClose();
 									onSavePng();
 								}}
-								style={{
-									cursor: "pointer",
-									background: "#0f766e",
-									color: "#ffffff",
-									border: "1px solid #0f766e",
-									borderRadius: "6px",
-									padding: "0.4rem 0.85rem",
-									fontSize: "0.8rem",
-									fontWeight: 600
-								}}
 							>
-								Save High-Res Plot PNG →
+								Save Plot PNG →
 							</button>
 						)}
 					</div>

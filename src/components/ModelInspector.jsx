@@ -63,45 +63,45 @@ export default function ModelInspector({
 
 	const MODEL_META = {
 		knn: {
-			title: "KNN Peer Neighborhood Inspector (Explainable AI)",
-			subtitle: "Explains predictions by showing the closest peer neighbors and how their majority vote is tallied."
+			title: "KNN Neighborhood Inspector",
+			subtitle: "Inspects the nearest training neighbors and how their class vote is tallied."
 		},
 		logistic: {
-			title: "Logistic Regression Feature Weights (Explainable AI)",
-			subtitle: "Shows how each student metric pushes the probability score toward On-Track or At-Risk."
+			title: "Logistic Regression Weights",
+			subtitle: "Shows how each student metric shifts the log-odds toward On-Track or At-Risk."
 		},
 		naivebayes: {
-			title: "Naive Bayes Bell Curve Inspector (Explainable AI)",
-			subtitle: "Displays the learned group averages, score spreads, and base rates for both student groups."
+			title: "Naive Bayes Gaussian Parameters",
+			subtitle: "Displays the learned group means, standard deviations, and prior probabilities."
 		},
 		perceptron: {
-			title: "Perceptron Boundary Weights (Explainable AI)",
-			subtitle: "Shows the learned line weights and how each feature tilts a student across the decision fence."
+			title: "Perceptron Linear Weights",
+			subtitle: "Shows the learned linear weights and bias offset for the separating hyperplane."
 		},
 		svm: {
-			title: "SVM Support Vector Roster (Explainable AI)",
-			subtitle: "Highlights the critical boundary students holding the safety street in place versus outer students."
+			title: "SVM Support Vector Roster",
+			subtitle: "Reports how many boundary observations act as support vectors versus outer points."
 		},
 		randomforest: {
-			title: "Random Forest Committee Breakdown (Explainable AI)",
-			subtitle: "Reveals which features the tree committee relies on most and how individual trees cast their votes."
+			title: "Random Forest Split & Vote Inspector",
+			subtitle: "Reports feature split proportions across the ensemble and individual tree votes."
 		},
 		xgboost: {
-			title: "XGBoost Relay & Split Inspector (Explainable AI)",
-			subtitle: "Shows the baseline starting risk, sequential error-fixing stages, and feature split balance."
+			title: "XGBoost Boosting Stage Inspector",
+			subtitle: "Shows baseline cohort risk, boosting hyperparameters, and feature split balance."
 		},
 		cba: {
-			title: "CBA Mined Rubric Rules (Explainable AI)",
-			subtitle: "Lists the exact if-then rubric rules discovered from your students along with confidence and support."
+			title: "CBA Discovered Rules",
+			subtitle: "Lists the discretized IF-THEN classification rules ordered by confidence and support."
 		},
 		ann: {
-			title: "Neural Network Signal & Sensitivity Inspector (Explainable AI)",
-			subtitle: "Summarizes the hidden layer architecture and how strongly each input feature activates the network."
+			title: "Neural Network Architecture & Weights",
+			subtitle: "Summarizes the hidden layer topology and input-layer connection weight magnitudes."
 		}
 	};
 
 	const meta = MODEL_META[activeModel] || {
-		title: "Model Explainability Inspector (Explainable AI)",
+		title: "Model Parameter Inspector",
 		subtitle: "Inspect the internal rules and weights learned by the active algorithm."
 	};
 
@@ -110,7 +110,7 @@ export default function ModelInspector({
 			<div className="tree-visualizer-card empty">
 				<div className="xai-title">{meta.title}</div>
 				<p className="xai-hint">
-					Plot students on the canvas and click <strong>Train Model</strong> to inspect the transparent inner workings of this algorithm.
+					Plot students on the canvas and click <strong>Train Model</strong> to inspect the learned parameters of this classifier.
 				</p>
 			</div>
 		);
@@ -119,26 +119,25 @@ export default function ModelInspector({
 	const renderWeightBar = (label, weight, maxAbs) => {
 		const pct = maxAbs > 0 ? Math.min(100, Math.round((Math.abs(weight) / maxAbs) * 100)) : 0;
 		const isAtRiskPull = weight > 0;
+		const direction =
+			Math.abs(weight) < 0.001
+				? "Neutral"
+				: isAtRiskPull
+				? "Shifts toward At-Risk"
+				: "Shifts toward On-Track";
 		return (
-			<div key={label} style={{ marginBottom: "0.65rem" }}>
-				<div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.82rem", marginBottom: "0.2rem" }}>
-					<span style={{ fontWeight: 600, color: "#1e293b" }}>{label}</span>
-					<span style={{ fontWeight: 700, color: Math.abs(weight) < 0.001 ? "#64748b" : isAtRiskPull ? "#e11d48" : "#0d9488" }}>
+			<div key={label} className="inspector-bar-item">
+				<div className="inspector-bar-row">
+					<span className="inspector-bar-label">{label}</span>
+					<span className={`inspector-bar-val ${Math.abs(weight) < 0.001 ? "is-neutral" : isAtRiskPull ? "is-risk" : "is-ontrack"}`}>
 						{weight >= 0 ? `+${weight.toFixed(2)}` : weight.toFixed(2)}{" "}
-						<span style={{ fontWeight: 500, fontSize: "0.75rem", color: "#64748b" }}>
-							({Math.abs(weight) < 0.001 ? "Neutral" : isAtRiskPull ? "Pulls toward At-Risk" : "Pulls toward On-Track"})
-						</span>
+						<span className="inspector-bar-dir">({direction})</span>
 					</span>
 				</div>
-				<div style={{ height: "8px", background: "#f1f5f9", borderRadius: "4px", overflow: "hidden" }}>
+				<div className="inspector-bar-track">
 					<div
-						style={{
-							width: `${ Math.max(4, pct) }%`,
-							height: "100%",
-							background: Math.abs(weight) < 0.001 ? "#94a3b8" : isAtRiskPull ? "#e11d48" : "#0d9488",
-							borderRadius: "4px",
-							transition: "width 0.25s ease"
-						}}
+						className={`inspector-bar-fill ${Math.abs(weight) < 0.001 ? "is-neutral" : isAtRiskPull ? "is-risk" : "is-ontrack"}`}
+						style={{ width: `${Math.max(4, pct)}%` }}
 					/>
 				</div>
 			</div>
@@ -146,7 +145,7 @@ export default function ModelInspector({
 	};
 
 	const renderContent = () => {
-		// 1. CBA: Mined Rubric Association Rules
+		// 1. CBA: Discretized Association Rules
 		if (activeModel === "cba") {
 			const k = model.gridSize || 3;
 			const bands = getBandLabels(k);
@@ -178,71 +177,56 @@ export default function ModelInspector({
 			const uncoveredTiles = totalTiles - ruleList.length;
 			const fallbackLabel =
 				model.fallbackMode === "ontrack"
-					? "Assume On-Track"
+					? "Default On-Track"
 					: model.majorityClass === S.class2
 					? "Cohort Majority (At-Risk)"
 					: "Cohort Majority (On-Track)";
 
 			return (
 				<div>
-					<div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginBottom: "1rem" }}>
-						<div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "0.6rem 0.9rem", flex: "1 1 160px" }}>
-							<div style={{ fontSize: "0.74rem", color: "#64748b" }}>Rubric Grid Resolution</div>
-							<div style={{ fontSize: "1rem", fontWeight: 700, color: "#0f172a" }}>
-								{k} x {k} ({totalTiles} Rubric Tiles)
+					<div className="inspector-stat-grid">
+						<div className="inspector-stat">
+							<div className="inspector-stat-kicker">Grid Resolution</div>
+							<div className="inspector-stat-value">
+								{k} x {k} ({totalTiles} cells)
 							</div>
 						</div>
-						<div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "0.6rem 0.9rem", flex: "1 1 160px" }}>
-							<div style={{ fontSize: "0.74rem", color: "#64748b" }}>Active Mined Rules</div>
-							<div style={{ fontSize: "1rem", fontWeight: 700, color: "#0f766e" }}>
-								{ruleList.length} Qualified Rules
+						<div className="inspector-stat">
+							<div className="inspector-stat-kicker">Qualified Rules</div>
+							<div className="inspector-stat-value is-ontrack">
+								{ruleList.length} rules
 							</div>
 						</div>
-						<div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "0.6rem 0.9rem", flex: "1 1 200px" }}>
-							<div style={{ fontSize: "0.74rem", color: "#64748b" }}>Uncovered Tile Policy ({uncoveredTiles} tiles)</div>
-							<div style={{ fontSize: "0.95rem", fontWeight: 700, color: "#334155" }}>{fallbackLabel}</div>
+						<div className="inspector-stat">
+							<div className="inspector-stat-kicker">Uncovered Cell Fallback ({uncoveredTiles} cells)</div>
+							<div className="inspector-stat-value">{fallbackLabel}</div>
 						</div>
 					</div>
 
 					{ruleList.length === 0 ? (
-						<div style={{ padding: "1rem", background: "#fff1f2", border: "1px solid #fecdd3", borderRadius: "8px", color: "#be123c", fontSize: "0.85rem" }}>
-							No rubric tile met the current minimum confidence ({Math.round((model.minConfidence || 0.65) * 100)}%) and support ({model.minSupport || 1} students) thresholds. Try lowering Min Confidence or Min Support.
+						<div className="inspector-empty-alert">
+							No grid cell met the current minimum confidence ({Math.round((model.minConfidence || 0.65) * 100)}%) and support ({model.minSupport || 1} students) thresholds. Lower Min Confidence or Min Support to generate rules.
 						</div>
 					) : (
-						<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))", gap: "0.65rem" }}>
+						<div className="inspector-rule-grid">
 							{ruleList.map((r, idx) => {
 								const isRisk = r.pred === S.class2;
 								return (
 									<div
 										key={r.key}
-										style={{
-											padding: "0.75rem 0.9rem",
-											borderRadius: "8px",
-											border: `1px solid ${isRisk ? "#fecdd3" : "#99f6e4"}`,
-											background: isRisk ? "#fff1f2" : "#f0fdfa"
-										}}
+										className={`inspector-rule-card ${isRisk ? "is-risk" : "is-ontrack"}`}
 									>
-										<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.3rem" }}>
-											<span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#475569" }}>Rule #{idx + 1}</span>
-											<span
-												style={{
-													fontSize: "0.74rem",
-													fontWeight: 700,
-													padding: "0.15rem 0.5rem",
-													borderRadius: "999px",
-													background: isRisk ? "#ffe4e6" : "#ccfbf1",
-													color: isRisk ? "#be123c" : "#0f766e"
-												}}
-											>
+										<div className="inspector-rule-head">
+											<span className="inspector-rule-num">Rule #{idx + 1}</span>
+											<span className={`inspector-tag ${isRisk ? "is-risk" : "is-ontrack"}`}>
 												THEN {isRisk ? "At-Risk" : "On-Track"}
 											</span>
 										</div>
-										<div style={{ fontSize: "0.83rem", color: "#0f172a", fontWeight: 600, marginBottom: "0.35rem" }}>
-											IF {xLabel} is <span style={{ textDecoration: "underline" }}>{r.xBand}</span> AND {yLabel} is{" "}
-											<span style={{ textDecoration: "underline" }}>{r.yBand}</span>
+										<div className="inspector-rule-body">
+											IF {xLabel} is <u>{r.xBand}</u> AND {yLabel} is <u>{r.yBand}</u>
 										</div>
-										<div style={{ fontSize: "0.75rem", color: "#475569" }}>
-											Confidence: <strong>{r.conf}%</strong> ({r.supp} of {r.totalInBin} students in tile)
+										<div className="inspector-rule-meta">
+											Confidence: <strong>{r.conf}%</strong> ({r.supp} of {r.totalInBin} students in cell)
 										</div>
 									</div>
 								);
@@ -271,26 +255,26 @@ export default function ModelInspector({
 			const maxAbs = Math.max(0.1, ...items.map((i) => Math.abs(i.val)));
 
 			return (
-				<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem" }}>
+				<div className="inspector-two-col">
 					<div>
-						<div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f172a", marginBottom: "0.65rem" }}>
+						<div className="inspector-col-heading">
 							Learned Feature Influence (Log-Odds Weights)
 						</div>
 						{items.map((it) => renderWeightBar(it.label, it.val, maxAbs))}
 					</div>
-					<div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "0.9rem 1rem" }}>
-						<div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f172a", marginBottom: "0.5rem" }}>
-							How Prediction Probability Is Calculated
+					<div className="inspector-note">
+						<div className="inspector-col-heading">
+							Log-Odds &amp; Sigmoid Calculation
 						</div>
-						<div style={{ fontSize: "0.8rem", color: "#334155", lineHeight: 1.55, marginBottom: "0.65rem" }}>
-							The model multiplies each student score by its weight above, adds the baseline intercept (<strong>{(w[0] || 0).toFixed(2)}</strong>), and passes the total through an S-shaped sigmoid curve to get a risk percentage from 0% to 100%.
-						</div>
-						<div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
-							<span style={{ fontSize: "0.76rem", background: "#ffe4e6", color: "#be123c", padding: "0.25rem 0.6rem", borderRadius: "6px", fontWeight: 600 }}>
+						<p className="inspector-note-text">
+							Each student metric is multiplied by its weight, summed with the intercept (<strong>{(w[0] || 0).toFixed(2)}</strong>), and mapped through the logistic sigmoid function to produce a risk probability between 0% and 100%.
+						</p>
+						<div className="inspector-tag-row">
+							<span className="inspector-tag is-risk">
 								Alert Cutoff: {Math.round((model.threshold || 0.5) * 100)}%
 							</span>
-							<span style={{ fontSize: "0.76rem", background: "#e2e8f0", color: "#334155", padding: "0.25rem 0.6rem", borderRadius: "6px", fontWeight: 600 }}>
-								Boundary Mode: {isQuad ? "Degree 2 Curve" : "Degree 1 Straight Line"}
+							<span className="inspector-tag">
+								Boundary Mode: {isQuad ? "Degree 2 Curve" : "Degree 1 Linear"}
 							</span>
 						</div>
 					</div>
@@ -298,42 +282,42 @@ export default function ModelInspector({
 			);
 		}
 
-		// 3. Perceptron: Linear Fence Weights
+		// 3. Perceptron: Linear Boundary Weights
 		if (activeModel === "perceptron") {
 			const w = model.w || [0, 0, 0];
 			// In Perceptron: result = w[0]*x + w[1]*y + w[2]*100.
 			// Positive result -> Class 1 (On-Track), Negative -> Class 2 (At-Risk).
-			// Flip sign so positive bar consistently means pulls toward At-Risk.
+			// Flip sign so positive bar consistently means shifts toward At-Risk.
 			const wxRisk = -w[0];
 			const wyRisk = -w[1];
 			const biasRisk = -w[2];
 			const maxAbs = Math.max(0.1, Math.abs(wxRisk), Math.abs(wyRisk));
 
 			return (
-				<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem" }}>
+				<div className="inspector-two-col">
 					<div>
-						<div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f172a", marginBottom: "0.65rem" }}>
-							Decision Fence Weight Balance
+						<div className="inspector-col-heading">
+							Linear Feature Weight Balance
 						</div>
 						{renderWeightBar(xLabel, wxRisk, maxAbs)}
 						{renderWeightBar(yLabel, wyRisk, maxAbs)}
 					</div>
-					<div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "0.9rem 1rem" }}>
-						<div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f172a", marginBottom: "0.45rem" }}>
-							Step-Rule Boundary Equation
+					<div className="inspector-note">
+						<div className="inspector-col-heading">
+							Linear Boundary Equation
 						</div>
-						<div style={{ fontSize: "0.8rem", color: "#334155", lineHeight: 1.55, marginBottom: "0.5rem" }}>
-							After tilting for <strong>{model.maxIters}</strong> maximum passes, the perceptron settled on a straight fence with bias offset <strong>{biasRisk.toFixed(1)}</strong>.
-						</div>
-						<div style={{ fontSize: "0.78rem", color: "#64748b" }}>
-							Students whose weighted total crosses zero are immediately flagged as At-Risk.
+						<p className="inspector-note-text">
+							After <strong>{model.maxIters}</strong> maximum training passes, the perceptron weights stabilized with bias offset <strong>{biasRisk.toFixed(1)}</strong>.
+						</p>
+						<div className="inspector-subnote">
+							Students whose weighted linear combination crosses zero are classified as At-Risk.
 						</div>
 					</div>
 				</div>
 			);
 		}
 
-		// 4. KNN: Peer Voting Consensus
+		// 4. KNN: Neighborhood Consensus
 		if (activeModel === "knn") {
 			const k = model.k || 3;
 			const mode = model.weighting === "distance" ? "Distance-Weighted" : "Uniform Equal Vote";
@@ -363,41 +347,41 @@ export default function ModelInspector({
 			}
 
 			return (
-				<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "0.9rem" }}>
-					<div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "0.8rem 1rem" }}>
-						<div style={{ fontSize: "0.75rem", color: "#64748b" }}>Active Peer Committee</div>
-						<div style={{ fontSize: "1.05rem", fontWeight: 700, color: "#0f172a", margin: "0.2rem 0" }}>
+				<div className="inspector-stat-grid">
+					<div className="inspector-stat">
+						<div className="inspector-stat-kicker">Neighborhood Configuration</div>
+						<div className="inspector-stat-value">
 							K = {k} Nearest Peers ({mode})
 						</div>
-						<div style={{ fontSize: "0.78rem", color: "#475569" }}>
-							Every prediction is decided directly by the {k} closest students on the chart.
+						<div className="inspector-stat-desc">
+							Each prediction is determined directly by the {k} closest students in feature space.
 						</div>
 					</div>
 
-					<div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "0.8rem 1rem" }}>
-						<div style={{ fontSize: "0.75rem", color: "#64748b" }}>Cohort Neighborhood Agreement</div>
-						<div style={{ fontSize: "0.95rem", fontWeight: 700, color: "#0f766e", margin: "0.2rem 0" }}>
+					<div className="inspector-stat">
+						<div className="inspector-stat-kicker">Cohort Neighborhood Agreement</div>
+						<div className="inspector-stat-value is-ontrack">
 							{unanimousCount} Unanimous / {splitCount} Contested
 						</div>
-						<div style={{ fontSize: "0.78rem", color: "#475569" }}>
-							{unanimousCount} students sit in pure neighborhoods where all {k} peers share the same outcome.
+						<div className="inspector-stat-desc">
+							{unanimousCount} students sit in uniform neighborhoods where all {k} neighbors share the same class.
 						</div>
 					</div>
 
-					<div style={{ background: probeNeighbors ? "#f0fdfa" : "#f8fafc", border: `1px solid ${probeNeighbors ? "#99f6e4" : "#e2e8f0"}`, borderRadius: "8px", padding: "0.8rem 1rem" }}>
-						<div style={{ fontSize: "0.75rem", color: "#64748b" }}>Live Cursor Peer Ballot</div>
+					<div className={`inspector-stat ${probeNeighbors ? "is-active-probe" : ""}`}>
+						<div className="inspector-stat-kicker">Cursor Neighbor Vote</div>
 						{probeNeighbors ? (
 							<div>
-								<div style={{ fontSize: "0.95rem", fontWeight: 700, color: "#0f172a", margin: "0.2rem 0" }}>
+								<div className="inspector-stat-value">
 									{probeNeighbors.c1Peers} On-Track vs {probeNeighbors.c2Peers} At-Risk
 								</div>
-								<div style={{ fontSize: "0.76rem", color: "#475569" }}>
-									Average peer distance: {probeNeighbors.avgDist} units from cursor.
+								<div className="inspector-stat-desc">
+									Mean neighbor distance: {probeNeighbors.avgDist} units from cursor.
 								</div>
 							</div>
 						) : (
-							<div style={{ fontSize: "0.8rem", color: "#64748b", marginTop: "0.25rem" }}>
-								Hover your mouse over the canvas to see the exact {k}-peer vote at any coordinate.
+							<div className="inspector-stat-desc">
+								Hover over the canvas to inspect the {k}-neighbor vote at any coordinate.
 							</div>
 						)}
 					</div>
@@ -405,41 +389,41 @@ export default function ModelInspector({
 			);
 		}
 
-		// 5. Naive Bayes: Gaussian Cloud Centers & Spreads
+		// 5. Naive Bayes: Gaussian Class Distributions
 		if (activeModel === "naivebayes" && model.stats) {
 			const s1 = model.stats[S.class1];
 			const s2 = model.stats[S.class2];
 			if (!s1 || !s2) return null;
 
 			return (
-				<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1rem" }}>
-					<div style={{ background: "#f0fdfa", border: "1px solid #99f6e4", borderRadius: "8px", padding: "0.85rem 1rem" }}>
-						<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
-							<span style={{ fontWeight: 700, color: "#0f766e", fontSize: "0.9rem" }}>On-Track Bell Curve Cloud</span>
-							<span style={{ fontSize: "0.75rem", fontWeight: 700, background: "#ccfbf1", color: "#0f766e", padding: "0.15rem 0.5rem", borderRadius: "999px" }}>
-								Base Rate: {Math.round(s1.prior * 100)}%
+				<div className="inspector-two-col">
+					<div className="inspector-class-summary is-ontrack">
+						<div className="inspector-rule-head">
+							<span className="inspector-class-title is-ontrack">On-Track Gaussian Distribution</span>
+							<span className="inspector-tag is-ontrack">
+								Prior: {Math.round(s1.prior * 100)}%
 							</span>
 						</div>
-						<div style={{ fontSize: "0.8rem", color: "#1e293b", marginBottom: "0.25rem" }}>
-							<strong>{xLabel} Center:</strong> {Math.round(s1.meanX)} (Spread: ±{Math.round(Math.sqrt(s1.varX))})
+						<div className="inspector-class-row">
+							<strong>{xLabel} Mean:</strong> {Math.round(s1.meanX)} (SD: {Math.round(Math.sqrt(s1.varX))})
 						</div>
-						<div style={{ fontSize: "0.8rem", color: "#1e293b" }}>
-							<strong>{yLabel} Center:</strong> {Math.round(s1.meanY)} (Spread: ±{Math.round(Math.sqrt(s1.varY))})
+						<div className="inspector-class-row">
+							<strong>{yLabel} Mean:</strong> {Math.round(s1.meanY)} (SD: {Math.round(Math.sqrt(s1.varY))})
 						</div>
 					</div>
 
-					<div style={{ background: "#fff1f2", border: "1px solid #fecdd3", borderRadius: "8px", padding: "0.85rem 1rem" }}>
-						<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
-							<span style={{ fontWeight: 700, color: "#be123c", fontSize: "0.9rem" }}>At-Risk Bell Curve Cloud</span>
-							<span style={{ fontSize: "0.75rem", fontWeight: 700, background: "#ffe4e6", color: "#be123c", padding: "0.15rem 0.5rem", borderRadius: "999px" }}>
-								Base Rate: {Math.round(s2.prior * 100)}%
+					<div className="inspector-class-summary is-risk">
+						<div className="inspector-rule-head">
+							<span className="inspector-class-title is-risk">At-Risk Gaussian Distribution</span>
+							<span className="inspector-tag is-risk">
+								Prior: {Math.round(s2.prior * 100)}%
 							</span>
 						</div>
-						<div style={{ fontSize: "0.8rem", color: "#1e293b", marginBottom: "0.25rem" }}>
-							<strong>{xLabel} Center:</strong> {Math.round(s2.meanX)} (Spread: ±{Math.round(Math.sqrt(s2.varX))})
+						<div className="inspector-class-row">
+							<strong>{xLabel} Mean:</strong> {Math.round(s2.meanX)} (SD: {Math.round(Math.sqrt(s2.varX))})
 						</div>
-						<div style={{ fontSize: "0.8rem", color: "#1e293b" }}>
-							<strong>{yLabel} Center:</strong> {Math.round(s2.meanY)} (Spread: ±{Math.round(Math.sqrt(s2.varY))})
+						<div className="inspector-class-row">
+							<strong>{yLabel} Mean:</strong> {Math.round(s2.meanY)} (SD: {Math.round(Math.sqrt(s2.varY))})
 						</div>
 					</div>
 				</div>
@@ -463,47 +447,45 @@ export default function ModelInspector({
 			const ignoredCount = Math.max(0, xTr.length - svCount);
 			const kernelName =
 				model.kernel === "rbf"
-					? `Radial Basis Curve (Sigma: ${model.rbfSigma})`
+					? `Radial Basis Function (Sigma: ${model.rbfSigma})`
 					: model.kernel === "poly"
-					? `Polynomial Curve (Degree: ${model.polyDegree})`
-					: "Straight Linear Street";
+					? `Polynomial Kernel (Degree: ${model.polyDegree})`
+					: "Linear Kernel";
 
 			return (
-				<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: "0.9rem" }}>
-					<div style={{ background: "#f0f9ff", border: "1px solid #bae6fd", borderRadius: "8px", padding: "0.8rem 1rem" }}>
-						<div style={{ fontSize: "0.75rem", color: "#0369a1", fontWeight: 600 }}>Active Support Vectors</div>
-						<div style={{ fontSize: "1.1rem", fontWeight: 700, color: "#0f172a", margin: "0.2rem 0" }}>
-							{svCount} Boundary Students ({svOnTrack} On-Track / {svAtRisk} At-Risk)
+				<div className="inspector-stat-grid">
+					<div className="inspector-stat">
+						<div className="inspector-stat-kicker">Active Support Vectors</div>
+						<div className="inspector-stat-value">
+							{svCount} Boundary Points ({svOnTrack} On-Track / {svAtRisk} At-Risk)
 						</div>
-						<div style={{ fontSize: "0.78rem", color: "#334155" }}>
-							These {svCount} edge students physically anchor the position and angle of the street.
-						</div>
-					</div>
-
-					<div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "0.8rem 1rem" }}>
-						<div style={{ fontSize: "0.75rem", color: "#64748b", fontWeight: 600 }}>Zero-Impact Outer Students</div>
-						<div style={{ fontSize: "1.1rem", fontWeight: 700, color: "#475569", margin: "0.2rem 0" }}>
-							{ignoredCount} Non-Support Students
-						</div>
-						<div style={{ fontSize: "0.78rem", color: "#64748b" }}>
-							Students far from the border have zero mathematical pull on the boundary.
+						<div className="inspector-stat-desc">
+							These {svCount} boundary observations determine the orientation and margin width.
 						</div>
 					</div>
 
-					<div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "0.8rem 1rem" }}>
-						<div style={{ fontSize: "0.75rem", color: "#64748b", fontWeight: 600 }}>Street Geometry & Stiffness</div>
-						<div style={{ fontSize: "0.95rem", fontWeight: 700, color: "#0f172a", margin: "0.2rem 0" }}>
-							{kernelName}
+					<div className="inspector-stat">
+						<div className="inspector-stat-kicker">Non-Support Observations</div>
+						<div className="inspector-stat-value">
+							{ignoredCount} Zero-Weight Points
 						</div>
-						<div style={{ fontSize: "0.78rem", color: "#475569" }}>
-							Strictness Penalty C = <strong>{model.C}</strong>
+						<div className="inspector-stat-desc">
+							Observations safely outside the margin receive zero dual weight.
+						</div>
+					</div>
+
+					<div className="inspector-stat">
+						<div className="inspector-stat-kicker">Kernel &amp; Regularization</div>
+						<div className="inspector-stat-value">{kernelName}</div>
+						<div className="inspector-stat-desc">
+							Regularization parameter C = <strong>{model.C}</strong>
 						</div>
 					</div>
 				</div>
 			);
 		}
 
-		// 7. Random Forest: Committee Votes & Feature Split Importance
+		// 7. Random Forest: Ensemble Votes & Feature Split Importance
 		if (activeModel === "randomforest") {
 			const trees = model.trees || [];
 			const counts = { x: 0, y: 0 };
@@ -526,47 +508,47 @@ export default function ModelInspector({
 			}
 
 			return (
-				<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.1rem" }}>
+				<div className="inspector-two-col">
 					<div>
-						<div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f172a", marginBottom: "0.5rem" }}>
-							Feature Split Importance Across {trees.length} Trees
+						<div className="inspector-col-heading">
+							Feature Split Proportions Across {trees.length} Trees
 						</div>
-						<div style={{ marginBottom: "0.55rem" }}>
-							<div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", marginBottom: "0.2rem" }}>
-								<span style={{ fontWeight: 600 }}>{xLabel}</span>
-								<span style={{ fontWeight: 700, color: "#0f172a" }}>{xPct}% ({counts.x} splits)</span>
+						<div className="inspector-bar-item">
+							<div className="inspector-bar-row">
+								<span className="inspector-bar-label">{xLabel}</span>
+								<span className="inspector-bar-val">{xPct}% ({counts.x} splits)</span>
 							</div>
-							<div style={{ height: "8px", background: "#e2e8f0", borderRadius: "4px", overflow: "hidden" }}>
-								<div style={{ width: `${xPct}%`, height: "100%", background: "#0284c7" }} />
+							<div className="inspector-bar-track">
+								<div className="inspector-bar-fill is-x" style={{ width: `${xPct}%` }} />
 							</div>
 						</div>
-						<div>
-							<div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", marginBottom: "0.2rem" }}>
-								<span style={{ fontWeight: 600 }}>{yLabel}</span>
-								<span style={{ fontWeight: 700, color: "#0f172a" }}>{yPct}% ({counts.y} splits)</span>
+						<div className="inspector-bar-item">
+							<div className="inspector-bar-row">
+								<span className="inspector-bar-label">{yLabel}</span>
+								<span className="inspector-bar-val">{yPct}% ({counts.y} splits)</span>
 							</div>
-							<div style={{ height: "8px", background: "#e2e8f0", borderRadius: "4px", overflow: "hidden" }}>
-								<div style={{ width: `${yPct}%`, height: "100%", background: "#0d9488" }} />
+							<div className="inspector-bar-track">
+								<div className="inspector-bar-fill is-y" style={{ width: `${yPct}%` }} />
 							</div>
 						</div>
 					</div>
 
-					<div style={{ background: probeVotes ? "#f0fdfa" : "#f8fafc", border: `1px solid ${probeVotes ? "#99f6e4" : "#e2e8f0"}`, borderRadius: "8px", padding: "0.85rem 1rem" }}>
-						<div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f172a", marginBottom: "0.35rem" }}>
-							Democratic Tree Committee Ballot
+					<div className={`inspector-note ${probeVotes ? "is-active-probe" : ""}`}>
+						<div className="inspector-col-heading">
+							Ensemble Vote Summary
 						</div>
 						{probeVotes ? (
 							<div>
-								<div style={{ fontSize: "1rem", fontWeight: 700, color: probeVotes.c2 >= probeVotes.c1 ? "#be123c" : "#0f766e", marginBottom: "0.25rem" }}>
+								<div className={`inspector-vote-result ${probeVotes.c2 >= probeVotes.c1 ? "is-risk" : "is-ontrack"}`}>
 									{probeVotes.c1} Trees Vote On-Track vs {probeVotes.c2} Trees Vote At-Risk
 								</div>
-								<div style={{ fontSize: "0.78rem", color: "#475569" }}>
-									Committee consensus at cursor: <strong>{Math.round((Math.max(probeVotes.c1, probeVotes.c2) / probeVotes.total) * 100)}%</strong> agreement.
+								<div className="inspector-subnote">
+									Ensemble agreement at cursor: <strong>{Math.round((Math.max(probeVotes.c1, probeVotes.c2) / probeVotes.total) * 100)}%</strong>.
 								</div>
 							</div>
 						) : (
-							<div style={{ fontSize: "0.8rem", color: "#64748b", lineHeight: 1.5 }}>
-								Each of the <strong>{trees.length}</strong> trees trained on a random 80% student sample up to depth <strong>{model.maxDepth}</strong>. Hover over the canvas to see the live tree vote tally.
+							<div className="inspector-note-text">
+								Each of the <strong>{trees.length}</strong> trees trained on a bootstrap sample up to max depth <strong>{model.maxDepth}</strong>. Hover over the canvas to inspect tree votes at any point.
 							</div>
 						)}
 					</div>
@@ -574,7 +556,7 @@ export default function ModelInspector({
 			);
 		}
 
-		// 8. XGBoost: Sequential Boosting Relay & Split Usage
+		// 8. XGBoost: Sequential Boosting Stages & Split Usage
 		if (activeModel === "xgboost") {
 			const trees = model.trees || [];
 			const counts = { x: 0, y: 0 };
@@ -585,44 +567,44 @@ export default function ModelInspector({
 			const baseProb = Math.round(model.sigmoid(model.baseLogOdds || 0) * 100);
 
 			return (
-				<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.1rem" }}>
+				<div className="inspector-two-col">
 					<div>
-						<div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f172a", marginBottom: "0.5rem" }}>
-							Feature Usage Across {trees.length} Boosting Stages
+						<div className="inspector-col-heading">
+							Feature Split Counts Across {trees.length} Boosting Stages
 						</div>
-						<div style={{ marginBottom: "0.55rem" }}>
-							<div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", marginBottom: "0.2rem" }}>
-								<span style={{ fontWeight: 600 }}>{xLabel}</span>
-								<span style={{ fontWeight: 700, color: "#0f172a" }}>{xPct}% ({counts.x} splits)</span>
+						<div className="inspector-bar-item">
+							<div className="inspector-bar-row">
+								<span className="inspector-bar-label">{xLabel}</span>
+								<span className="inspector-bar-val">{xPct}% ({counts.x} splits)</span>
 							</div>
-							<div style={{ height: "8px", background: "#e2e8f0", borderRadius: "4px", overflow: "hidden" }}>
-								<div style={{ width: `${xPct}%`, height: "100%", background: "#0284c7" }} />
+							<div className="inspector-bar-track">
+								<div className="inspector-bar-fill is-x" style={{ width: `${xPct}%` }} />
 							</div>
 						</div>
-						<div>
-							<div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", marginBottom: "0.2rem" }}>
-								<span style={{ fontWeight: 600 }}>{yLabel}</span>
-								<span style={{ fontWeight: 700, color: "#0f172a" }}>{yPct}% ({counts.y} splits)</span>
+						<div className="inspector-bar-item">
+							<div className="inspector-bar-row">
+								<span className="inspector-bar-label">{yLabel}</span>
+								<span className="inspector-bar-val">{yPct}% ({counts.y} splits)</span>
 							</div>
-							<div style={{ height: "8px", background: "#e2e8f0", borderRadius: "4px", overflow: "hidden" }}>
-								<div style={{ width: `${yPct}%`, height: "100%", background: "#0d9488" }} />
+							<div className="inspector-bar-track">
+								<div className="inspector-bar-fill is-y" style={{ width: `${yPct}%` }} />
 							</div>
 						</div>
 					</div>
 
-					<div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "0.85rem 1rem" }}>
-						<div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f172a", marginBottom: "0.35rem" }}>
-							Sequential Additive Relay Summary
+					<div className="inspector-note">
+						<div className="inspector-col-heading">
+							Additive Boosting Summary
 						</div>
-						<div style={{ fontSize: "0.8rem", color: "#334155", lineHeight: 1.55 }}>
-							Stage 0 begins with a baseline cohort risk of <strong>{baseProb}%</strong>. Each of the <strong>{trees.length}</strong> shallow trees (Depth {model.maxDepth}) targets remaining errors, scaled by learning rate <strong>η = {model.learningRate}</strong> and regularized by <strong>λ = {model.l2Reg}</strong>.
+						<div className="inspector-note-text">
+							Stage 0 begins with a cohort base risk of <strong>{baseProb}%</strong>. Each of the <strong>{trees.length}</strong> shallow trees (max depth {model.maxDepth}) fits negative gradient residuals, scaled by learning rate <strong>η = {model.learningRate}</strong> and regularized by <strong>λ = {model.l2Reg}</strong>.
 						</div>
 					</div>
 				</div>
 			);
 		}
 
-		// 9. ANN: Neural Network Architecture & Input Sensitivity
+		// 9. ANN: Neural Network Architecture & Input Weight Sensitivity
 		if (activeModel === "ann") {
 			const layers = model.layers || [2, 4, 3, 1];
 			let xStrength = 0;
@@ -649,40 +631,40 @@ export default function ModelInspector({
 			const yPct = 100 - xPct;
 
 			return (
-				<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.1rem" }}>
+				<div className="inspector-two-col">
 					<div>
-						<div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f172a", marginBottom: "0.5rem" }}>
-							First-Layer Input Synapse Sensitivity
+						<div className="inspector-col-heading">
+							Input-Layer Weight Magnitude
 						</div>
-						<div style={{ marginBottom: "0.55rem" }}>
-							<div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", marginBottom: "0.2rem" }}>
-								<span style={{ fontWeight: 600 }}>{xLabel} Signal Strength</span>
-								<span style={{ fontWeight: 700, color: "#0f172a" }}>{xPct}%</span>
+						<div className="inspector-bar-item">
+							<div className="inspector-bar-row">
+								<span className="inspector-bar-label">{xLabel} Weight Share</span>
+								<span className="inspector-bar-val">{xPct}%</span>
 							</div>
-							<div style={{ height: "8px", background: "#e2e8f0", borderRadius: "4px", overflow: "hidden" }}>
-								<div style={{ width: `${xPct}%`, height: "100%", background: "#0284c7" }} />
+							<div className="inspector-bar-track">
+								<div className="inspector-bar-fill is-x" style={{ width: `${xPct}%` }} />
 							</div>
 						</div>
-						<div>
-							<div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", marginBottom: "0.2rem" }}>
-								<span style={{ fontWeight: 600 }}>{yLabel} Signal Strength</span>
-								<span style={{ fontWeight: 700, color: "#0f172a" }}>{yPct}%</span>
+						<div className="inspector-bar-item">
+							<div className="inspector-bar-row">
+								<span className="inspector-bar-label">{yLabel} Weight Share</span>
+								<span className="inspector-bar-val">{yPct}%</span>
 							</div>
-							<div style={{ height: "8px", background: "#e2e8f0", borderRadius: "4px", overflow: "hidden" }}>
-								<div style={{ width: `${yPct}%`, height: "100%", background: "#0d9488" }} />
+							<div className="inspector-bar-track">
+								<div className="inspector-bar-fill is-y" style={{ width: `${yPct}%` }} />
 							</div>
 						</div>
 					</div>
 
-					<div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "0.85rem 1rem" }}>
-						<div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f172a", marginBottom: "0.35rem" }}>
-							Active Neural Architecture
+					<div className="inspector-note">
+						<div className="inspector-col-heading">
+							Network Topology
 						</div>
-						<div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f766e", marginBottom: "0.3rem" }}>
+						<div className="inspector-topology-line">
 							Layers: {layers.join(" → ")} Neurons ({totalWeights} Trainable Parameters)
 						</div>
-						<div style={{ fontSize: "0.78rem", color: "#475569", lineHeight: 1.5 }}>
-							Signals pass through hyperbolic tangent (tanh) hidden activations to bend nonlinear decision boundaries.
+						<div className="inspector-subnote">
+							Hidden units apply the hyperbolic tangent (tanh) activation function to represent nonlinear decision boundaries.
 						</div>
 					</div>
 				</div>
@@ -694,25 +676,15 @@ export default function ModelInspector({
 
 	return (
 		<div className="tree-visualizer-card">
-			<div className="xai-header" style={{ marginBottom: isCollapsed ? 0 : "1.1rem", borderBottom: isCollapsed ? "none" : undefined, paddingBottom: isCollapsed ? 0 : undefined }}>
+			<div className={`xai-header ${isCollapsed ? "is-collapsed" : ""}`}>
 				<div>
 					<h3 className="xai-title">{meta.title}</h3>
 					<span className="xai-subtitle">{meta.subtitle}</span>
 				</div>
 				<button
 					type="button"
+					className="inspector-toggle-btn"
 					onClick={() => setIsCollapsed(!isCollapsed)}
-					style={{
-						background: "#f1f5f9",
-						border: "1px solid #cbd5e1",
-						borderRadius: "6px",
-						padding: "0.3rem 0.7rem",
-						fontSize: "0.76rem",
-						fontWeight: 600,
-						color: "#334155",
-						cursor: "pointer",
-						whiteSpace: "nowrap"
-					}}
 				>
 					{isCollapsed ? "Show Inspector" : "Hide Inspector"}
 				</button>

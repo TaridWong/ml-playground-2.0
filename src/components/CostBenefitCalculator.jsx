@@ -21,31 +21,31 @@ export default function CostBenefitCalculator({ metrics }) {
 	const fnTotalDollar = fn * dollarFN;
 	const totalDollars = fpTotalDollar + fnTotalDollar;
 
-	// Plain-English Educational Policy Insight
+	// Educational Policy Summary
 	let verdictType = "success";
-	let verdictTitle = "Balanced Intervention Policy";
-	let verdictDesc = "Model maintains a solid balance between catching at-risk students and respecting teacher workload.";
+	let verdictTitle = "Balanced Operating Point";
+	let verdictDesc = "Classification errors are distributed moderately between false alarms and missed at-risk students.";
 
 	if (fn === 0 && fp === 0) {
 		verdictType = "success";
-		verdictTitle = "Ideal Intervention: 100% Precision & 100% Sensitivity";
-		verdictDesc = "All struggling students are supported with zero false alarms or wasted staff hours.";
+		verdictTitle = "Zero Classification Errors (100% Precision, 100% Sensitivity)";
+		verdictDesc = "All at-risk students are identified with zero false alarms or wasted outreach hours.";
 	} else if (fn === 0 && fp > 0) {
 		verdictType = "safe";
-		verdictTitle = "Maximum Safety Net Policy (Zero Missed Students)";
-		verdictDesc = `All struggling students (${tp}) were caught for tutoring. However, ${fp} on-track student(s) received false alarms (${fpTotalTime} mins of extra teacher outreach).`;
+		verdictTitle = "Full At-Risk Recall with False Positives";
+		verdictDesc = `All ${tp} at-risk students are flagged for tutoring. However, ${fp} on-track student(s) received false alarms (${fpTotalTime} mins of extra outreach).`;
 	} else if (fn > 0 && fp === 0) {
 		verdictType = "danger";
-		verdictTitle = "Conservative Policy: Zero False Alarms, but High Student Risk";
-		verdictDesc = `${fn} struggling student(s) slipped past detection without help. In education, missed students compound learning deficits over time.`;
+		verdictTitle = "Zero False Alarms with Missed At-Risk Students";
+		verdictDesc = `${fn} at-risk student(s) were not flagged by the current boundary or decision cutoff.`;
 	} else if (fn > 2) {
 		verdictType = "danger";
-		verdictTitle = "High-Stakes Deficit: Severe Remediation Burden Ahead";
-		verdictDesc = `${fn} struggling students were overlooked by this algorithm. Consider lowering the decision threshold or choosing a non-linear model.`;
+		verdictTitle = "Elevated False Negative Rate";
+		verdictDesc = `${fn} at-risk students were missed by this model. Lowering the decision threshold or choosing a non-linear model may capture more positive cases.`;
 	} else if (fp > 4) {
 		verdictType = "warning";
-		verdictTitle = "Staff Fatigue: Too Many False Alarms";
-		verdictDesc = `${fp} thriving students were flagged, wasting ${fpTotalTime} minutes of counselor time. Teachers may experience alert fatigue.`;
+		verdictTitle = "Elevated False Positive Burden";
+		verdictDesc = `${fp} on-track students were flagged unnecessarily, accounting for ${fpTotalTime} minutes of advisor outreach.`;
 	}
 
 	return (

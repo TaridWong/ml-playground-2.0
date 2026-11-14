@@ -45,9 +45,9 @@ export function KNNDiagram() {
 				<rect x="65" y="202" width="210" height="24" rx="4" fill="#f8fafc" stroke="#e2e8f0" strokeWidth="1" />
 				<text x="170" y="218" textAnchor="middle" fontSize="11" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Dashed circle = 5 closest peers</text>
 
-				{/* Right side voting ballot */}
+				{/* Right side summary */}
 				<rect x="360" y="20" width="335" height="220" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
-				<text x="380" y="52" fontSize="15" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Peer Voting Consensus (K = 5)</text>
+				<text x="380" y="52" fontSize="15" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Nearest-Neighbor Vote (K = 5)</text>
 
 				{/* Vote tally row */}
 				<circle cx="395" cy="88" r="8" fill={COLOR_TEAL} />
@@ -79,8 +79,8 @@ export function LogisticDiagram() {
 
 				{/* 50% Threshold line */}
 				<line x1="75" y1="120" x2="405" y2="120" stroke="#e11d48" strokeWidth="1.5" strokeDasharray="5 4" />
-				<rect x="290" y="105" width="112" height="18" rx="3" fill="#ffffff" stroke="#fecdd3" strokeWidth="1" />
-				<text x="346" y="118" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#e11d48" fontFamily={FONT_FAMILY}>Alert Cutoff (50%)</text>
+				<rect x="282" y="105" width="120" height="18" rx="3" fill="#ffffff" stroke="#fecdd3" strokeWidth="1" />
+				<text x="342" y="118" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#e11d48" fontFamily={FONT_FAMILY}>Decision Cutoff (50%)</text>
 
 				{/* Axes */}
 				<line x1="75" y1="205" x2="405" y2="205" stroke={COLOR_SLATE} strokeWidth="1.5" />
@@ -106,13 +106,13 @@ export function LogisticDiagram() {
 
 				<rect x="470" y="68" width="210" height="65" rx="6" fill="#fee2e2" stroke="#fca5a5" strokeWidth="1" />
 				<text x="482" y="88" fontSize="12" fontWeight="bold" fill="#b91c1c" fontFamily={FONT_FAMILY}>Above Cutoff (≥ 50%):</text>
-				<text x="482" y="105" fontSize="11" fill="#b91c1c" fontFamily={FONT_FAMILY}>High probability of struggle.</text>
-				<text x="482" y="121" fontSize="11" fontWeight="600" fill="#991b1b" fontFamily={FONT_FAMILY}>Flag for proactive intervention.</text>
+				<text x="482" y="105" fontSize="11" fill="#b91c1c" fontFamily={FONT_FAMILY}>Predicted At-Risk probability.</text>
+				<text x="482" y="121" fontSize="11" fontWeight="600" fill="#991b1b" fontFamily={FONT_FAMILY}>Flag for early intervention.</text>
 
 				<rect x="470" y="145" width="210" height="65" rx="6" fill="#dcfce7" stroke="#86efac" strokeWidth="1" />
 				<text x="482" y="165" fontSize="12" fontWeight="bold" fill="#15803d" fontFamily={FONT_FAMILY}>Below Cutoff (&lt; 50%):</text>
-				<text x="482" y="182" fontSize="11" fill="#15803d" fontFamily={FONT_FAMILY}>Low probability of struggle.</text>
-				<text x="482" y="198" fontSize="11" fontWeight="600" fill="#166534" fontFamily={FONT_FAMILY}>Keep student on track.</text>
+				<text x="482" y="182" fontSize="11" fill="#15803d" fontFamily={FONT_FAMILY}>Predicted On-Track probability.</text>
+				<text x="482" y="198" fontSize="11" fontWeight="600" fill="#166534" fontFamily={FONT_FAMILY}>Below intervention threshold.</text>
 			</svg>
 		</div>
 	);
@@ -162,7 +162,7 @@ export function PerceptronDiagram() {
 			<svg viewBox="0 0 720 260" width="100%" style={{ maxHeight: "300px", display: "block", background: "#f8fafc", borderRadius: "10px", border: "1px solid #e2e8f0" }}>
 				<defs>
 					<marker id="arrow-percep" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-						<path d="M 0 1 L 10 5 L 0 9 z" fill="#ea580c" />
+						<path d="M 0 1 L 10 5 L 0 9 z" fill="#0284c7" />
 					</marker>
 				</defs>
 
@@ -179,32 +179,32 @@ export function PerceptronDiagram() {
 				<circle cx="95" cy="175" r="6" fill={COLOR_ROSE} />
 				<circle cx="130" cy="195" r="6" fill={COLOR_ROSE} />
 
-				{/* Misclassified student causing tilt */}
+				{/* Misclassified student causing weight update */}
 				<circle cx="160" cy="100" r="8" fill={COLOR_ROSE} stroke="#000000" strokeWidth="1.5" />
 				<text x="175" y="104" textAnchor="start" fontSize="11" fontWeight="bold" fill="#b91c1c" fontFamily={FONT_FAMILY}>Mistake Point</text>
 
-				{/* Old line */}
+				{/* Prior line */}
 				<line x1="60" y1="80" x2="320" y2="180" stroke="#94a3b8" strokeWidth="2" strokeDasharray="5 4" />
-				<text x="75" y="112" fontSize="11" fontWeight="bold" fill="#64748b" fontFamily={FONT_FAMILY}>Old Fence</text>
+				<text x="68" y="112" fontSize="11" fontWeight="bold" fill="#64748b" fontFamily={FONT_FAMILY}>Prior Boundary</text>
 
-				{/* Tilt adjustment arrow */}
-				<path d="M 180 125 A 40 40 0 0 1 205 160" fill="none" stroke="#ea580c" strokeWidth="2.5" markerEnd="url(#arrow-percep)" />
-				<text x="220" y="145" fontSize="10.5" fontWeight="bold" fill="#ea580c" fontFamily={FONT_FAMILY}>Tilt</text>
+				{/* Adjustment arrow */}
+				<path d="M 180 125 A 40 40 0 0 1 205 160" fill="none" stroke="#0284c7" strokeWidth="2.5" markerEnd="url(#arrow-percep)" />
+				<text x="218" y="145" fontSize="10.5" fontWeight="bold" fill="#0284c7" fontFamily={FONT_FAMILY}>Update</text>
 
 				{/* Corrected new line */}
 				<line x1="80" y1="35" x2="260" y2="225" stroke={COLOR_NAVY} strokeWidth="3" />
-				<text x="268" y="224" fontSize="11" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Corrected Line</text>
+				<text x="266" y="224" fontSize="11" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Updated Line</text>
 
-				{/* Right side explainer card */}
+				{/* Right side summary */}
 				<rect x="415" y="20" width="280" height="220" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
-				<text x="432" y="52" fontSize="15" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Incremental Tilting</text>
-				<text x="432" y="82" fontSize="12" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>1. Begins with a random line.</text>
-				<text x="432" y="112" fontSize="12" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>2. Corrects on each mistake:</text>
-				<text x="448" y="130" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>When a student lands on</text>
-				<text x="448" y="146" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>the wrong side, weights tilt</text>
-				<text x="448" y="162" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>the fence over to fix it.</text>
+				<text x="432" y="52" fontSize="15" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Linear Weight Updates</text>
+				<text x="432" y="82" fontSize="12" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>1. Initializes linear weights.</text>
+				<text x="432" y="112" fontSize="12" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>2. Updates on each error:</text>
+				<text x="448" y="130" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>When a student is misclassified,</text>
+				<text x="448" y="146" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>weights shift to rotate the</text>
+				<text x="448" y="162" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>hyperplane toward correctness.</text>
 				<rect x="432" y="180" width="245" height="34" rx="4" fill="#ccfbf1" stroke="#99f6e4" />
-				<text x="554" y="201" textAnchor="middle" fontSize="11.5" fontWeight="bold" fill="#0f766e" fontFamily={FONT_FAMILY}>Stops once all students are clean.</text>
+				<text x="554" y="201" textAnchor="middle" fontSize="11.5" fontWeight="bold" fill="#0f766e" fontFamily={FONT_FAMILY}>Halts when linearly separable.</text>
 			</svg>
 		</div>
 	);
@@ -227,9 +227,9 @@ export function SVMDiagram() {
 				{/* Center dividing boundary (Road divider) */}
 				<line x1="180" y1="20" x2="280" y2="240" stroke={COLOR_NAVY} strokeWidth="3" />
 
-				{/* Clear Safety Margin Explanation Text: font +30%, placed to the right of dashed line */}
-				<text x="258" y="38" textAnchor="start" fontSize="10.5" fontWeight="bold" fill="#0284c7" fontFamily={FONT_FAMILY}>Safety Margin (Street)</text>
-				<text x="258" y="52" textAnchor="start" fontSize="8.8" fill="#64748b" fontFamily={FONT_FAMILY}>Empty buffer separating groups</text>
+				{/* Margin Explanation Text */}
+				<text x="258" y="38" textAnchor="start" fontSize="10.5" fontWeight="bold" fill="#0284c7" fontFamily={FONT_FAMILY}>Separation Margin</text>
+				<text x="258" y="52" textAnchor="start" fontSize="8.8" fill="#64748b" fontFamily={FONT_FAMILY}>Margin zone separating classes</text>
 
 				{/* Students far away (non-support vectors) */}
 				<circle cx="55" cy="60" r="5" fill={COLOR_ROSE} />
@@ -237,7 +237,7 @@ export function SVMDiagram() {
 				<circle cx="365" cy="72" r="5" fill={COLOR_TEAL} />
 				<circle cx="375" cy="130" r="5" fill={COLOR_TEAL} />
 
-				{/* Support vectors (touching road edge with glow halo - no boxes) */}
+				{/* Support vectors (touching margin boundary) */}
 				<circle cx="165" cy="115" r="13" fill="none" stroke="#0284c7" strokeWidth="2" />
 				<circle cx="165" cy="115" r="6" fill={COLOR_ROSE} />
 				<text x="45" y="119" fontSize="11" fontWeight="bold" fill="#0284c7" fontFamily={FONT_FAMILY}>Support Vector</text>
@@ -252,24 +252,24 @@ export function SVMDiagram() {
 				<text x="320" y="200" fontSize="11" fontWeight="bold" fill="#0284c7" fontFamily={FONT_FAMILY}>Support Vector</text>
 				<line x1="315" y1="188" x2="308" y2="173" stroke="#0284c7" strokeWidth="1.5" />
 
-				{/* Decision Line Text at bottom (no box) */}
-				<text x="230" y="228" textAnchor="middle" fontSize="11" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Decision Line</text>
+				{/* Decision Line Text at bottom */}
+				<text x="230" y="228" textAnchor="middle" fontSize="11" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Decision Hyperplane</text>
 
-				{/* Right side explainer card */}
+				{/* Right side summary card */}
 				<rect x="420" y="20" width="280" height="225" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
-				<text x="435" y="46" fontSize="14" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>The Widest Street</text>
-				<text x="435" y="70" fontSize="11" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>1. Maximizes safety margin:</text>
-				<text x="448" y="86" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Widens the shaded street until it</text>
-				<text x="448" y="100" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>touches the closest students.</text>
+				<text x="435" y="46" fontSize="14" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Maximum Margin Hyperplane</text>
+				<text x="435" y="70" fontSize="11" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>1. Maximizes margin width:</text>
+				<text x="448" y="86" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Widens the margin band until it</text>
+				<text x="448" y="100" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>contacts the nearest boundary points.</text>
 
-				<text x="435" y="122" fontSize="11" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>2. Support Vectors matter most:</text>
-				<text x="448" y="138" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Only edge students hold the road.</text>
-				<text x="448" y="152" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Outer students have zero effect.</text>
+				<text x="435" y="122" fontSize="11" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>2. Support vectors define the fit:</text>
+				<text x="448" y="138" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Only margin points carry weight.</text>
+				<text x="448" y="152" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Outer points receive zero weight.</text>
 
-				<text x="435" y="174" fontSize="11" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>3. Students inside the empty buffer:</text>
-				<text x="448" y="190" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Indicate noisy overlap. Soft margins</text>
-				<text x="448" y="204" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>tolerate intrusions, while kernels</text>
-				<text x="448" y="218" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>bend space to resolve boundaries.</text>
+				<text x="435" y="174" fontSize="11" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>3. Soft margin &amp; kernels:</text>
+				<text x="448" y="190" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Penalty C controls margin violations,</text>
+				<text x="448" y="204" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>while kernels map inputs to higher</text>
+				<text x="448" y="218" fontSize="10.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>dimensions for nonlinear boundaries.</text>
 			</svg>
 		</div>
 	);
@@ -334,7 +334,7 @@ export function TreeDiagram() {
 				<text x="492" y="147" fontSize="12" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>2. Step-by-step logic:</text>
 				<text x="508" y="165" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Evaluates one metric at a</text>
 				<text x="508" y="181" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>time, just like a checklist.</text>
-				<text x="492" y="212" fontSize="11" fontWeight="bold" fill="#0f766e" fontFamily={FONT_FAMILY}>Highly auditable and readable.</text>
+				<text x="492" y="212" fontSize="11" fontWeight="bold" fill="#0f766e" fontFamily={FONT_FAMILY}>Interpretable rule hierarchy.</text>
 			</svg>
 		</div>
 	);
@@ -349,11 +349,11 @@ export function RandomForestDiagram() {
 				<g transform="translate(25, 25)">
 					<rect x="0" y="0" width="105" height="105" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
 					<text x="52" y="22" textAnchor="middle" fontSize="12" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Tree #1</text>
-					<circle cx="52" cy="40" r="4.5" fill="#f97316" />
-					<line x1="52" y1="44" x2="35" y2="60" stroke="#f97316" strokeWidth="2" />
-					<line x1="52" y1="44" x2="69" y2="60" stroke="#f97316" strokeWidth="2" />
-					<circle cx="35" cy="62" r="4" fill="#f97316" />
-					<circle cx="69" cy="62" r="4" fill="#f97316" />
+					<circle cx="52" cy="40" r="4.5" fill={COLOR_TEAL} />
+					<line x1="52" y1="44" x2="35" y2="60" stroke={COLOR_TEAL} strokeWidth="2" />
+					<line x1="52" y1="44" x2="69" y2="60" stroke={COLOR_TEAL} strokeWidth="2" />
+					<circle cx="35" cy="62" r="4" fill={COLOR_TEAL} />
+					<circle cx="69" cy="62" r="4" fill={COLOR_TEAL} />
 					<rect x="10" y="75" width="85" height="20" rx="4" fill="#ccfbf1" />
 					<text x="52" y="89" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#0f766e" fontFamily={FONT_FAMILY}>Vote: On-Track</text>
 				</g>
@@ -362,11 +362,11 @@ export function RandomForestDiagram() {
 				<g transform="translate(145, 25)">
 					<rect x="0" y="0" width="105" height="105" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
 					<text x="52" y="22" textAnchor="middle" fontSize="12" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Tree #2</text>
-					<circle cx="52" cy="40" r="4.5" fill="#f97316" />
-					<line x1="52" y1="44" x2="35" y2="60" stroke="#f97316" strokeWidth="2" />
-					<line x1="52" y1="44" x2="69" y2="60" stroke="#f97316" strokeWidth="2" />
-					<circle cx="35" cy="62" r="4" fill="#f97316" />
-					<circle cx="69" cy="62" r="4" fill="#f97316" />
+					<circle cx="52" cy="40" r="4.5" fill={COLOR_TEAL} />
+					<line x1="52" y1="44" x2="35" y2="60" stroke={COLOR_TEAL} strokeWidth="2" />
+					<line x1="52" y1="44" x2="69" y2="60" stroke={COLOR_TEAL} strokeWidth="2" />
+					<circle cx="35" cy="62" r="4" fill={COLOR_TEAL} />
+					<circle cx="69" cy="62" r="4" fill={COLOR_TEAL} />
 					<rect x="10" y="75" width="85" height="20" rx="4" fill="#ccfbf1" />
 					<text x="52" y="89" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#0f766e" fontFamily={FONT_FAMILY}>Vote: On-Track</text>
 				</g>
@@ -375,35 +375,35 @@ export function RandomForestDiagram() {
 				<g transform="translate(265, 25)">
 					<rect x="0" y="0" width="105" height="105" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
 					<text x="52" y="22" textAnchor="middle" fontSize="12" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Tree #3</text>
-					<circle cx="52" cy="40" r="4.5" fill="#f97316" />
-					<line x1="52" y1="44" x2="35" y2="60" stroke="#f97316" strokeWidth="2" />
-					<line x1="52" y1="44" x2="69" y2="60" stroke="#f97316" strokeWidth="2" />
-					<circle cx="35" cy="62" r="4" fill="#f97316" />
-					<circle cx="69" cy="62" r="4" fill="#f97316" />
+					<circle cx="52" cy="40" r="4.5" fill={COLOR_SLATE} />
+					<line x1="52" y1="44" x2="35" y2="60" stroke={COLOR_SLATE} strokeWidth="2" />
+					<line x1="52" y1="44" x2="69" y2="60" stroke={COLOR_SLATE} strokeWidth="2" />
+					<circle cx="35" cy="62" r="4" fill={COLOR_SLATE} />
+					<circle cx="69" cy="62" r="4" fill={COLOR_SLATE} />
 					<rect x="10" y="75" width="85" height="20" rx="4" fill="#fee2e2" />
 					<text x="52" y="89" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#be123c" fontFamily={FONT_FAMILY}>Vote: At-Risk</text>
 				</g>
 
-				{/* Voting Arrows converging to committee */}
+				{/* Voting Arrows converging to ensemble summary */}
 				<line x1="77" y1="130" x2="165" y2="160" stroke={COLOR_MUTED} strokeWidth="2" />
 				<line x1="197" y1="130" x2="197" y2="160" stroke={COLOR_MUTED} strokeWidth="2" />
 				<line x1="317" y1="130" x2="230" y2="160" stroke={COLOR_MUTED} strokeWidth="2" />
 
-				{/* Consensus Box */}
+				{/* Majority Box */}
 				<rect x="65" y="160" width="265" height="58" rx="8" fill="#0f172a" />
-				<text x="197" y="182" textAnchor="middle" fontSize="12" fill="#cbd5e1" fontFamily={FONT_FAMILY}>Democratic Consensus (2 vs 1)</text>
+				<text x="197" y="182" textAnchor="middle" fontSize="12" fill="#cbd5e1" fontFamily={FONT_FAMILY}>Ensemble Vote (2 vs 1)</text>
 				<text x="197" y="203" textAnchor="middle" fontSize="13.5" fontWeight="bold" fill="#2dd4bf" fontFamily={FONT_FAMILY}>Majority Prediction: On-Track</text>
 
-				{/* Right side explainer card */}
+				{/* Right side summary card */}
 				<rect x="395" y="25" width="300" height="210" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
-				<text x="412" y="55" fontSize="15" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Bagging Committee</text>
-				<text x="412" y="85" fontSize="12" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>1. Trains 15 to 30 diverse trees:</text>
-				<text x="428" y="103" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Each tree trains on a random</text>
-				<text x="428" y="119" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>subsample of students.</text>
-				<text x="412" y="147" fontSize="12" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>2. Voting smooths out mistakes:</text>
-				<text x="428" y="165" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Voting cancels out the erratic</text>
-				<text x="428" y="181" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>mistakes of any single tree.</text>
-				<text x="412" y="212" fontSize="11" fontWeight="bold" fill="#0f766e" fontFamily={FONT_FAMILY}>Far more resilient and stable.</text>
+				<text x="412" y="55" fontSize="15" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Bootstrap Ensemble</text>
+				<text x="412" y="85" fontSize="12" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>1. Trains diverse trees:</text>
+				<text x="428" y="103" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Each tree fits a random</text>
+				<text x="428" y="119" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>bootstrap sample of students.</text>
+				<text x="412" y="147" fontSize="12" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>2. Aggregation reduces variance:</text>
+				<text x="428" y="165" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Majority voting cancels out</text>
+				<text x="428" y="181" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>overfitting from single trees.</text>
+				<text x="412" y="212" fontSize="11" fontWeight="bold" fill="#0f766e" fontFamily={FONT_FAMILY}>Lower variance than a single tree.</text>
 			</svg>
 		</div>
 	);
@@ -415,10 +415,10 @@ export function XGBoostDiagram() {
 			<svg viewBox="0 0 720 260" width="100%" style={{ maxHeight: "300px", display: "block", background: "#f8fafc", borderRadius: "10px", border: "1px solid #e2e8f0" }}>
 				<defs>
 					<marker id="arrow-xgb-1" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-						<path d="M 0 1 L 10 5 L 0 9 z" fill="#ea580c" />
+						<path d="M 0 1 L 10 5 L 0 9 z" fill="#0284c7" />
 					</marker>
 					<marker id="arrow-xgb-2" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-						<path d="M 0 1 L 10 5 L 0 9 z" fill="#ea580c" />
+						<path d="M 0 1 L 10 5 L 0 9 z" fill="#0284c7" />
 					</marker>
 				</defs>
 
@@ -432,28 +432,28 @@ export function XGBoostDiagram() {
 					<text x="48" y="86" textAnchor="middle" fontSize="9.5" fontWeight="bold" fill="#b91c1c" fontFamily={FONT_FAMILY}>2 Mistakes Left</text>
 				</g>
 
-				{/* Forward arrow with widened gap so Residual never gets squeezed */}
-				<path d="M 124 77 L 164 77" stroke="#ea580c" strokeWidth="2.5" markerEnd="url(#arrow-xgb-1)" />
-				<text x="144" y="60" textAnchor="middle" fontSize="8.5" fontWeight="bold" fill="#ea580c" fontFamily={FONT_FAMILY}>Residual</text>
+				{/* Forward arrow */}
+				<path d="M 124 77 L 164 77" stroke="#0284c7" strokeWidth="2.5" markerEnd="url(#arrow-xgb-1)" />
+				<text x="144" y="60" textAnchor="middle" fontSize="8.5" fontWeight="bold" fill="#0284c7" fontFamily={FONT_FAMILY}>Residual</text>
 
 				{/* Step 2 Tree */}
 				<g transform="translate(172, 25)">
 					<rect x="0" y="0" width="96" height="105" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
 					<text x="48" y="22" textAnchor="middle" fontSize="11.5" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Stage 2 Tree</text>
-					<text x="48" y="39" textAnchor="middle" fontSize="10" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Targets errors</text>
+					<text x="48" y="39" textAnchor="middle" fontSize="10" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Fits residuals</text>
 					<circle cx="48" cy="56" r="5" fill="#0d9488" />
 					<rect x="8" y="72" width="80" height="20" rx="4" fill="#fee2e2" />
 					<text x="48" y="86" textAnchor="middle" fontSize="9.5" fontWeight="bold" fill="#b91c1c" fontFamily={FONT_FAMILY}>1 Mistake Left</text>
 				</g>
 
 				{/* Forward arrow */}
-				<path d="M 276 77 L 316 77" stroke="#ea580c" strokeWidth="2.5" markerEnd="url(#arrow-xgb-2)" />
+				<path d="M 276 77 L 316 77" stroke="#0284c7" strokeWidth="2.5" markerEnd="url(#arrow-xgb-2)" />
 
 				{/* Step 3 Tree */}
 				<g transform="translate(324, 25)">
 					<rect x="0" y="0" width="96" height="105" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
 					<text x="48" y="22" textAnchor="middle" fontSize="11.5" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Stage 3 Tree</text>
-					<text x="48" y="39" textAnchor="middle" fontSize="10" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Fine-tunes fit</text>
+					<text x="48" y="39" textAnchor="middle" fontSize="10" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Refines log-odds</text>
 					<circle cx="48" cy="56" r="5" fill="#0d9488" />
 					<rect x="8" y="72" width="80" height="20" rx="4" fill="#dcfce7" />
 					<text x="48" y="86" textAnchor="middle" fontSize="9.5" fontWeight="bold" fill="#15803d" fontFamily={FONT_FAMILY}>0 Mistakes</text>
@@ -464,16 +464,16 @@ export function XGBoostDiagram() {
 				<text x="220" y="178" textAnchor="middle" fontSize="12" fill="#94a3b8" fontFamily={FONT_FAMILY}>Sequential Additive Model:</text>
 				<text x="220" y="202" textAnchor="middle" fontSize="12.5" fontWeight="bold" fill="#38bdf8" fontFamily={FONT_FAMILY}>Prediction = Tree 1 + (η × Tree 2) + (η × Tree 3)</text>
 
-				{/* Right side explainer card */}
+				{/* Right side summary card */}
 				<rect x="435" y="25" width="265" height="210" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
-				<text x="447" y="55" fontSize="15" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Relay Correction</text>
-				<text x="447" y="85" fontSize="12" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>1. Trains in a relay sequence:</text>
-				<text x="463" y="103" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Each new tree specifically</text>
-				<text x="463" y="119" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>fixes previous errors.</text>
+				<text x="447" y="55" fontSize="15" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Sequential Boosting</text>
+				<text x="447" y="85" fontSize="12" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>1. Sequential residual fitting:</text>
+				<text x="463" y="103" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Each new tree targets the</text>
+				<text x="463" y="119" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>remaining gradient residuals.</text>
 				<text x="447" y="147" fontSize="12" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>2. Learning rate shrinkage (η):</text>
-				<text x="463" y="165" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Scales down tree impact to</text>
-				<text x="463" y="181" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>prevent memorizing noise.</text>
-				<text x="447" y="212" fontSize="11" fontWeight="bold" fill="#0284c7" fontFamily={FONT_FAMILY}>High accuracy on complex data.</text>
+				<text x="463" y="165" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Scales tree step sizes to</text>
+				<text x="463" y="181" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>limit overfitting on noise.</text>
+				<text x="447" y="212" fontSize="11" fontWeight="bold" fill="#0284c7" fontFamily={FONT_FAMILY}>Additive step-by-step refinement.</text>
 			</svg>
 		</div>
 	);
@@ -530,16 +530,16 @@ export function CBADiagram() {
 
 				<text x="350" y="202" textAnchor="middle" fontSize="10" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Uncovered cases use default rule</text>
 
-				{/* Right side explainer card */}
+				{/* Right side summary card */}
 				<rect x="475" y="25" width="220" height="205" rx="8" fill="#ffffff" stroke={COLOR_BORDER} strokeWidth="1.5" />
-				<text x="492" y="55" fontSize="15" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Rubric Tiles</text>
+				<text x="492" y="55" fontSize="15" fontWeight="bold" fill={COLOR_NAVY} fontFamily={FONT_FAMILY}>Discretized Intervals</text>
 				<text x="492" y="85" fontSize="12" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>1. Discretizes into bands:</text>
-				<text x="508" y="103" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Converts continuous scores</text>
-				<text x="508" y="119" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>into familiar rubric boxes.</text>
+				<text x="508" y="103" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Bins continuous scores</text>
+				<text x="508" y="119" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>into ordinal rubric bands.</text>
 				<text x="492" y="147" fontSize="12" fontWeight="600" fill={COLOR_SLATE} fontFamily={FONT_FAMILY}>2. Mines policy rules:</text>
-				<text x="508" y="165" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Finds clear if-then rules</text>
-				<text x="508" y="181" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>matching grading rubrics.</text>
-				<text x="492" y="210" fontSize="11" fontWeight="bold" fill="#0f766e" fontFamily={FONT_FAMILY}>Auditable and explainable.</text>
+				<text x="508" y="165" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>Extracts IF-THEN rules</text>
+				<text x="508" y="181" fontSize="11.5" fill={COLOR_MUTED} fontFamily={FONT_FAMILY}>filtered by support &amp; confidence.</text>
+				<text x="492" y="210" fontSize="11" fontWeight="bold" fill="#0f766e" fontFamily={FONT_FAMILY}>Transparent IF-THEN rule table.</text>
 			</svg>
 		</div>
 	);
@@ -598,7 +598,7 @@ export function ANNDiagram() {
 
 				<rect x="395" y="142" width="285" height="65" rx="6" fill="#fff1f2" stroke="#fecdd3" strokeWidth="1" />
 				<text x="408" y="164" fontSize="12" fontWeight="bold" fill="#be123c" fontFamily={FONT_FAMILY}>Backpropagation (Learning):</text>
-				<text x="408" y="184" fontSize="11" fill="#be123c" fontFamily={FONT_FAMILY}>Nudges connection weights after mistakes</text>
+				<text x="408" y="184" fontSize="11" fill="#be123c" fontFamily={FONT_FAMILY}>Updates weights via gradient descent</text>
 			</svg>
 		</div>
 	);

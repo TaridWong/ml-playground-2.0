@@ -344,37 +344,40 @@ export default class RandomForest extends MLModel {
 	info() {
 		return this.generateInfo({
 			name: "Random Forest",
-			tldr: "Combining many decision trees into a democratic committee",
-			expl1: (
-				<div>
-					Builds an ensemble of diverse decision trees, has each one vote on every student, and chooses the majority prediction.
-				</div>
+			overview: (
+				<p>
+					Random Forest is a bootstrap aggregating (bagging) ensemble that trains multiple unpruned or depth-limited decision trees on resampled subsets of the data and averages their predictions to reduce variance.
+				</p>
 			),
+			steps: [
+				"Build N separate training sets by drawing points at random with replacement from the chart, each sized by the Bootstrap Subsample Ratio.",
+				"Fit a separate decision tree up to Max Tree Depth on each random sample.",
+				"To classify a new point, pass it through all N trees and count how many trees vote At-Risk.",
+				"Use the share of trees voting At-Risk as the risk score, and predict At-Risk when at least half of the trees agree."
+			],
+			mathNote: (
+				<p>
+					A single decision tree can shift sharply if a few points move. Averaging votes across many trees built on different random samples smooths out individual tree mistakes.
+				</p>
+			),
+			diagram: <RandomForestDiagram key="rf_diag" />,
 			params: [
-				"Number of Trees: How many separate decision trees vote in the committee. More trees smooth out erratic predictions.",
-				"Max Tree Depth: The maximum depth allowed for each individual tree in the committee.",
-				"Bootstrap Subsample: The percentage of students randomly sampled to train each separate tree, making sure the voters do not all look identical."
-			],
-			usecase: [
-				"Educational datasets with real classroom noise, missed assignments, and unusual student habits",
-				"Complex student patterns that need high accuracy without overfitting",
-				"Predicting student risk across many grade book columns and LMS activity metrics",
-				"Balancing stability and flexibility when a single tree proves too fragile"
-			],
-			expl2: [
-				"A single decision tree can be fragile because moving a single student dot can alter the whole tree. Random Forest solves this by training multiple trees on random samples of the data.",
-				<RandomForestDiagram key="rf_diag" />,
-				"Every tree votes on whether a student is On-Track or At-Risk, and the majority vote wins.",
-				"Combining many trees blends sharp rectangular boxes into smooth gradual steps, creating much more dependable risk probabilities."
+				"Number of Trees (N): Default 15 (slider 1 to 40; setter accepts 1 to 50). Setting N = 1 recovers a single bootstrap tree; increasing N stabilizes boundary contours at the cost of linear growth in training and prediction time.",
+				"Max Tree Depth: Default 4 (slider 1 to 8; setter accepts 1 to 10). Bounds individual tree depth before ensemble averaging.",
+				"Bootstrap Subsample Ratio: Default 0.80 (slider 0.50 to 1.00). Controls the fraction of rows sampled with replacement for each tree; moderate subsampling increases diversity across trees."
 			],
 			pros: [
-				"Greatly reduces the risk of memorizing noise compared to a single decision tree.",
-				"Provides smooth, reliable probability estimates across the whole class.",
-				"Handles complex relationships without needing data features to be converted to the same scale."
+				"Substantially lower variance and better resistance to isolated outliers than a single decision tree.",
+				"Outputs ensemble vote fractions directly as calibrated risk scores between 0% and 100%.",
+				"Invariant to feature scaling."
 			],
 			cons: [
-				"Harder to visualize on a single page because it combines votes from dozens of trees.",
-				"Takes more processing power and memory than a single decision tree or linear equation."
+				"Loses the single-flowchart auditability of a standalone decision tree because predictions aggregate dozens of trees.",
+				"Higher memory and prediction cost than linear models or shallow single trees."
+			],
+			applied: [
+				"Noisy institutional gradebook and LMS log datasets where individual outliers would distort single-tree thresholds.",
+				"Estimating prediction stability via tree vote agreement across borderline student profiles."
 			],
 			links: [
 				["https://en.wikipedia.org/wiki/Random_forest", "Wikipedia Random Forest"],

@@ -97,32 +97,15 @@ export default function WhatIfCounterfactualPanel({
 	].slice(0, 10);
 
 	return (
-		<div
-			style={{
-				marginTop: "1.15rem",
-				paddingTop: "1rem",
-				borderTop: "1px dashed #cbd5e1"
-			}}
-		>
-			<div
-				style={{
-					display: "flex",
-					justifyContent: "space-between",
-					alignItems: "center",
-					flexWrap: "wrap",
-					gap: "0.5rem",
-					marginBottom: "0.75rem"
-				}}
-			>
+		<div className="cf-section">
+			<div className="cf-header">
 				<div>
-					<div style={{ fontSize: "0.9rem", fontWeight: 700, color: "#0f172a" }}>
-						What-If Counterfactual Intervention Explorer
-					</div>
-					<div style={{ fontSize: "0.77rem", color: "#64748b" }}>
-						Calculates the minimum score change required to flip a student across the decision boundary (hover any dot on the canvas or click a student below).
+					<div className="cf-title">Counterfactual Boundary Analysis</div>
+					<div className="cf-subtitle">
+						Calculates the minimum feature change required to shift a student across the decision boundary (hover any point on the plot or select a student below).
 					</div>
 				</div>
-				<div style={{ display: "flex", gap: "0.35rem", flexWrap: "wrap" }}>
+				<div className="cf-student-list">
 					{pillStudents.map((st) => {
 						const isSel = st.rawIdx === activeStudent.rawIdx;
 						const isRisk = st.pred === S.class2;
@@ -131,22 +114,7 @@ export default function WhatIfCounterfactualPanel({
 								key={st.rawIdx}
 								type="button"
 								onClick={() => handleSelectStudent(st.rawIdx)}
-								style={{
-									cursor: "pointer",
-									fontSize: "0.72rem",
-									fontWeight: 600,
-									padding: "0.22rem 0.55rem",
-									borderRadius: "999px",
-									border: isSel
-										? "2px solid #0f172a"
-										: `1px solid ${isRisk ? "#fecdd3" : "#99f6e4"}`,
-									background: isSel
-										? "#0f172a"
-										: isRisk
-										? "#fff1f2"
-										: "#f0fdfa",
-									color: isSel ? "#ffffff" : isRisk ? "#be123c" : "#0f766e"
-								}}
+								className={`cf-student-btn ${isSel ? "is-selected" : isRisk ? "is-risk" : "is-ontrack"}`}
 								title={`Inspect Student #${st.index} (${isRisk ? "Predicted At-Risk" : "Predicted On-Track"})`}
 							>
 								#{st.index} {isRisk ? "At-Risk" : "On-Track"}
@@ -156,225 +124,110 @@ export default function WhatIfCounterfactualPanel({
 				</div>
 			</div>
 
-			<div
-				style={{
-					display: "grid",
-					gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-					gap: "1rem"
-				}}
-			>
-				{/* Left Card: Minimum Counterfactual Paths */}
-				<div
-					style={{
-						background: "#f8fafc",
-						border: "1px solid #e2e8f0",
-						borderRadius: "8px",
-						padding: "0.85rem 1rem"
-					}}
-				>
-					<div
-						style={{
-							display: "flex",
-							justifyContent: "space-between",
-							alignItems: "center",
-							marginBottom: "0.55rem"
-						}}
-					>
-						<span style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0f172a" }}>
+			<div className="cf-grid">
+				{/* Left Panel: Minimum Counterfactual Paths */}
+				<div className="cf-card">
+					<div className="cf-card-head">
+						<span className="cf-card-title">
 							Student #{activeStudent.index} ({formatSigned(activeStudent.x)}, {formatSigned(activeStudent.y)})
 						</span>
-						<span
-							style={{
-								fontSize: "0.73rem",
-								fontWeight: 700,
-								padding: "0.15rem 0.55rem",
-								borderRadius: "999px",
-								background: activeStudent.pred === S.class2 ? "#ffe4e6" : "#ccfbf1",
-								color: activeStudent.pred === S.class2 ? "#be123c" : "#0f766e"
-							}}
-						>
+						<span className={`inspector-tag ${activeStudent.pred === S.class2 ? "is-risk" : "is-ontrack"}`}>
 							Current: {activeStudent.pred === S.class2 ? "At-Risk" : "On-Track"} ({Math.round(activeStudent.prob * 100)}% Risk)
 						</span>
 					</div>
 
-					<div style={{ fontSize: "0.76rem", color: "#475569", marginBottom: "0.55rem" }}>
+					<div className="cf-paths-caption">
 						{activeStudent.pred === S.class2
-							? "Minimum counterfactual paths to flip prediction to On-Track:"
-							: "Safety buffer distance before slipping into At-Risk:"}
+							? "Minimum counterfactual paths to reach On-Track classification:"
+							: "Distance from the decision boundary before At-Risk classification:"}
 					</div>
 
-					<div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
+					<div className="cf-paths-list">
 						{/* Shortest Combined Path */}
-						<div
-							style={{
-								display: "flex",
-								justifyContent: "space-between",
-								alignItems: "center",
-								background: "#ffffff",
-								border: "1px solid #cbd5e1",
-								borderRadius: "6px",
-								padding: "0.45rem 0.65rem",
-								fontSize: "0.76rem"
-							}}
-						>
+						<div className="cf-path-row">
 							<div>
-								<strong style={{ color: "#0f172a" }}>Shortest Combined Path:</strong>{" "}
+								<strong>Shortest Combined Path:</strong>{" "}
 								{cf && cf.combined ? (
-									<span style={{ color: "#334155" }}>
+									<span>
 										{xLabel} <strong>{formatSigned(cf.combined.dx)}</strong>, {yLabel}{" "}
 										<strong>{formatSigned(cf.combined.dy)}</strong>
 									</span>
 								) : (
-									<span style={{ color: "#94a3b8" }}>No boundary crossing in range</span>
+									<span className="cf-muted">No boundary crossing in range</span>
 								)}
 							</div>
 							{cf && cf.combined && (
 								<button
 									type="button"
+									className="cf-test-btn is-primary"
 									onClick={() => applyPath(cf.combined)}
-									style={{
-										cursor: "pointer",
-										fontSize: "0.7rem",
-										fontWeight: 600,
-										background: "#0f766e",
-										color: "#ffffff",
-										border: "none",
-										borderRadius: "4px",
-										padding: "0.2rem 0.5rem"
-									}}
 								>
-									Test
+									Apply
 								</button>
 							)}
 						</div>
 
 						{/* X-Axis Only Path */}
-						<div
-							style={{
-								display: "flex",
-								justifyContent: "space-between",
-								alignItems: "center",
-								background: "#ffffff",
-								border: "1px solid #e2e8f0",
-								borderRadius: "6px",
-								padding: "0.4rem 0.65rem",
-								fontSize: "0.75rem"
-							}}
-						>
+						<div className="cf-path-row">
 							<div>
-								<strong style={{ color: "#334155" }}>{xLabel} Only:</strong>{" "}
+								<strong>{xLabel} Only:</strong>{" "}
 								{cf && cf.xOnly ? (
-									<span style={{ color: "#475569" }}>
+									<span>
 										Change by <strong>{formatSigned(cf.xOnly.dx)}</strong> (to {formatSigned(cf.xOnly.nx)})
 									</span>
 								) : (
-									<span style={{ color: "#94a3b8" }}>Not reachable by X alone</span>
+									<span className="cf-muted">Not reachable along X alone</span>
 								)}
 							</div>
 							{cf && cf.xOnly && (
 								<button
 									type="button"
+									className="cf-test-btn"
 									onClick={() => applyPath(cf.xOnly)}
-									style={{
-										cursor: "pointer",
-										fontSize: "0.7rem",
-										fontWeight: 600,
-										background: "#f1f5f9",
-										color: "#334155",
-										border: "1px solid #cbd5e1",
-										borderRadius: "4px",
-										padding: "0.18rem 0.45rem"
-									}}
 								>
-									Test
+									Apply
 								</button>
 							)}
 						</div>
 
 						{/* Y-Axis Only Path */}
-						<div
-							style={{
-								display: "flex",
-								justifyContent: "space-between",
-								alignItems: "center",
-								background: "#ffffff",
-								border: "1px solid #e2e8f0",
-								borderRadius: "6px",
-								padding: "0.4rem 0.65rem",
-								fontSize: "0.75rem"
-							}}
-						>
+						<div className="cf-path-row">
 							<div>
-								<strong style={{ color: "#334155" }}>{yLabel} Only:</strong>{" "}
+								<strong>{yLabel} Only:</strong>{" "}
 								{cf && cf.yOnly ? (
-									<span style={{ color: "#475569" }}>
+									<span>
 										Change by <strong>{formatSigned(cf.yOnly.dy)}</strong> (to {formatSigned(cf.yOnly.ny)})
 									</span>
 								) : (
-									<span style={{ color: "#94a3b8" }}>Not reachable by Y alone</span>
+									<span className="cf-muted">Not reachable along Y alone</span>
 								)}
 							</div>
 							{cf && cf.yOnly && (
 								<button
 									type="button"
+									className="cf-test-btn"
 									onClick={() => applyPath(cf.yOnly)}
-									style={{
-										cursor: "pointer",
-										fontSize: "0.7rem",
-										fontWeight: 600,
-										background: "#f1f5f9",
-										color: "#334155",
-										border: "1px solid #cbd5e1",
-										borderRadius: "4px",
-										padding: "0.18rem 0.45rem"
-									}}
 								>
-									Test
+									Apply
 								</button>
 							)}
 						</div>
 					</div>
 				</div>
 
-				{/* Right Card: Interactive What-If Intervention Sandbox */}
-				<div
-					style={{
-						background: simPred === S.class1 ? "#f0fdfa" : "#fff1f2",
-						border: `1px solid ${simPred === S.class1 ? "#99f6e4" : "#fecdd3"}`,
-						borderRadius: "8px",
-						padding: "0.85rem 1rem",
-						display: "flex",
-						flexDirection: "column",
-						justifyContent: "space-between"
-					}}
-				>
+				{/* Right Panel: Boundary Threshold Simulator */}
+				<div className="cf-card cf-sim-card">
 					<div>
-						<div
-							style={{
-								display: "flex",
-								justifyContent: "space-between",
-								alignItems: "center",
-								marginBottom: "0.55rem"
-							}}
-						>
-							<span style={{ fontSize: "0.82rem", fontWeight: 700, color: "#0f172a" }}>
-								Live What-If Intervention Simulator
+						<div className="cf-card-head">
+							<span className="cf-card-title">
+								Boundary Threshold Simulator
 							</span>
 							<button
 								type="button"
+								className="cf-test-btn"
 								onClick={() => {
 									setSimX(activeStudent.x);
 									setSimY(activeStudent.y);
-								}}
-								style={{
-									cursor: "pointer",
-									fontSize: "0.7rem",
-									fontWeight: 600,
-									background: "#ffffff",
-									color: "#475569",
-									border: "1px solid #cbd5e1",
-									borderRadius: "4px",
-									padding: "0.18rem 0.5rem"
 								}}
 							>
 								Reset Sliders
@@ -382,10 +235,10 @@ export default function WhatIfCounterfactualPanel({
 						</div>
 
 						{/* X Slider */}
-						<div style={{ marginBottom: "0.55rem" }}>
-							<div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.76rem", marginBottom: "0.15rem" }}>
-								<span style={{ fontWeight: 600, color: "#1e293b" }}>Simulated {xLabel}</span>
-								<span style={{ fontWeight: 700, color: "#0f172a" }}>
+						<div className="cf-slider-group">
+							<div className="cf-slider-row">
+								<span className="cf-slider-label">Adjusted {xLabel}</span>
+								<span className="cf-slider-val">
 									{formatSigned(simX)} ({formatSigned(simX - activeStudent.x)} from original)
 								</span>
 							</div>
@@ -396,15 +249,15 @@ export default function WhatIfCounterfactualPanel({
 								step="1"
 								value={simX}
 								onChange={(e) => setSimX(Number(e.target.value))}
-								style={{ width: "100%", cursor: "pointer" }}
+								className="cf-slider"
 							/>
 						</div>
 
 						{/* Y Slider */}
-						<div style={{ marginBottom: "0.65rem" }}>
-							<div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.76rem", marginBottom: "0.15rem" }}>
-								<span style={{ fontWeight: 600, color: "#1e293b" }}>Simulated {yLabel}</span>
-								<span style={{ fontWeight: 700, color: "#0f172a" }}>
+						<div className="cf-slider-group">
+							<div className="cf-slider-row">
+								<span className="cf-slider-label">Adjusted {yLabel}</span>
+								<span className="cf-slider-val">
 									{formatSigned(simY)} ({formatSigned(simY - activeStudent.y)} from original)
 								</span>
 							</div>
@@ -415,41 +268,21 @@ export default function WhatIfCounterfactualPanel({
 								step="1"
 								value={simY}
 								onChange={(e) => setSimY(Number(e.target.value))}
-								style={{ width: "100%", cursor: "pointer" }}
+								className="cf-slider"
 							/>
 						</div>
 					</div>
 
-					<div
-						style={{
-							background: "#ffffff",
-							border: `1px solid ${simPred === S.class1 ? "#5eead4" : "#fda4af"}`,
-							borderRadius: "6px",
-							padding: "0.5rem 0.75rem",
-							display: "flex",
-							justifyContent: "space-between",
-							alignItems: "center",
-							fontSize: "0.78rem"
-						}}
-					>
+					<div className="cf-sim-result">
 						<div>
-							<strong>Simulated Outcome:</strong>{" "}
-							<span style={{ fontWeight: 700, color: simPred === S.class1 ? "#0f766e" : "#be123c" }}>
-								● {simPred === S.class1 ? "On-Track" : "At-Risk"} ({Math.round(simProb * 100)}% Risk)
+							<strong>Projected Outcome:</strong>{" "}
+							<span className={simPred === S.class1 ? "is-ontrack-text" : "is-risk-text"}>
+								{simPred === S.class1 ? "On-Track" : "At-Risk"} ({Math.round(simProb * 100)}% Risk)
 							</span>
 						</div>
 						{flipped && (
-							<span
-								style={{
-									fontSize: "0.7rem",
-									fontWeight: 700,
-									background: simPred === S.class1 ? "#ccfbf1" : "#ffe4e6",
-									color: simPred === S.class1 ? "#0f766e" : "#be123c",
-									padding: "0.15rem 0.45rem",
-									borderRadius: "4px"
-								}}
-							>
-								✓ Outcome Flipped!
+							<span className={`inspector-tag ${simPred === S.class1 ? "is-ontrack" : "is-risk"}`}>
+								Prediction Flipped
 							</span>
 						)}
 					</div>

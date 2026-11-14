@@ -58,7 +58,7 @@ export default function MetricsDashboard({ metrics }) {
 			{/* Header */}
 			<div className="metrics-header">
 				<div className="metrics-title-group">
-					<h3 className="metrics-title">Learning Analytics & Evaluation Metrics</h3>
+					<h3 className="metrics-title">Classification & Evaluation Metrics</h3>
 					<span className="metrics-subtitle">
 						Evaluating all {total} plotted students ({tp + fn} At-Risk / {tn + fp} On-Track)
 					</span>
@@ -142,12 +142,12 @@ export default function MetricsDashboard({ metrics }) {
 									<td className="cm-cell cm-tp" title="True Positive: Correctly flagged for intervention">
 										<div className="cm-count">{tp}</div>
 										<div className="cm-text">True Positive (TP)</div>
-										<div className="cm-note">✓ Caught for help</div>
+										<div className="cm-note">Caught for support</div>
 									</td>
-									<td className="cm-cell cm-fn" title="False Negative: Missed student in need of support!">
+									<td className="cm-cell cm-fn" title="False Negative: Missed student in need of support">
 										<div className="cm-count">{fn}</div>
 										<div className="cm-text">False Negative (FN)</div>
-										<div className="cm-note">⚠ Missed student!</div>
+										<div className="cm-note">Missed at-risk</div>
 									</td>
 								</tr>
 								<tr>
@@ -155,12 +155,12 @@ export default function MetricsDashboard({ metrics }) {
 									<td className="cm-cell cm-fp" title="False Positive: Unnecessary intervention triggered">
 										<div className="cm-count">{fp}</div>
 										<div className="cm-text">False Positive (FP)</div>
-										<div className="cm-note">⚡ False alarm</div>
+										<div className="cm-note">False alarm</div>
 									</td>
-									<td className="cm-cell cm-tn" title="True Negative: Thriving independently">
+									<td className="cm-cell cm-tn" title="True Negative: Correctly left unflagged">
 										<div className="cm-count">{tn}</div>
 										<div className="cm-text">True Negative (TN)</div>
-										<div className="cm-note">✓ On-track kept</div>
+										<div className="cm-note">Correctly unflagged</div>
 									</td>
 								</tr>
 							</tbody>
@@ -264,7 +264,7 @@ export default function MetricsDashboard({ metrics }) {
 
 			{/* Educational Intervention Synthesis Card */}
 			<div className="impact-summary-card">
-				<div className="impact-title">Pedagogical Intervention Impact:</div>
+				<div className="impact-title">Intervention Impact Summary</div>
 				<p className="impact-text">
 					If an advisor acts on this model today, they will successfully reach{" "}
 					<strong>

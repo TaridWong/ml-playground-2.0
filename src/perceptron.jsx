@@ -112,31 +112,38 @@ export default class Perceptron extends MLModel {
 	info() {
 		return this.generateInfo({
 			name: "Perceptron",
-			tldr: "Finding a straight dividing line between two groups",
-			expl1: (
-				<div>
-					Draws a single straight fence across the canvas by nudging the line every time it makes a mistake.
-				</div>
+			overview: (
+				<p>
+					The Perceptron (Rosenblatt, 1957) is an online binary linear classifier that separates points with a hyperplane updated sequentially on misclassified training examples.
+				</p>
 			),
-			params: ["Max Iterations: The maximum number of update steps allowed to adjust the dividing line."],
-			usecase: [
-				"Simple screening problems where one clean cutoff separates successful and struggling students",
-				"Classroom demonstrations showing how basic artificial intelligence adjusts weights step by step",
-				"Situations where two clear factors add up directly toward a passing score"
+			steps: [
+				"Start with random weights for X and Y and a zero baseline offset.",
+				"Multiply X and Y by those weights and add the offset: points on the positive side are predicted On-Track and points on the negative side are predicted At-Risk.",
+				"Check each training point one at a time. Whenever a point falls on the wrong side of the line, shift the weights to move the line toward fixing that error.",
+				"Repeat full passes over the points until every point is on the right side or the Max Iters pass limit is reached."
 			],
-			expl2: [
-				"Invented in 1957, it assigns weights to each axis, adds them together, and checks whether the total crosses zero.",
-				<PerceptronDiagram key="percep_diag" />,
-				"In two dimensions, this boundary is always a single straight line.",
-				"If groups can be separated by a straight ruler, it finds a boundary. If groups overlap, curve, or form separate islands, a single straight line cannot divide them."
+			mathNote: (
+				<p>
+					When a straight line can separate the two groups without errors, the Perceptron is guaranteed to finish in a finite number of steps. When the two groups overlap, the line keeps shifting until Max Iters stops training.
+				</p>
+			),
+			diagram: <PerceptronDiagram key="percep_diag" />,
+			params: [
+				"Max Iters: Default 20 (accepted range 1 to 500). Caps the maximum passes through the dataset when classes cannot be linearly separated."
 			],
 			pros: [
-				"Extremely fast and lightweight to compute.",
-				"Easy to understand as a basic weighted scoring system."
+				"Minimal memory footprint (three scalar parameters) and fast per-epoch runtime.",
+				"Demonstrates error-driven linear weight updates directly."
 			],
 			cons: [
-				"Only works when groups can be divided by a straight line.",
-				"Stops at the first line it finds rather than searching for the safest gap between groups."
+				"Restricted strictly to straight decision boundaries; non-linear pockets or L-shaped rules cannot be separated.",
+				"Terminates at the first separating line found rather than optimizing a maximum margin.",
+				"Updates may fail to stabilize when points overlap across the boundary."
+			],
+			applied: [
+				"Introductory screening models where two cumulative indicators (such as attendance and homework completion) separate On-Track from At-Risk students.",
+				"Classroom baseline for illustrating why linear models break down on gaming-the-system or orthogonal mastery patterns."
 			],
 			links: [
 				["https://en.wikipedia.org/wiki/Perceptron", "Wikipedia Perceptron"],

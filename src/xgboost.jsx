@@ -319,7 +319,7 @@ export default class XGBoost extends MLModel {
 								style={{ width: "100%", accentColor: "#475569", cursor: "pointer", marginTop: "0.2rem" }}
 							/>
 							<div style={{ fontSize: "0.72rem", color: "#64748b", marginTop: "0.15rem" }}>
-								Smaller rates take conservative steps; higher rates take aggressive leaps toward mistakes.
+								Smaller rates apply conservative updates; larger rates apply stronger per-tree corrections.
 							</div>
 						</div>
 
@@ -395,38 +395,41 @@ export default class XGBoost extends MLModel {
 	info() {
 		return this.generateInfo({
 			name: "Extreme Gradient Boosting (XGBoost)",
-			tldr: "Sequential team of short decision trees that fix each other mistakes",
-			expl1: (
-				<div>
-					Builds an ensemble where each new decision tree focuses specifically on the students misclassified by earlier trees, adding gradual corrections to the final score.
-				</div>
+			overview: (
+				<p>
+					XGBoost is a sequential gradient boosting algorithm that builds an additive ensemble of shallow regression trees, fitting each new tree to the first- and second-order derivatives (gradients and Hessians) of binary cross-entropy loss.
+				</p>
 			),
+			steps: [
+				"Start with a baseline risk estimate equal to the overall share of At-Risk points in the cohort.",
+				"Measure how far the current prediction sits from each point's true label, giving larger errors more weight.",
+				"Build one shallow tree (depth 1 or 2) focused on fixing the largest remaining errors, keeping leaf adjustments small when a box has few points.",
+				"Add a scaled step (controlled by the Learning Rate) from that new tree to the running risk score, repeat for each round, and assign At-Risk if the final score meets the threshold."
+			],
+			mathNote: (
+				<p>
+					Unlike Random Forest, where trees are trained separately at the same time, boosting adds trees one after another so each tree fixes mistakes left by earlier ones. A smaller Learning Rate takes smaller steps per tree to limit chasing single-point noise.
+				</p>
+			),
+			diagram: <XGBoostDiagram key="xgb_diag" />,
 			params: [
-				"Boosting Rounds: How many sequential trees are added. More rounds reduce errors on tricky students but can overfit if set too high.",
-				"Learning Rate: How much influence each new tree adds to the running score. Smaller steps prevent overreacting to single outliers.",
-				"Base Tree Depth: Depth 1 uses single-cut decision stumps, while Depth 2 allows the tree to capture combinations of two metrics.",
-				"Decision Threshold: Probability cutoff required to trigger an intervention flag."
-			],
-			usecase: [
-				"Educational datasets with complex non-linear trends and subtle patterns",
-				"High-stakes prediction tasks that demand the highest possible competitive accuracy",
-				"Finding subtle interactions across multiple activity columns without manual feature engineering",
-				"Demonstrating how boosting differs from bagging by showing how learning rate controls overfitting"
-			],
-			expl2: [
-				"Unlike Random Forest where trees train independently and vote at the end, XGBoost builds trees one by one in a chain.",
-				<XGBoostDiagram key="xgb_diag" />,
-				"After each round, the algorithm calculates how far each student prediction was from reality (the residual error).",
-				"The next tree is trained specifically to predict those residual errors. When added together with shrinkage, the steps combine into a finely calibrated risk surface."
+				"Boosting Rounds (Trees): Default 12 (slider 1 to 30; setter accepts 1 to 35). Controls total additive stages; very high counts relative to sample size increase overfitting risk.",
+				"Learning Rate (eta): Default 0.20 (slider 0.05 to 0.50). Scales each tree's contribution to log-odds; lower eta generally requires more boosting rounds.",
+				"Base Tree Depth: Default 2 (toggle 1 or 2). Depth 1 yields additive univariate adjustments (no interaction terms); Depth 2 allows pairwise interactions between X and Y.",
+				"Risk Threshold: Default 0.50 (slider 0.10 to 0.90). Adjusts the probability cutoff used to convert final log-odds into At-Risk predictions."
 			],
 			pros: [
-				"Consistently achieves top accuracy on complex tabular educational datasets.",
-				"Enables fine-grained control over model complexity through learning rate and tree depth.",
-				"Produces smooth, terraced probability boundaries that conform tightly to student clusters."
+				"Captures intricate non-linear and interaction boundaries with shallow base learners.",
+				"Second-order Hessian weighting and L2 leaf regularization control step size on sparse leaves.",
+				"Supports direct threshold calibration alongside additive log-odds interpretation."
 			],
 			cons: [
-				"More sensitive to noisy outlier points than Random Forest if trained for too many rounds.",
-				"Sequential training requires slightly more steps than parallel bagging."
+				"Can overfit noisy points when boosting rounds and learning rate are both high.",
+				"Must train sequentially across rounds rather than in independent parallel passes."
+			],
+			applied: [
+				"Predictive retention and course failure modeling across complex non-linear student activity patterns.",
+				"Comparing additive boosting against independent bootstrap ensembles (Random Forest) on overlapping cohorts."
 			],
 			links: [
 				["https://en.wikipedia.org/wiki/Gradient_boosting", "Wikipedia Gradient Boosting"],

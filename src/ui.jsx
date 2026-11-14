@@ -143,7 +143,7 @@ export default class UI extends React.Component {
 						onClick={() => this.props.onShareLink && this.props.onShareLink()}
 						title="Copy a shareable deep link to this exact cohort, model, and view"
 					>
-						{this.props.shareCopied ? "✓ Link Copied" : "Share Link"}
+						{this.props.shareCopied ? "Link Copied" : "Share Link"}
 					</button>
 					<button
 						type="button"
@@ -222,7 +222,7 @@ export default class UI extends React.Component {
 						id="btnCompareModels"
 						className="btn-compare-models"
 						onClick={() => this.props.openComparison && this.props.openComparison()}
-						title="Evaluate all 8 classification paradigms on this student cohort simultaneously"
+						title="Evaluate all 10 classification models on this student cohort simultaneously"
 					>
 						Compare All Models
 					</button>

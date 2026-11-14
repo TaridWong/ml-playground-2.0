@@ -353,38 +353,41 @@ export default class CBA extends MLModel {
 	info() {
 		return this.generateInfo({
 			name: "Classification Based on Associations (CBA)",
-			tldr: "Discretizing student scores into rubric tiles and mining if-then association rules",
-			expl1: (
-				<div>
-					Divides the continuous chart into discrete rubric performance bands and discovers association rules that connect specific score combinations to student outcomes.
-				</div>
+			overview: (
+				<p>
+					Classification Based on Associations (CBA) discretizes continuous input axes into uniform ordinal bins and extracts class association rules (IF X_bin AND Y_bin THEN Class) filtered by minimum support and confidence thresholds.
+				</p>
 			),
+			steps: [
+				"Divide both the X and Y axes into k equal bands (3, 4, or 5 bands), creating a k by k grid of rubric boxes.",
+				"Count how many On-Track and At-Risk points land inside each box.",
+				"Keep a box as an active IF-THEN rule only when it holds at least Min Support points and at least Min Rule Confidence percent belong to one class.",
+				"When a new point lands in a box with no qualifying rule, use the Fallback Policy to label it while estimating risk from the box's point counts."
+			],
+			mathNote: (
+				<p>
+					Raising Min Support skips boxes with too few examples to rely on. Finer grids (such as 5 by 5) create smaller boxes that follow curves better, though more boxes end up empty or below the minimum point count.
+				</p>
+			),
+			diagram: <CBADiagram key="cba_diag" />,
 			params: [
-				"Rubric Discretization: How many discrete bands are created along each axis, such as Low, Medium, and High.",
-				"Min Rule Confidence: The percentage purity required inside a rubric tile before the system generates an intervention rule.",
-				"Min Support: The minimum number of students needed in a tile to justify creating a rule, preventing flukes from warping policy.",
-				"Uncovered Tile Policy: How the school handles empty or ambiguous score tiles where no strong rule was discovered."
-			],
-			usecase: [
-				"Classroom policies based on letter grades, rubric tiers, and performance bands",
-				"Creating clear if-then rules that read directly like school board intervention guidelines",
-				"Filtering out rare fluke behaviors by setting minimum support thresholds",
-				"Auditing decisions because each student falls into a clearly defined rubric box"
-			],
-			expl2: [
-				"Educators often evaluate learners using performance bands rather than continuous algebraic equations.",
-				<CBADiagram key="cba_diag" />,
-				"CBA groups continuous metrics into distinct boxes, counts the outcomes inside each box, and mines strong if-then association rules.",
-				"Unlike recursive decision trees, CBA creates a direct patchwork of rubric tiles, making every single threshold immediately clear."
+				"Score Rubric Discretization: Default 3 x 3 (Low / Mid / High), with options for 4 x 4 and 5 x 5 grids.",
+				"Min Rule Confidence: Default 65% (slider 50% to 90%). Minimum majority proportion required inside a cell to emit a rule.",
+				"Min Support: Default 1 observation (slider 1 to 5). Minimum cell count required to prevent sparse single-point cells from generating rules.",
+				"Uncovered Tile Policy: Assume On-Track (default) or Cohort Majority Class for grid tiles without a qualifying rule."
 			],
 			pros: [
-				"Produces transparent rules that match school rubrics and letter grade boundaries.",
-				"Support and confidence thresholds naturally filter out single accidental student scores.",
-				"Easy to audit and communicate with students, parents, and administrators."
+				"Produces discrete IF-THEN rules that map directly onto ordinal grading bands and performance tiers.",
+				"Support and confidence thresholds filter out sparse, low-evidence regions.",
+				"Fast single-pass training."
 			],
 			cons: [
-				"Discretization can treat two students close to a boundary line very differently if they fall on opposite sides of a bin edge.",
-				"Struggles with curved diagonal boundaries unless the grid is made very fine."
+				"Hard bin edges assign different rules to nearly identical coordinates on opposite sides of a cut boundary.",
+				"Fixed uniform grids cannot follow diagonal linear or smooth circular boundaries without fine binning."
+			],
+			applied: [
+				"Constructing auditable policy matrices based on Low / Medium / High engagement and assessment tiers.",
+				"Presenting student screening rules to faculty and families in rubric format without regression coefficients."
 			],
 			links: [
 				["https://en.wikipedia.org/wiki/Association_rule_learning", "Wikipedia Association Rule Learning"],

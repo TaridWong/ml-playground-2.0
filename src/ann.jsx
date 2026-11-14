@@ -337,31 +337,39 @@ export default class Ann extends MLModel {
 	info() {
 		return this.generateInfo({
 			name: "Artificial Neural Network (ANN)",
-			tldr: "Connecting layers of artificial neurons to learn complex shapes",
-			expl1: "Connects multiple processing units in layers, passing signals forward and adjusting connection strengths through practice.",
+			overview: (
+				<p>
+					A feedforward Multi-Layer Perceptron (MLP) composes affine linear transformations with element-wise nonlinear tanh activations across hidden layers to approximate arbitrary smooth decision boundaries.
+				</p>
+			),
+			steps: [
+				"Rescale X and Y inputs and start with random connection weights across the network layers (default 2 inputs, 4 hidden units, 3 hidden units, 1 output).",
+				"Send each point forward layer by layer: each unit adds up weighted signals from the layer before it and passes that total through an S-shaped curve.",
+				"Compare the final output against the point's true label (+1 or -1), then trace the error backward to see how much each weight contributed.",
+				"Adjust the weights in small steps after each point for up to the Epochs limit (stopping early if average error drops below 0.02), and convert the final output into a 0% to 100% risk score."
+			],
+			mathNote: (
+				<p>
+					Stacking multiple layers of weighted S-shaped units lets the network bend straight inputs into curves and enclosed shapes. Because training starts from random weights, two runs on the same points can settle on different boundaries.
+				</p>
+			),
+			diagram: <ANNDiagram key="ann_diag" />,
 			params: [
-				"Learning Rate: The step size used to adjust connection weights when a mistake occurs. Larger steps learn quickly but may overshoot, while smaller steps take more practice cycles.",
-				"Epochs: How many complete passes the network takes through the student training data.",
-				"Hidden Layers and Neurons: The structure of internal processing nodes. Adding layers and neurons allows the network to learn more intricate shapes."
-			],
-			usecase: [
-				"Complex non-linear patterns like concentric circles, interlocking curves, and multiple separate groups",
-				"Large educational systems collecting rich, continuous data like moment by moment tutor interactions",
-				"Problems where simple straight lines and rule boxes are too rigid to capture learner behaviors"
-			],
-			expl2: [
-				"Stacks layers of artificial neurons where each unit combines inputs and passes the result through a smooth mathematical curve.",
-				<ANNDiagram key="ann_diag" />,
-				"When the network makes an incorrect prediction, error signals travel backward through the layers to nudge each connection weight in the right direction.",
-				"Because it transforms data through multiple layers, it can bend around complex shapes. In education, it acts as a black box because teachers cannot easily trace a prediction back to a single human rule."
+				"Learning Rate (alpha): Default 0.05. Gradient step size per training sample update; overly high values cause oscillating boundaries, while very low values require more epochs.",
+				"Epochs: Default 200. Maximum full shuffled passes over the training set before stopping (unless Mean Absolute Error falls below 0.02 earlier).",
+				"Architecture (Hidden Layers & Neurons): Default 2 -> 4 -> 3 -> 1 (up to 8 total layers, 10 neurons per hidden layer). More units increase representational capacity and overfitting risk on small cohorts."
 			],
 			pros: [
-				"Can bend and reshape boundaries to fit almost any complicated pattern.",
-				"Capable of learning subtle combinations of features without manual rule creation."
+				"Learns smooth non-linear, nested, and multi-modal boundaries without manual quadratic feature engineering.",
+				"Adjustable layer width and depth illustrate capacity versus sample-size trade-offs."
 			],
 			cons: [
-				"Functions as a black box where individual student decisions cannot easily be explained to families.",
-				"Needs more practice iterations and careful adjustment to avoid learning noise."
+				"Weight matrices distributed across hidden layers are harder to inspect than decision tree splits or linear weights.",
+				"Sensitive to weight initialization, step size, and small training counts."
+			],
+			applied: [
+				"High-volume LMS interaction modeling where learners exhibit non-linear combinations of latency, hint usage, and persistence.",
+				"Benchmarking black-box flexibility against transparent rule models (Decision Tree, CBA) when selecting institutional early-warning tools."
 			],
 			links: [
 				["https://en.wikipedia.org/wiki/Artificial_neural_network", "Wikipedia Artificial Neural Network"],

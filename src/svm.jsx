@@ -224,37 +224,40 @@ export default class SupportVectorMachine extends MLModel {
 	info() {
 		return this.generateInfo({
 			name: "Support Vector Machine (SVM)",
-			tldr: "Building the widest possible road between two student groups",
-			expl1: (
-				<div>
-					Finds the dividing line that leaves the largest possible safety gap between On-Track and At-Risk students.
-				</div>
+			overview: (
+				<p>
+					A Support Vector Machine constructs the decision hyperplane (in input or kernel-mapped feature space) that maximizes the geometric separation margin between classes while penalizing margin violations.
+				</p>
 			),
+			steps: [
+				"Rescale the X and Y coordinates and assign the two classes to opposite sides (+1 and -1).",
+				"Run up to 10 optimization passes to position a dividing boundary that leaves as wide an empty margin as possible between the two groups while limiting points inside the margin.",
+				"Keep only the borderline points resting on or inside the margin edge (the support vectors), since only they control where the boundary sits.",
+				"Score each new point by comparing it against those kept boundary points, assigning On-Track on one side and At-Risk on the other."
+			],
+			mathNote: (
+				<p>
+					With a Linear kernel, the boundary is a straight line. Switching to the Polynomial or RBF kernel measures point similarity in a way that bends the border into curves or closed loops around isolated groups.
+				</p>
+			),
+			diagram: <SVMDiagram key="svm_diag" />,
 			params: [
-				"Regularization C: How strictly the model respects every single dot. High C tries to fit every student without mistakes, while low C allows a wider road that tolerates exceptions.",
-				"Kernel Choice: Linear creates a straight fence. Polynomial allows gentle curves. RBF draws flexible circular regions around student clusters.",
-				"RBF Sigma: Controls how far each student dot casts its influence when using the RBF kernel. Smaller values make tight bubbles, while larger values make broad smooth regions."
-			],
-			usecase: [
-				"Finding clean, wide boundaries that stay reliable when new students join the class",
-				"Clear separation problems where you want a comfortable safety margin between groups",
-				"Separating complex curved or circular clusters when using the RBF kernel",
-				"Small to medium datasets where accuracy and general stability matter most"
-			],
-			expl2: [
-				"Instead of settling for any dividing line, this model mathematically searches for the widest street separating the two groups.",
-				<SVMDiagram key="svm_diag" />,
-				"The students standing right on the edge of the street are the support vectors. Students located further away have zero effect on where the road is drawn.",
-				"When straight lines cannot separate groups, kernels bend the coordinate space so that curved patterns can be divided cleanly."
+				"Kernel Trick: Linear (default) learns a straight hyperplane; Polynomial (d = 2) models curved conic boundaries; RBF (Gaussian) creates closed local boundaries around clusters.",
+				"Regularization (C): Default 10 (must be > 0). Large C heavily penalizes training errors, tightening the fit and shrinking the margin; small C prioritizes a wider margin that tolerates overlapping points.",
+				"RBF Kernel Sigma (sigma): Default 0.5 (slider 0.10 to 1.50). Controls kernel bandwidth under RBF; smaller sigma produces tight local islands, while larger sigma produces broader smooth regions."
 			],
 			pros: [
-				"Creates stable boundaries because students far from the street edge do not shift the line.",
-				"The regularization parameter lets you balance between fitting dots exactly and tolerating noisy data.",
-				"The kernel function allows it to fit circular or curved student clusters."
+				"Boundary placement depends only on edge support vectors, leaving distant interior points without influence.",
+				"Soft-margin regularization C trades off margin width against training error tolerance.",
+				"RBF and polynomial kernels capture non-linear and enclosed cluster topologies."
 			],
 			cons: [
-				"Takes longer to compute as the number of students increases.",
-				"Curved kernel boundaries are harder to explain to parents or school leaders than simple flowchart rules."
+				"Kernel evaluation cost grows with the number of support vectors and training set size.",
+				"Hyperplane coefficients are less straightforward to translate into rubric rules when non-linear kernels are active."
+			],
+			applied: [
+				"Identifying borderline students (support vectors) who sit nearest the risk boundary and most directly shape classifier thresholds.",
+				"Separating isolated gaming-the-system clusters from surrounding deliberate learners using the RBF kernel."
 			],
 			links: [
 				["https://en.wikipedia.org/wiki/Support_vector_machine", "Wikipedia Support Vector Machine"],

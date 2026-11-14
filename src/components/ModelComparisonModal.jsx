@@ -17,7 +17,7 @@ export default function ModelComparisonModal({ isOpen, onClose, store, onSelectM
 	const xTr = store ? store.xTr || [] : [];
 	const yTr = store ? store.yTr || [] : [];
 
-	// Run benchmark across all 8 models simultaneously in memory
+	// Evaluate all 10 models simultaneously in memory
 	const benchmarkResults = useMemo(() => {
 		if (xTr.length < 2 || yTr.length < 2) return null;
 
@@ -29,14 +29,14 @@ export default function ModelComparisonModal({ isOpen, onClose, store, onSelectM
 				id: "tree",
 				name: "Decision Tree",
 				paradigm: "Rule Cuts",
-				pedagogicalStrength: "Excels at axis-aligned orthogonal cuts (L-shaped rules)",
+				pedagogicalStrength: "Partitions space with axis-aligned threshold cuts (L-shaped rules)",
 				create: () => new Tree()
 			},
 			{
 				id: "randomforest",
 				name: "Random Forest",
 				paradigm: "Bagging Ensemble",
-				pedagogicalStrength: "Ensemble voting smooths boundaries and resists noise",
+				pedagogicalStrength: "Ensemble voting smooths boundaries and reduces variance",
 				create: () => {
 					const rf = new RandomForest();
 					rf.numTrees = 15;
@@ -47,56 +47,56 @@ export default function ModelComparisonModal({ isOpen, onClose, store, onSelectM
 				id: "logistic",
 				name: "Logistic Regression",
 				paradigm: "Linear Probabilistic",
-				pedagogicalStrength: "Smooth continuous probability with tunable alert threshold",
+				pedagogicalStrength: "Continuous probability estimates with an adjustable alert threshold",
 				create: () => new Logistic()
 			},
 			{
 				id: "knn",
 				name: "K-Nearest Neighbors",
 				paradigm: "Instance-Based",
-				pedagogicalStrength: "Captures isolated non-linear pockets; sensitive to noise",
+				pedagogicalStrength: "Captures local non-linear clusters; sensitive to noisy points",
 				create: () => new KNN()
 			},
 			{
 				id: "svm",
 				name: "Support Vector Machine",
 				paradigm: "Maximum Margin",
-				pedagogicalStrength: "Finds the widest separation margin between student clusters",
+				pedagogicalStrength: "Finds the maximum-margin boundary between student groups",
 				create: () => new SVM()
 			},
 			{
 				id: "naivebayes",
 				name: "Gaussian Naive Bayes",
 				paradigm: "Bayesian Prior",
-				pedagogicalStrength: "Fast probabilistic benchmark using prior school base rates",
+				pedagogicalStrength: "Fast generative baseline incorporating class prior base rates",
 				create: () => new NaiveBayes()
 			},
 			{
 				id: "perceptron",
 				name: "Perceptron",
 				paradigm: "Linear Hyperplane",
-				pedagogicalStrength: "Classical single straight fence; fast baseline",
+				pedagogicalStrength: "Single linear threshold boundary; fast baseline",
 				create: () => new Perceptron()
 			},
 			{
 				id: "xgboost",
 				name: "XGBoost",
 				paradigm: "Boosting Ensemble",
-				pedagogicalStrength: "Sequential residual correction fits intricate stepped boundaries",
+				pedagogicalStrength: "Sequential residual tree updates fit stepped decision boundaries",
 				create: () => new XGBoost()
 			},
 			{
 				id: "cba",
 				name: "Association Rules (CBA)",
 				paradigm: "Rule Discretization",
-				pedagogicalStrength: "Mines clear if-then rubric tiles with confidence filtering",
+				pedagogicalStrength: "Extracts discrete IF-THEN rules over binned intervals with confidence filtering",
 				create: () => new CBA()
 			},
 			{
 				id: "ann",
 				name: "Neural Network (ANN)",
 				paradigm: "Multi-Layer Perceptron",
-				pedagogicalStrength: "Flexible continuous curves; requires more epochs to converge",
+				pedagogicalStrength: "Learns smooth non-linear boundaries; sensitive to epochs and learning rate",
 				create: () => {
 					const ann = new Ann();
 					ann.maxEpochs = 40;
@@ -152,12 +152,12 @@ export default function ModelComparisonModal({ isOpen, onClose, store, onSelectM
 			<div className="modal-content model-comparison-modal" onClick={(e) => e.stopPropagation()}>
 				<div className="modal-header">
 					<div>
-						<h2 className="modal-title">Model Comparison & Benchmark</h2>
+						<h2 className="modal-title">Model Comparison</h2>
 						<p className="modal-subtitle">
-							Evaluating all 10 machine learning paradigms on your current cohort of {xTr.length} students simultaneously.
+							Evaluating all 10 classification models on the current cohort of {xTr.length} students.
 						</p>
 					</div>
-					<button className="modal-close-btn" onClick={onClose} title="Close benchmark">
+					<button className="modal-close-btn" onClick={onClose} title="Close comparison">
 						✕
 					</button>
 				</div>
@@ -165,24 +165,24 @@ export default function ModelComparisonModal({ isOpen, onClose, store, onSelectM
 				<div className="modal-body">
 					{!benchmarkResults ? (
 						<div className="comparison-empty">
-							<div className="comparison-empty-title">Not Enough Student Points Plotted</div>
+							<div className="comparison-empty-title">Insufficient Training Points</div>
 							<p className="comparison-empty-hint">
-								Please ensure you have plotted at least <strong>one On-Track student (Teal)</strong> and{" "}
-								<strong>one At-Risk student (Rose)</strong> on the sandbox canvas to benchmark the models.
+								Plot at least <strong>one On-Track student (Teal)</strong> and{" "}
+								<strong>one At-Risk student (Rose)</strong> on the canvas to compare models.
 							</p>
 						</div>
 					) : (
 						<>
-							{/* Pedagogical Winner Banner */}
+							{/* Highest-accuracy model summary */}
 							{topModel && (
 								<div className="top-model-banner">
 									<div className="top-model-header">
-										<span className="trophy-badge">Top Performing Model</span>
+										<span className="trophy-badge">Highest Accuracy</span>
 										<strong className="top-model-name">{topModel.name} ({topModel.paradigm})</strong>
 										<span className="top-model-acc">Accuracy: {(topModel.accuracy * 100).toFixed(1)}% | F1: {topModel.f1.toFixed(3)}</span>
 									</div>
 									<p className="top-model-desc">
-										<strong>Why this model succeeded:</strong> {topModel.pedagogicalStrength}. In Learning Analytics, the best model depends entirely on the geometric pattern of student behavior (the No Free Lunch theorem).
+										<strong>Summary:</strong> {topModel.pedagogicalStrength}. Model accuracy depends on how closely each decision boundary matches the distribution of the student data.
 									</p>
 								</div>
 							)}

@@ -89,7 +89,7 @@ export const EDUCATIONAL_PRESETS = [
 		positiveLabel: "Needs Remediation (Struggling)",
 		negativeLabel: "Concept Mastered",
 		pedagogicalLesson:
-			"L-Shaped Rule Cut: A student masters the concept if Pre-Test is high OR Practice is high. Only students low in BOTH need remediation. Decision Trees excel here with 2 orthogonal cuts; single diagonal linear models struggle to fit the corner!",
+			"L-Shaped Rule Cut: A student masters the concept if Pre-Test is high OR Practice is high. Only students low in both need remediation. Decision Trees fit this region with two orthogonal cuts, whereas single linear models struggle with the corner.",
 		description:
 			"Determining which middle school students need targeted small-group remediation. High pre-test students master immediately; average students master through practice.",
 		points: [
@@ -155,7 +155,7 @@ export const EDUCATIONAL_PRESETS = [
 		positiveLabel: "Gaming the System (Exploiting Hints)",
 		negativeLabel: "Genuine Learning (Deliberate Practice)",
 		pedagogicalLesson:
-			"Non-Linear Island (Bullseye): Gamers form an isolated pocket in the center. A single straight line (Perceptron) FAILS completely (~50% accuracy). Non-linear models like KNN, RBF SVM, or Neural Networks carve a bubble around the gamers!",
+			"Non-Linear Island (Bullseye): Gamers form an isolated pocket in the center. A single straight line (Perceptron) misclassifies roughly half the cohort (~50% accuracy), while non-linear models such as KNN, RBF SVM, or Neural Networks enclose the central cluster.",
 		description:
 			"A classic EDM pattern studied by Baker and colleagues: A distinct cluster of students game the software by rapid-guessing, surrounded on all sides by normal learners.",
 		points: [

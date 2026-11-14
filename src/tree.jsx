@@ -363,30 +363,39 @@ export default class Tree extends MLModel {
 	info() {
 		return this.generateInfo({
 			name: "Decision Tree",
-			tldr: "Step by step rules that read like a flowchart",
-			expl1: "Sorts students into categories by asking a sequence of simple yes or no threshold questions.",
+			overview: (
+				<p>
+					A Decision Tree recursively partitions the two-dimensional feature space using axis-aligned threshold cuts (feature &le; split value), forming a hierarchical set of rectangular regions.
+				</p>
+			),
+			steps: [
+				"Sort the points along X and along Y to test every midpoint cut between neighboring values.",
+				"Pick the single horizontal or vertical cut that best separates On-Track and At-Risk points according to Gini Impurity or Entropy.",
+				"Divide the points into a left group (at or below the cut) and a right group (above the cut), and keep splitting each group until hitting Max Tree Depth, a pure group, or fewer than 2 points.",
+				"Label each final box with its majority group and use the fraction of At-Risk points in that box as the risk score."
+			],
+			mathNote: (
+				<p>
+					Gini Impurity and Entropy both measure how mixed a group is: 0 means every point in the box belongs to one class, while higher values mean the box holds an even mix of both classes. Because cuts only depend on value order, changing the numeric scale of X or Y does not alter the splits.
+				</p>
+			),
+			diagram: <TreeDiagram key="tree_diag" />,
 			params: [
-				"Max Depth: Limits the number of sequential questions. Depth 1 makes a single cut, while higher depths create more detailed rules.",
-				"Splitting Criterion: How the tree measures purity when choosing where to cut. Gini Impurity and Shannon Entropy both seek to make each student subgroup as uniform as possible."
-			],
-			usecase: [
-				"Policies that must be easily audited and explained to teachers, parents, and school boards",
-				"Rule-based criteria where passing can happen through multiple independent paths, like an L-shaped rule",
-				"Scenarios where students want to follow the exact logic leading to their prediction",
-				"Data where features have very different units, such as percentages, letter grades, and login counts"
-			],
-			expl2: [
-				"Works like a flowchart. Starting at the top question, each student follows the left or right branch based on their score until reaching a final prediction leaf.",
-				<TreeDiagram key="tree_diag" />,
-				"Every dividing line is strictly horizontal or vertical because each step looks at one metric at a time. This makes it ideal for educational rubrics where a student can pass through high exam scores or high project completion."
+				"Max Tree Depth: Default 4 (slider 1 to 8; setter accepts 1 to 10). Depth 1 trains a single-split decision stump; deeper trees isolate smaller pockets at higher risk of overfitting noise.",
+				"Splitting Criterion: Gini Impurity (CART default) or Shannon Entropy (C4.5); both penalize mixed nodes and usually produce similar partitions."
 			],
 			pros: [
-				"Completely transparent so educators can read and verify every rule.",
-				"Does not require scores on different scales to be normalized."
+				"Each root-to-leaf path translates directly into an explicit sequence of threshold rules shown in the tree viewer.",
+				"Scale-invariant across features with different units.",
+				"Models non-linear L-shaped or rectangular regions without manual feature transformations."
 			],
 			cons: [
-				"Can be unstable because shifting a few student scores can change the order of splits.",
-				"Approximates smooth curved boundaries with rigid stair-step boxes."
+				"High variance: small shifts in training coordinates can alter the root split and rearrange downstream branches.",
+				"Axis-aligned cuts approximate diagonal boundaries with coarse stair-step segments."
+			],
+			applied: [
+				"Institutional advising policies and early-warning rubrics where stakeholders require explicit, auditable cutoff thresholds.",
+				"Formative assessment classification when mastery occurs via alternative pathways (high diagnostic score OR high practice volume)."
 			],
 			links: [
 				["https://en.wikipedia.org/wiki/Decision_tree", "Wikipedia Decision Tree"],

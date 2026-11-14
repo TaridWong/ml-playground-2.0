@@ -72,34 +72,61 @@ export default class MLModel {
 		return -1;
 	}
 
-	generateInfo({ name, tldr, expl1, params, usecase, expl2, pros, cons, links }) {
+	generateInfo({
+		name,
+		overview,
+		steps = [],
+		mathNote = null,
+		diagram = null,
+		params = [],
+		pros = [],
+		cons = [],
+		applied = [],
+		links = []
+	}) {
 		return (
-			<div>
+			<div className="info-prose">
 				<h1>{name}</h1>
-				<h2>Overview: {tldr}</h2>
-				<div style={{ margin: "0.5rem 0 1rem 0", lineHeight: 1.55 }}>{expl1}</div>
-				<h2>Parameters</h2>
-				{this.liGen(params)}
-				<h2>What this model excels at:</h2>
-				{this.liGen(usecase)}
-				<h2>How it works in plain words:</h2>
-				<div className="para">
-					{expl2.map((i, j) => (
-						<div className="col-xs-12" key={j} style={{ marginBottom: "0.6rem", lineHeight: 1.6 }}>
-							{i}
-						</div>
-					))}
+				{overview && <div className="info-lead">{overview}</div>}
+
+				<div className="info-block">
+					<h2>Algorithm Mechanics</h2>
+					{steps.length > 0 && (
+						<ol className="info-steps">
+							{steps.map((step, j) => (
+								<li key={j}>{step}</li>
+							))}
+						</ol>
+					)}
+					{mathNote && <div className="info-math-note">{mathNote}</div>}
+					{diagram && <div className="info-diagram">{diagram}</div>}
 				</div>
-				<div className="good col-xs-12 col-md-6">
-					<h2>The Good</h2>
-					{this.liGen(pros)}
+
+				<div className="info-block">
+					<h2>Parameters</h2>
+					{this.liGen(params)}
 				</div>
-				<div className="bad col-xs-12 col-md-6">
-					<h2>The Bad</h2>
-					{this.liGen(cons)}
+
+				<div className="info-block info-columns">
+					<div className="info-col">
+						<h2>Strengths</h2>
+						{this.liGen(pros)}
+					</div>
+					<div className="info-col">
+						<h2>Limitations</h2>
+						{this.liGen(cons)}
+					</div>
 				</div>
-				<div className="col-xs-12">
-					<h2>Learn more:</h2>
+
+				{applied.length > 0 && (
+					<div className="info-block">
+						<h2>Applied Educational Data Mining Context</h2>
+						{this.liGen(applied)}
+					</div>
+				)}
+
+				<div className="info-block">
+					<h2>References</h2>
 					{this.linkGen(links)}
 				</div>
 			</div>

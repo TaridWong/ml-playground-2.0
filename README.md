@@ -3,81 +3,79 @@
 </p>
 
 # Machine Learning Playground 2.0
-### An Interactive Visual Sandbox for Learning Analytics and Educational Data Mining
+### Interactive Classification Playground for Learning Analytics and Educational Data Mining
 
-🌐 **Live Web Application:** [https://taridwong.github.io/ml-playground-2.0/](https://taridwong.github.io/ml-playground-2.0/)
+**Live Web Application:** [https://taridwong.github.io/ml-playground-2.0/](https://taridwong.github.io/ml-playground-2.0/)
 
-Developed by **Jo Chuang**; Extended and modernized by **Tarid Wongvorachan**.
+Developed by **Jo Chuang**; extended and updated by **Tarid Wongvorachan**.
 
-Connect with the Maintainer: For inquiries, updates, or collaboration regarding ML Playground 2.0, connect with [Tarid Wongvorachan](https://sites.google.com/view/tarid2/).
+For inquiries, updates, or collaboration regarding ML Playground 2.0, contact [Tarid Wongvorachan](https://sites.google.com/view/tarid2/).
 
 ---
 
 ## Overview
 
-**Machine Learning Playground 2.0** is an interactive, browser-based sandbox designed for students, educators, and researchers in **Learning Analytics (LA)** and **Educational Data Mining (EDM)**.
+**Machine Learning Playground 2.0** is a browser-based interactive tool for students, educators, and researchers in **Learning Analytics (LA)** and **Educational Data Mining (EDM)**.
 
-Originally created as an intuitive visualization of basic machine learning classifiers, Version 2.0 has been redesigned and modernized to aid educators in their learning of machine learning algorithms.
+Originally created as a visualization tool for basic classifiers, Version 2.0 adds educational datasets, model inspection panels, counterfactual analysis, and evaluation metrics for classroom teaching and self-study.
 
-Students and educators can plot student data points, observe how 10 machine learning algorithms make decision boundaries, inspect real-time risk probabilities, and evaluate the policy impact of false alarms versus missed students.
-
----
-
-## What Is New in Version 2.0
-
-### 1. Expanded to 10 Machine Learning Paradigms
-* **K-Nearest Neighbors (KNN):** Interactive neighborhood consensus with live slider updates and uniform versus inverse-distance voting.
-* **Logistic Regression:** Continuous probabilistic sigmoidal surfaces with an adjustable intervention threshold and degree 1 (linear) or degree 2 (polynomial) feature expansion.
-* **Gaussian Naive Bayes:** Probabilistic cloud modeling using Bayes theorem with empirical school base rates and variance smoothing.
-* **Perceptron:** The classic single straight-line separating hyperplane trained through incremental mistake correction.
-* **Support Vector Machine (SVM):** Maximum-margin road optimization with support vector identification and Linear, Polynomial, and Radial Basis Function (RBF) kernels.
-* **Decision Tree:** Step-by-step orthogonal rule cuts using Gini Impurity (CART) or Shannon Entropy (C4.5) splitting criteria.
-* **Random Forest:** Ensemble bagging committee that aggregates multiple decision trees to produce smooth consensus probability gradients that resist classroom noise.
-* **Extreme Gradient Boosting (XGBoost):** Sequential boosting ensemble that trains small decision trees to predict residuals, demonstrating how shrinkage and boosting rounds control overfitting.
-* **Association Rules (CBA):** Classification Based on Associations that discretizes continuous scores into rubric performance bands (e.g. Low, Medium, High) and mines transparent if-then decision rules.
-* **Artificial Neural Network (ANN):** Multi-layer perceptron with an interactive visual architecture builder (add or remove hidden layers and neurons) and real-time backpropagation.
-
-### 2. Learning Analytics & Evaluation Dashboard
-* **Real-Time Student Inspector:** Hover anywhere across the canvas to inspect continuous risk probabilities and identify misclassified students.
-* **Standard LA Metrics:** Computes Sensitivity (Recall), Specificity (True Negative Rate), Precision (Positive Predictive Value), F1 Score, and Accuracy.
-* **2x2 Confusion Matrix:** Displays True Positives (caught for intervention), False Negatives (missed students), False Positives (false alarms), and True Negatives (thriving students).
-* **Empirical ROC Curve & AUC:** Computes the Receiver Operating Characteristic curve across decision thresholds and grades model discrimination.
-
-### 3. Educational Policy & Cost-Benefit Planner
-* Connects classification errors directly to school resources:
-  * **False Alarm Burden:** Calculates wasted teacher outreach time or counseling budget.
-  * **Missed Student Deficit:** Quantifies compounding remediation hours or summer school costs.
-* Allows administrators to toggle between teacher time (hours) and remediation funding ($).
-
-### 4. Model Comparison Benchmark
-* Evaluates all 10 algorithms simultaneously on your active student cohort.
-* Ranks models by F1 score and Accuracy to demonstrate that the best algorithm depends on the geometric shape of student behaviors.
-
-### 5. Curated Educational Data Patterns
-* **Higher Ed Early Warning Dropout:** Linear separable student cohort based on engagement, class attendance, and assignment completion.
-* **K-12 Formative Assessment Mastery:** L-shaped rule-based relationship where passing can occur through high diagnostic scores or high practice volume.
-* **EDM Classic (Gaming the System):** Non-linear enclosed island based on rapid guessing and hint abuse.
-
-### 6. Modernized Log
-* Fully upgraded from legacy React 15 and Webpack 2 to modern **React 18** and **Vite 6**.
-* Professional educational theme featuring navy slate, teal (On-Track), and rose (At-Risk).
-* 100% client-side execution in the browser with zero server setup required.
+Users can plot data points on a 2D canvas, inspect how 10 classification algorithms form decision boundaries, examine point-level risk estimates, and compare the resource trade-offs of false alarms versus missed At-Risk students.
 
 ---
 
-## Live Demo & Public Access
+## Features in Version 2.0
 
-You can use the application directly in any modern desktop or tablet web browser:
+### 1. Ten Classification Algorithms
+* **K-Nearest Neighbors (KNN):** Instance-based classification using uniform or inverse-distance neighbor voting.
+* **Logistic Regression:** Linear and degree-2 polynomial log-odds models with an adjustable decision threshold and L2 regularization.
+* **Gaussian Naive Bayes:** Generative classifier using class prior base rates, per-class feature means and variances, and variance smoothing.
+* **Perceptron:** Linear threshold classifier trained through sequential updates on misclassified points.
+* **Support Vector Machine (SVM):** Maximum-margin classifier with support vector inspection and Linear, Polynomial, and Radial Basis Function (RBF) kernels.
+* **Decision Tree:** Axis-aligned recursive partitioning using Gini Impurity (CART) or Shannon Entropy (C4.5), paired with a tree structure viewer.
+* **Random Forest:** Bootstrap aggregating ensemble that averages predictions across multiple decision trees.
+* **Extreme Gradient Boosting (XGBoost):** Sequential additive tree ensemble fitted to binary cross-entropy residuals with learning rate shrinkage.
+* **Association Rules (CBA):** Classification Based on Associations that bins continuous axes into ordinal intervals and extracts IF-THEN rules filtered by support and confidence.
+* **Artificial Neural Network (ANN):** Multi-layer perceptron with configurable hidden layers, neuron counts, learning rate, and epochs.
 
-👉 **[Launch Machine Learning Playground 2.0](https://taridwong.github.io/ml-playground-2.0/)**
+### 2. Model Inspection & Counterfactual Analysis
+* **Cursor Probe:** Hover over the canvas to inspect predicted class, risk probability, and actual versus predicted match status.
+* **Model Parameter Inspector:** Displays learned feature weights, support vectors, Gaussian class distributions, tree split proportions, or discovered CBA rules depending on the active algorithm.
+* **Counterfactual Boundary Analysis:** Computes minimum feature adjustments needed to move a selected student across the decision boundary, with interactive sliders to test hypothetical score changes.
+* **High-Resolution Plot Export:** Exports a 2x resolution PNG combining the boundary heatmap or solid plot, data points, axis labels, and dataset metadata.
 
-No account, download, or installation is needed.
+### 3. Learning Analytics Metrics & Policy Planner
+* **Classification Metrics:** Computes Accuracy, Sensitivity (Recall), Specificity, Precision, and F1 Score.
+* **2x2 Confusion Matrix:** Displays True Positives (caught for support), False Negatives (missed At-Risk), False Positives (false alarms), and True Negatives (correctly unflagged).
+* **Empirical ROC Curve & AUC:** Plots the Receiver Operating Characteristic curve across decision thresholds and reports Area Under the Curve (AUC).
+* **Educational Resource & Policy Impact Planner:** Maps false positives and false negatives to teacher outreach hours or remediation funding ($).
+
+### 4. Model Comparison
+* Evaluates all 10 classifiers on the active cohort in memory.
+* Ranks models by F1 score and Accuracy so users can compare how different decision boundaries behave on the same data.
+
+### 5. Educational Data Presets
+* **Higher Ed Retention:** Linearly separable cohort based on LMS engagement, attendance, and assignment completion.
+* **K-12 Formative Mastery:** L-shaped rule pattern where students pass via high diagnostic scores or high practice volume.
+* **Gaming the System (EDM):** Enclosed non-linear cluster representing rapid guessing and hint abuse surrounded by typical learners.
+
+### 6. Technical Stack
+* Upgraded from legacy React 15 and Webpack 2 to **React 18** and **Vite 6**.
+* Color palette built around slate, teal (`On-Track`), and rose (`At-Risk`).
+* Runs client-side in the browser with no backend server required.
+
+---
+
+## Live Access
+
+The application runs in desktop and tablet browsers:
+
+**[Launch Machine Learning Playground 2.0](https://taridwong.github.io/ml-playground-2.0/)**
+
+No account, download, or installation is required.
 
 ---
 
 ## Running Locally
-
-To run the project on your own machine:
 
 ### Prerequisites
 * [Node.js](https://nodejs.org/) (version 18 or higher recommended)
@@ -106,19 +104,19 @@ Open your browser and navigate to `http://localhost:3000/`.
 ```bash
 npm run build
 ```
-The compiled, optimized files will be output to the `dist/` directory.
+Compiled output is written to the `dist/` directory.
 
 ---
 
 ## Deployment to GitHub Pages
 
-This repository includes an automated GitHub Actions deployment workflow at `.github/workflows/deploy.yml`.
+This repository includes a GitHub Actions deployment workflow at `.github/workflows/deploy.yml`.
 
 To deploy your own fork:
-1. Push your repository to GitHub.
-2. In your repository on GitHub, navigate to **Settings** > **Pages**.
+1. Push the repository to GitHub.
+2. In your GitHub repository, open **Settings** > **Pages**.
 3. Under **Build and deployment** > **Source**, select **GitHub Actions**.
-4. GitHub will automatically build and publish your web app.
+4. GitHub Actions builds and publishes the web application on push.
 
 ---
 
@@ -146,5 +144,5 @@ If you use Machine Learning Playground 2.0 in your research, teaching, curriculu
 
 ## License
 
-This project is licensed under the [MIT License](https://opensource.org/license/mit) - see the [LICENSE](LICENSE) file for full details.
+This project is licensed under the [MIT License](https://opensource.org/license/mit); see the [LICENSE](LICENSE) file for details.
 Original work copyright (c) 2017 Jo Chuang. Version 2.0 enhancements and extensions copyright (c) 2026 Tarid Wongvorachan.

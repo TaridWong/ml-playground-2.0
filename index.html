@@ -5,22 +5,54 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Machine Learning Playground 2.0 | Learning Analytics & Educational Data Mining</title>
 	<meta name="author" content="Tarid Wongvorachan">
+	<meta name="robots" content="index, follow">
+	<meta name="theme-color" content="#0d9488">
 	<meta name="description" content="An interactive Machine Learning Playground designed for Learning Analytics and Educational Data Mining (EDM). Compare 10 classification algorithms, inspect decision boundaries, test counterfactual interventions, and evaluate classification metrics.">
 	<meta name="keywords" content="machine learning, learning analytics, educational data mining, EDM, interpretable machine learning, counterfactual explanations, decision trees, random forest, xgboost, support vector machines, SVM, KNN, naive bayes, logistic regression, edtech">
 	<link rel="canonical" href="https://taridwong.github.io/ml-playground-2.0/">
 
 	<!-- Open Graph / Social Sharing -->
 	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="Machine Learning Playground 2.0">
+	<meta property="og:locale" content="en_US">
 	<meta property="og:url" content="https://taridwong.github.io/ml-playground-2.0/">
 	<meta property="og:title" content="Machine Learning Playground 2.0 | Learning Analytics & EDM">
 	<meta property="og:description" content="Explore 10 classification models, model inspection panels, counterfactual analysis, and evaluation metrics in an interactive learning analytics playground.">
 	<meta property="og:image" content="https://taridwong.github.io/ml-playground-2.0/img/logo.png">
+	<meta property="og:image:alt" content="Machine Learning Playground 2.0 logo">
 
 	<!-- Twitter Card -->
 	<meta name="twitter:card" content="summary_large_image">
 	<meta name="twitter:title" content="Machine Learning Playground 2.0 | Learning Analytics & EDM">
 	<meta name="twitter:description" content="Interactive Machine Learning Playground for Learning Analytics and Educational Data Mining with 10 algorithms, model inspection panels, and counterfactual analysis.">
 	<meta name="twitter:image" content="https://taridwong.github.io/ml-playground-2.0/img/logo.png">
+	<meta name="twitter:image:alt" content="Machine Learning Playground 2.0 logo">
+
+	<!-- Structured Data -->
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "SoftwareApplication",
+		"name": "Machine Learning Playground 2.0",
+		"url": "https://taridwong.github.io/ml-playground-2.0/",
+		"applicationCategory": "EducationalApplication",
+		"operatingSystem": "Web Browser",
+		"isAccessibleForFree": true,
+		"license": "https://opensource.org/licenses/MIT",
+		"description": "Interactive browser-based classification playground for Learning Analytics and Educational Data Mining (EDM), featuring 10 algorithms, model inspection panels, counterfactual boundary analysis, ROC/AUC metrics, and resource impact planning.",
+		"author": {
+			"@type": "Person",
+			"name": "Tarid Wongvorachan",
+			"url": "https://sites.google.com/view/tarid2/"
+		},
+		"contributor": {
+			"@type": "Person",
+			"name": "Jo Chuang",
+			"url": "https://github.com/josephch405"
+		},
+		"codeRepository": "https://github.com/TaridWong/ml-playground-2.0"
+	}
+	</script>
 
 	<link rel="icon" type="image/png" sizes="64x64" href="./img/favicon.png?v=2">
 	<link rel="shortcut icon" type="image/png" href="./img/favicon.png?v=2">
@@ -31,6 +63,19 @@
 </head>
 <body>
 	<div id="root"></div>
+	<noscript>
+		<main style="max-width: 760px; margin: 2rem auto; padding: 0 1rem; font-family: sans-serif; line-height: 1.6; color: #0f172a;">
+			<h1>Machine Learning Playground 2.0</h1>
+			<p>
+				An interactive browser-based classification tool for Learning Analytics and Educational Data Mining (EDM).
+				Compare 10 algorithms (K-Nearest Neighbors, Logistic Regression, Gaussian Naive Bayes, Perceptron, Support Vector Machine, Decision Tree, Random Forest, XGBoost, Association Rules CBA, and Artificial Neural Network), inspect model parameters, test counterfactual interventions, and evaluate classification metrics.
+			</p>
+			<p>
+				JavaScript is required to run the interactive canvas. Source code is available at
+				<a href="https://github.com/TaridWong/ml-playground-2.0">github.com/TaridWong/ml-playground-2.0</a>.
+			</p>
+		</main>
+	</noscript>
 	<script type="module" src="/src/main.jsx"></script>
 </body>
 </html>

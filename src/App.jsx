@@ -717,6 +717,23 @@ export default function App() {
 				</section>
 			</main>
 
+			<footer className="app-footer">
+				<div className="app-footer-inner">
+					<span>
+						Machine Learning Playground 2.0 | MIT License | Original work by Jo Chuang (2017); extended by Tarid Wongvorachan (2026)
+					</span>
+					<span className="app-footer-links">
+						<a href="https://github.com/TaridWong/ml-playground-2.0" target="_blank" rel="noopener noreferrer">
+							GitHub
+						</a>
+						<span aria-hidden="true"> | </span>
+						<a href="https://sites.google.com/view/tarid2/" target="_blank" rel="noopener noreferrer">
+							Maintainer
+						</a>
+					</span>
+				</div>
+			</footer>
+
 			{/* Pattern Guide Modal */}
 			<PatternGuideModal
 				isOpen={isGuideOpen}
